@@ -1,21 +1,27 @@
 import { CreateRequestFormDataType } from "@/app/user_portal/_components/CreateRequestForm";
-import supabase from "@/server-actions/supabase/supabase";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
-  const requestDetailsFromUserId = await supabase
-    .from("request_details")
-    .select(`* , user_profile(*), pitch(*)`)
-    .order("createdAt", { ascending: false })
-    .eq("createdBy", id);
-
-  return NextResponse.json(requestDetailsFromUserId);
+  const supabase = createServerComponentClient({ cookies });
+  try {
+    const requestDetailsFromUserId = await supabase
+      .from("request_details")
+      .select(`* , user_profile(*), pitch(*)`)
+      .order("createdAt", { ascending: false })
+      .eq("createdBy", id);
+    return NextResponse.json(requestDetailsFromUserId);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function POST(request: Request) {
   const requestDetails: CreateRequestFormDataType = await request.json();
+  const supabase = createServerComponentClient({ cookies });
   const data = await supabase.from("request_details").insert({
     title: requestDetails.title,
     content: requestDetails.content,
@@ -26,5 +32,6 @@ export async function POST(request: Request) {
     disclose_contact: requestDetails.disclose_contact,
     status: "Active",
   });
+  console.log("/api/request POST : ", data);
   return NextResponse.json(data);
 }

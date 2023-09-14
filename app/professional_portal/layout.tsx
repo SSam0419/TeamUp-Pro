@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Navbar from "./_components/Navbar";
 
 export const metadata: Metadata = {
-  title: "User Portal",
-  description: "User Portal",
+  title: "Professional Portal",
+  description: "Professional Portal",
 };
 
-export default async function UserPortalLayout({
+export default function UserPortalLayout({
   children,
 }: {
   children: React.ReactNode;

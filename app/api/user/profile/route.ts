@@ -1,6 +1,5 @@
 import { UserProfileFormType } from "@/app/user_portal/profile/_components/UserProfileForm";
 import supabase from "@/server-actions/supabase/supabase";
-import { STATUS_CODES } from "http";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {

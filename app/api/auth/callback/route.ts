@@ -6,10 +6,13 @@ export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
-
+  const isProfessional = searchParams.get("professional");
   if (code) {
     await supabase.auth.exchangeCodeForSession(code);
   }
-
-  return NextResponse.redirect(new URL("/user_portal", req.url));
+  if (isProfessional == null) {
+    return NextResponse.redirect(new URL("/user_portal", req.url));
+  } else {
+    return NextResponse.redirect(new URL("/professional_portal", req.url));
+  }
 }

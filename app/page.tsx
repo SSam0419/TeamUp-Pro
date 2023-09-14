@@ -8,6 +8,9 @@ export default function Home() {
       <Link href={"/user_portal"}>
         <h1>Go to user portal</h1>
       </Link>
+      <Link href={"/professional_portal"}>
+        <h1>Go to professional portal</h1>
+      </Link>
     </div>
   );
 }

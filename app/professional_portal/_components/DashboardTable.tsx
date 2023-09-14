@@ -9,9 +9,10 @@ import {
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 const DashboardTable = () => {
-  const { fetchedRequestDetails } = useAppStore();
+  const { fetchedRequestDetails, session } = useAppStore();
   const router = useRouter();
 
   const columnHelper = createColumnHelper<RequestDetails>();
@@ -31,13 +32,8 @@ const DashboardTable = () => {
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor("budget", {
-      header: "Budget",
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-    }),
     columnHelper.accessor("pitches", {
-      header: "Pitches",
+      header: "Competitions",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
       footer: (info) => info.column.id,
     }),
@@ -52,7 +48,6 @@ const DashboardTable = () => {
 
   useEffect(() => {
     setTableData(fetchedRequestDetails);
-    console.log(fetchedRequestDetails);
   }, [fetchedRequestDetails]);
 
   const table = useReactTable({
@@ -64,12 +59,12 @@ const DashboardTable = () => {
   return (
     <div className="flex items-center justify-center">
       {fetchedRequestDetails && (
-        <table className="border-spacing-3 border-separate p-3">
-          <thead>
+        <table className="table-auto border-spacing-4 border-collapse">
+          <thead className="text-gray-700 uppercase bg-gray-50">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="text-left p-3">
+                  <th key={header.id} className="text-left p-3 font-medium">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -78,26 +73,35 @@ const DashboardTable = () => {
                         )}
                   </th>
                 ))}
+                <th></th>
               </tr>
             ))}
           </thead>
 
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="shadow hover:cursor-pointer">
+              <tr
+                key={row.id}
+                className="bg-white border-b hover:cursor-pointer"
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-left p-3">
+                  <td key={cell.id} className="text-left p-4">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
-                <SecondaryButton
-                  text="Mange"
-                  action={() => {
-                    router.push(
-                      `user_portal/request_details/${row.original.id}`
-                    );
-                  }}
-                />
+                <td>
+                  <SecondaryButton
+                    text="Unlock"
+                    action={() => {
+                      if (session == null) {
+                        toast("You have to sign in to make a pitch", {
+                          duration: 5000,
+                        });
+                        return;
+                      }
+                    }}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

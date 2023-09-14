@@ -1,6 +1,6 @@
 type RequestDetails = {
   id: string;
-  user_profile: UserProfile;
+  user_profile: UserProfile | null;
   title: string;
   industry: string;
   content: string;

@@ -6,8 +6,12 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 
 import React from "react";
 
-export default function AuthForm() {
+export default function ProfessionalAuthForm() {
   const supabase = createClientComponentClient();
+  const origin =
+    typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : "";
   return (
     <div className="w-[500px]">
       <Auth
@@ -26,7 +30,11 @@ export default function AuthForm() {
         view="sign_in"
         theme="light"
         providers={["github", "apple", "google"]}
-        redirectTo="http://localhost:3000/api/auth/callback"
+        redirectTo={
+          origin !== ""
+            ? `${origin}/api/auth/callback?professional=true`
+            : "http://localhost:3000/api/auth/callback"
+        }
       ></Auth>
     </div>
   );
