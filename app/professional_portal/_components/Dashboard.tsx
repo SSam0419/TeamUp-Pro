@@ -1,9 +1,7 @@
 "use client";
-import PrimaryButton from "@/components/PrimaryButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import DashboardTable from "./DashboardTable";
-import GlobalPopUp from "@/components/GlobalPopUp";
 import { useQuery } from "react-query";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
@@ -15,27 +13,31 @@ const Dashboard = () => {
     ["fetchRequestDetails"],
     async () => {
       const data = await axios.get("/api/request/professional/all_request");
-
       return data;
     }
   );
 
   useEffect(() => {
-    if (requestFreeViewData)
-      setFetchedRequestDetails(requestFreeViewData.data.data);
-    console.log(requestFreeViewData?.data.data[0]);
+    if (requestFreeViewData) setFetchedRequestDetails(requestFreeViewData.data);
   }, [requestFreeViewData, setFetchedRequestDetails]);
 
   return (
-    <div className="px-[30px] py-[10px]  bg-white min-w-[1000px] rounded-[15px] shadow">
-      <div className="flex justify-between">
+    <div className="px-[30px] py-[10px]  bg-white min-w-[1000px] rounded-[15px] shadow flex flex-col gap-5">
+      <div className="flex items-start justify-center">
         <button className="shadow px-10 py-2">
           maybe change this to a search bar
         </button>
       </div>
-      <div className="my-3 min-h-[500px] flex items-center justify-center">
-        {isLoading ? <Spinner /> : <DashboardTable />}
-      </div>
+      {!isLoading && (
+        <div className="min-h-[500px] flex items-start justify-center">
+          <DashboardTable />
+        </div>
+      )}
+      {isLoading && (
+        <div className="my-3 min-h-[500px] flex items-center justify-center">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 };

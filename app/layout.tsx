@@ -23,7 +23,18 @@ export default function RootLayout({
       <body className={`text-sm ${inter.className}`}>
         <ReactQueryClientProvider>
           <div className="flex flex-col items-center justify-between p-[100px]">
-            <Toaster />
+            <Toaster
+              toastOptions={{
+                className: "",
+                style: {
+                  // border: "1px solid #713200",
+                  padding: "16px",
+                  color: "black",
+                  background: "white",
+                },
+                position: "bottom-right",
+              }}
+            />
             {children}
           </div>
         </ReactQueryClientProvider>

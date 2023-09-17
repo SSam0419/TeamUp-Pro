@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const supabase = createServerComponentClient({ cookies });
-  const requestDetails = await supabase.from("request_free_view").select(` * `);
-
-  return NextResponse.json(requestDetails);
+  const { data, error } = await supabase
+    .from("professional_free_request_view")
+    .select(` *  `);
+  if (error !== null) return NextResponse.json({ error });
+  return NextResponse.json(data);
 }

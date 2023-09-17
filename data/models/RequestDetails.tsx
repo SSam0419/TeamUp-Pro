@@ -9,4 +9,5 @@ type RequestDetails = {
   disclose_contact: boolean;
   status: "Active" | "Expired" | "Cancelled" | "Hired";
   pitches: Pitch[];
+  unlocked: boolean;
 };

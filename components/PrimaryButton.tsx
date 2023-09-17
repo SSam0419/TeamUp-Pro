@@ -11,7 +11,7 @@ const PrimaryButton = ({ action, text }: props) => {
     <button
       className="bg-primary 
       text-white h-[40px] 
-        font-medium px-10 py-2 rounded-[45px] "
+        font-medium px-10 py-2 rounded-[45px] hover:opacity-70"
       onClick={(e) => action(e)}
     >
       {text}

@@ -108,6 +108,9 @@ const Navbar = () => {
             <button
               type="submit"
               className="bg-secondary text-white font-medium px-10 py-2 rounded-[45px] "
+              onClick={() => {
+                setUserProfile(null);
+              }}
             >
               Sign out
             </button>

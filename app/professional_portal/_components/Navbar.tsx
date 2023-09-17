@@ -35,7 +35,9 @@ const Navbar = () => {
   const { data, isLoading, error, isSuccess } = useQuery(
     ["fetchUserProfile", session],
     async () => {
-      const data = await axios.get("/api/user?id=" + session?.user.id);
+      const data = await axios.get(
+        "/api/professional/profile?id=" + session?.user.id
+      );
       return data;
     }
   );
@@ -66,7 +68,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (data?.data.data) {
-      setUserProfile(data?.data.data[0]);
+      setUserProfile(data?.data.data);
     }
   }, [data, setUserProfile]);
 
@@ -123,6 +125,9 @@ const Navbar = () => {
             <button
               type="submit"
               className="bg-secondary text-white font-medium px-10 py-2 rounded-[45px] "
+              onClick={() => {
+                setUserProfile(null);
+              }}
             >
               Sign out
             </button>

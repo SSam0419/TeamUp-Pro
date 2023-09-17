@@ -1,5 +1,6 @@
 "use client";
-import SecondaryButton from "@/components/SecondaryButton";
+
+import { IndustriesOptions } from "@/constants/industries";
 import { useAppStore } from "@/libs/ZustandStore";
 import {
   createColumnHelper,
@@ -7,47 +8,84 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { AiFillLock } from "react-icons/ai";
+import { useMutation } from "react-query";
 
 const DashboardTable = () => {
-  const { fetchedRequestDetails, session } = useAppStore();
+  const { mutate } = useMutation({
+    mutationFn: async ({
+      requestDetailsId,
+      professionalId,
+    }: {
+      requestDetailsId: string;
+      professionalId: string;
+    }) => {
+      const response = await axios.post(
+        "/api/request/professional/unlock_request",
+        {
+          requestDetailsId,
+          professionalId,
+        }
+      );
+      return response;
+    },
+    onError: (error: AxiosError) => {
+      error.response ? toast(error.response?.statusText) : toast(error.message);
+    },
+    onSuccess: (data) => {
+      toast("Unlocked");
+      router.push("/professional_portal/view_request/" + data.data);
+    },
+  });
+
+  const { fetchedRequestDetails, profileInfo } = useAppStore();
   const router = useRouter();
 
   const columnHelper = createColumnHelper<RequestDetails>();
   const columns = [
-    columnHelper.accessor("industry", {
-      header: "Industry",
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-    }),
     columnHelper.accessor("title", {
       header: "Title",
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
+      enableSorting: true,
+      size: 140,
     }),
     columnHelper.accessor("duration", {
       header: "Duration",
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
+      enableSorting: true,
     }),
     columnHelper.accessor("pitches", {
       header: "Competitions",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
       footer: (info) => info.column.id,
+      enableSorting: true,
     }),
     columnHelper.accessor("status", {
       header: "Status",
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
+      enableSorting: true,
     }),
   ];
 
-  const [tableData, setTableData] = useState(fetchedRequestDetails);
+  const [tableData, setTableData] = useState(
+    fetchedRequestDetails?.filter(
+      (request) => request.industry === IndustriesOptions[0]
+    )
+  );
 
   useEffect(() => {
-    setTableData(fetchedRequestDetails);
+    setTableData(
+      fetchedRequestDetails?.filter(
+        (request) => request.industry === IndustriesOptions[0]
+      )
+    );
   }, [fetchedRequestDetails]);
 
   const table = useReactTable({
@@ -56,15 +94,43 @@ const DashboardTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const [selectedIndustry, setSelectedIndustry] = useState(0);
+
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex flex-col items-center justify-start">
+      <div className="flex my-4 rounded-full shadow border p-3">
+        {IndustriesOptions.map((option, idx) => (
+          <div key={idx} className="flex">
+            <button
+              className={`${selectedIndustry == idx ? "text-primary" : ""}`}
+              type="button"
+              onClick={() => {
+                setSelectedIndustry(idx);
+                setTableData(
+                  fetchedRequestDetails?.filter(
+                    (request) => request.industry === IndustriesOptions[idx]
+                  )
+                );
+              }}
+            >
+              {option}
+            </button>
+            <div className="mx-2">
+              {idx !== IndustriesOptions.length - 1 ? "|" : ""}
+            </div>
+          </div>
+        ))}
+      </div>
       {fetchedRequestDetails && (
-        <table className="table-auto border-spacing-4 border-collapse">
+        <table className="border-spacing-4 border-collapse">
           <thead className="text-gray-700 uppercase bg-gray-50">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="text-left p-3 font-medium">
+                  <th
+                    key={header.id}
+                    className="text-left p-3 font-medium w-[150px]"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -73,37 +139,72 @@ const DashboardTable = () => {
                         )}
                   </th>
                 ))}
-                <th></th>
+                <th className="text-left p-3 font-medium">Access</th>
               </tr>
             ))}
           </thead>
 
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="bg-white border-b hover:cursor-pointer"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="text-left p-4">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-                <td>
-                  <SecondaryButton
-                    text="Unlock"
-                    action={() => {
-                      if (session == null) {
-                        toast("You have to sign in to make a pitch", {
-                          duration: 5000,
-                        });
+            {table.getRowModel().rows.map((row, idx) => {
+              const beforeContent =
+                tableData[idx].unlocked && profileInfo
+                  ? "before:content-['View_Details'] before:text-primary "
+                  : "before:content-['UNLOCK_TO_VIEW_DETAILS']";
+              return (
+                <tr
+                  key={row.id}
+                  className="bg-white border-b hover:cursor-pointer hover:opacity-50 
+                hover:backdrop-blur-sm hover:bg-white/30 group
+               "
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="text-left p-4">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                  <td
+                    className={`p-4 flex justify-center items-center before:hidden group-hover:before:flex before:absolute group-hover:before:opacity-100 
+                    ${beforeContent}
+                    before:left-0 before:top-0  before:w-full before:bg-white/70 before:h-full before:backdrop-blur-sm before:items-center before:justify-center before:text-base before:font-semibold`}
+                    align="center"
+                    onClick={(e) => {
+                      if (tableData[idx].unlocked && profileInfo) {
+                        router.push(
+                          "/professional_portal/view_request/" +
+                            tableData[idx].id
+                        );
+                      } else if (profileInfo == null) {
+                        toast("You have to sign in to unlock the request");
                         return;
+                      } else {
+                        mutate({
+                          requestDetailsId: tableData[idx].id,
+                          professionalId: profileInfo.id,
+                        });
                       }
                     }}
-                  />
-                </td>
-              </tr>
-            ))}
+                  >
+                    <button
+                      className="text-center rounded-full bg-secondary w-[30px] h-[30px]
+                  text-white p-2 flex items-center justify-center"
+                      onClick={() => {
+                        if (profileInfo == null) {
+                          toast("You have to sign in to make a pitch", {
+                            duration: 5000,
+                          });
+                          return;
+                        }
+                      }}
+                    >
+                      <AiFillLock />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

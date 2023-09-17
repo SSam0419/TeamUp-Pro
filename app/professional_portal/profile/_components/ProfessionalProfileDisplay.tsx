@@ -5,9 +5,11 @@ import React from "react";
 
 const ProfessionalProfileDisplay = () => {
   const { profileInfo: userProfileInfo } = useAppStore();
+
   if (userProfileInfo == null) {
     return <div>Error : Null profile</div>;
   }
+
   return (
     <div className="text-gray-600 w-full">
       <div className="max-w-3xl mx-auto">

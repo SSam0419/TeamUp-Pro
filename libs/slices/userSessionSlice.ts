@@ -9,8 +9,8 @@ export interface IUserProfile {
 export interface UserProfileSlice {
   session: Session | null;
   profileInfo: UserProfile | null;
-  setUserSession: (session: Session) => void;
-  setUserProfile: (profileData: UserProfile) => void;
+  setUserSession: (session: Session | null) => void;
+  setUserProfile: (profileData: UserProfile | null) => void;
 }
 
 export const createUserProfileSlice: StateCreator<UserProfileSlice> = (
@@ -19,12 +19,12 @@ export const createUserProfileSlice: StateCreator<UserProfileSlice> = (
   session: null,
   profileInfo: null,
 
-  setUserSession: (session: Session) => {
+  setUserSession: (session: Session | null) => {
     set({
       session: session,
     });
   },
-  setUserProfile: (profileData: UserProfile) => {
+  setUserProfile: (profileData: UserProfile | null) => {
     set({
       profileInfo: profileData,
     });
