@@ -14,7 +14,7 @@ export default function UserPortalLayout({
   return (
     <div className="flex flex-col items-center justify-between">
       <Navbar />
-      {children}
+      <div className="mt-10">{children}</div>
     </div>
   );
 }

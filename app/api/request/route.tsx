@@ -10,9 +10,9 @@ export async function GET(request: Request) {
   try {
     const requestDetailsFromUserId = await supabase
       .from("request_details")
-      .select(`* , user_profile(*), pitch(*)`)
-      .order("createdAt", { ascending: false })
-      .eq("createdBy", id);
+      .select(`* , user_profile(*), professional_pitch(*)`)
+      .order("created_at", { ascending: false })
+      .eq("created_by", id);
     return NextResponse.json(requestDetailsFromUserId);
   } catch (error) {
     console.log(error);
@@ -32,6 +32,5 @@ export async function POST(request: Request) {
     disclose_contact: requestDetails.disclose_contact,
     status: "Active",
   });
-  console.log("/api/request POST : ", data);
   return NextResponse.json(data);
 }

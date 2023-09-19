@@ -1,10 +1,15 @@
 import React from "react";
+import { MoonLoader } from "react-spinners";
 import PuffLoader from "react-spinners/PuffLoader";
 
-const Spinner = () => {
+type props = {
+  size?: 18 | number;
+};
+
+const Spinner = ({ size }: props) => {
   return (
     <div>
-      <PuffLoader color="#F7717D" />
+      <MoonLoader color="#F7717D" size={size} />
     </div>
   );
 };

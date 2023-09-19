@@ -1,6 +1,6 @@
 "use client";
 
-import { IndustriesOptions } from "@/constants/industries";
+import { IndustriesOptions } from "@/types/constants/industries";
 import { useAppStore } from "@/libs/ZustandStore";
 import {
   createColumnHelper,
@@ -16,7 +16,7 @@ import { AiFillLock } from "react-icons/ai";
 import { useMutation } from "react-query";
 
 const DashboardTable = () => {
-  const { mutate } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: async ({
       requestDetailsId,
       professionalId,

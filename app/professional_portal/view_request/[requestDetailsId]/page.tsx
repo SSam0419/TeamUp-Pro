@@ -1,47 +1,74 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import React from "react";
 import { useQuery } from "react-query";
+import UnlockedRequestView from "./_components/UnlockedRequestView";
+import PitchForm from "./_components/PitchForm";
+import { useAppStore } from "@/libs/ZustandStore";
 
 const Page = ({ params }: { params: { requestDetailsId: string } }) => {
-  const { data, isLoading, error } = useQuery(
-    ["fetchUnlockedRequest"],
-    async () => {
-      const data = await axios.get(
-        "/api/request/professional/unlock_request?id=" + params.requestDetailsId
-      );
+  const { profileInfo } = useAppStore();
 
-      return data;
-    }
-  );
+  const {
+    data: requestDetailsData,
+    isLoading,
+    error,
+  } = useQuery(["fetchUnlockedRequest", profileInfo], async () => {
+    if (profileInfo?.id === null || profileInfo?.id === undefined) return null;
+    const data = await axios.get(
+      `/api/request/professional/unlock_request?request_id=${params.requestDetailsId}&professional_id=${profileInfo.id}`
+    );
 
-  if (isLoading) {
+    return data.data.data as RequestDetails;
+  });
+
+  if (profileInfo === null) {
     return (
-      <>
-        <Spinner />
-      </>
+      <div className="text-center w-[880px] h-[300px] bg-white p-4 rounded-lg flex justify-center items-center italic">
+        Please Sign In Before Viewing Unlocked Request Details
+      </div>
     );
   }
 
-  if (error) {
-    const e: AxiosError = error as AxiosError;
+  if (error instanceof AxiosError) {
     return (
       <>
-        <h1>{e.response?.statusText}</h1>
+        <h1>{error.response?.statusText}</h1>
       </>
     );
   }
 
   return (
-    <div>
-      <div className="">Title : </div>
-      <div className="">Content</div>
-      <div className=""></div>
-      <div className=""></div>
-      <div className=""></div>
-      <div className=""></div>
+    <div className="w-[880px] bg-white p-4 rounded-lg flex gap-3 flex-col justify-between items-start">
+      {isLoading && (
+        <div className="flex w-full h-[300px] justify-center items-center">
+          <Spinner />
+        </div>
+      )}
+
+      {!isLoading && requestDetailsData && (
+        <>
+          <div className="w-full min-h-[300px]">
+            <UnlockedRequestView requestDetails={requestDetailsData} />
+          </div>
+
+          <div className="my-6 w-full gap-3 grid grid-cols-5 items-center">
+            <div className="border-gray-400 border col-span-2"></div>
+            <p className="text-center text-base italic font-thin">
+              {requestDetailsData.pitch !== null
+                ? "Edit Pitch"
+                : "Create Pitch"}
+            </p>
+            <div className="border-gray-400 border col-span-2"></div>
+          </div>
+
+          <div className="w-full">
+            <PitchForm params={params} requestDetails={requestDetailsData} />
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { IndustriesOptions } from "@/constants/industries";
+import { IndustriesOptions } from "@/types/constants/industries";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
