@@ -21,6 +21,9 @@ const UnlockedRequestView = ({ requestDetails }: props) => {
         Estimated Project Timeframe: {requestDetails.duration}{" "}
         {requestDetails.duration_unit}
       </div>
+      <div className="mt-3  italic">
+        Estimated Project Budget: {requestDetails.budget}
+      </div>
       <div className="mt-3 leading-relaxed">{requestDetails.content}</div>
     </div>
   );

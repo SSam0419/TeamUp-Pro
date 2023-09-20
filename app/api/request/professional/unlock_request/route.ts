@@ -1,12 +1,14 @@
+import { ConsoleLog } from "@/server-actions/utils/logger";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 //get a unlocked request
 export async function GET(request: NextRequest) {
-  console.log(
-    "server log : getting unlocked request details at : api/request/professional/unlock_request/route"
-  );
+  ConsoleLog({
+    requestType: "GET",
+    route: "/api/request/professional/unlock_request/route",
+  });
 
   const supabase = createServerComponentClient({ cookies });
   const { searchParams } = new URL(request.url);
@@ -56,6 +58,10 @@ export async function GET(request: NextRequest) {
 
 //unlock a request
 export async function POST(request: NextRequest) {
+  ConsoleLog({
+    requestType: "POST",
+    route: "/api/request/professional/all_request/route",
+  });
   const supabase = createServerComponentClient({ cookies });
   const unlockRequestData = await request.json();
   const { data, error } = await supabase.from("unlocked_request").insert({

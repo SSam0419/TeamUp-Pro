@@ -14,7 +14,7 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
   } = useAppStore();
 
   const { data, isLoading } = useQuery(
-    ["fetchSingleRequestDetails", session],
+    ["fetchSingleRequestDetails", session, params.requestDetailsId],
     async () => {
       const requestDetails = await axios.get(
         "/api/request/single_request_details?id=" + params.requestDetailsId
@@ -23,6 +23,7 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
       return requestDetails;
     }
   );
+
   useEffect(() => {
     if (data) setFetchedSingleRequestDetails(data.data.data);
   }, [setFetchedSingleRequestDetails, data]);
@@ -31,7 +32,7 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
     <div>
       {isLoading && <Spinner />}
       {!isLoading && fetchedSingleRequestDetails && (
-        <div className="bg-white  rounded p-5 w-[500px]">
+        <div className="bg-white  rounded p-5 w-[1000px]">
           <RequestDetailsContainer />
         </div>
       )}

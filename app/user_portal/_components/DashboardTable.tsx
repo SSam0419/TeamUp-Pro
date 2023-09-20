@@ -36,7 +36,7 @@ const DashboardTable = () => {
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor("pitches", {
+    columnHelper.accessor("professional_pitch", {
       header: "Pitches",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
       footer: (info) => info.column.id,

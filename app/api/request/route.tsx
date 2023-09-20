@@ -1,9 +1,14 @@
 import { CreateRequestFormDataType } from "@/app/user_portal/_components/CreateRequestForm";
+import { ConsoleLog } from "@/server-actions/utils/logger";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
+  ConsoleLog({
+    requestType: "GET",
+    route: "/api/request/route",
+  });
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   const supabase = createServerComponentClient({ cookies });
@@ -20,6 +25,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  ConsoleLog({
+    requestType: "POST",
+    route: "/api/request/single_request_details/route",
+  });
   const requestDetails: CreateRequestFormDataType = await request.json();
   const supabase = createServerComponentClient({ cookies });
   const data = await supabase.from("request_details").insert({

@@ -60,7 +60,7 @@ const DashboardTable = () => {
       footer: (info) => info.column.id,
       enableSorting: true,
     }),
-    columnHelper.accessor("pitches", {
+    columnHelper.accessor("professional_pitch", {
       header: "Competitions",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
       footer: (info) => info.column.id,
@@ -172,6 +172,7 @@ const DashboardTable = () => {
                     align="center"
                     onClick={(e) => {
                       if (tableData[idx].unlocked && profileInfo) {
+                        console.log(tableData[idx]);
                         router.push(
                           "/professional_portal/view_request/" +
                             tableData[idx].id

@@ -2,7 +2,8 @@ import SecondaryButton from "@/components/SecondaryButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { ChangeEvent, useState } from "react";
-import { useMutation } from "react-query";
+import { toast } from "react-hot-toast";
+import { useMutation, useQueryClient } from "react-query";
 
 export type PitchFormDataType = {
   message: string;
@@ -20,15 +21,35 @@ const PitchForm = ({
 }) => {
   const { profileInfo } = useAppStore();
 
+  const queryClient = useQueryClient();
+
   const { mutate, isLoading, error } = useMutation(
     ["postPitch"],
     async (pitchFormData: PitchFormDataType) => {
-      const data = await axios.post(
-        `/api/pitch?request_id=${params.requestDetailsId}&professional_id=${profileInfo?.id}`,
-        pitchFormData
-      );
+      let data;
+      if (requestDetails.pitch == null) {
+        data = await axios.post(
+          `/api/pitch?request_id=${params.requestDetailsId}&professional_id=${profileInfo?.id}`,
+          pitchFormData
+        );
+      } else {
+        data = await axios.put(
+          `/api/pitch?request_id=${params.requestDetailsId}&professional_id=${profileInfo?.id}`,
+          pitchFormData
+        );
+      }
       console.log(data);
       return data;
+    },
+    {
+      onSuccess: () => {
+        if (requestDetails.pitch == null) {
+          toast("Pitch Created!");
+        } else {
+          toast("Pitch Edited!");
+        }
+        queryClient.invalidateQueries({ queryKey: ["fetchUnlockedRequest"] });
+      },
     }
   );
 
@@ -55,10 +76,16 @@ const PitchForm = ({
       className="flex p-5 flex-col gap-3 shadow w-full border rounded-xl"
       onSubmit={(e) => {
         e.preventDefault();
-        console.log("yo", pitchFormData);
         mutate(pitchFormData);
       }}
     >
+      <div className="italic">
+        {requestDetails.pitch &&
+          `Last Update: ${new Intl.DateTimeFormat("en-HK", {
+            dateStyle: "full",
+            timeStyle: "long",
+          }).format(new Date(requestDetails.pitch.updated_at))}`}
+      </div>
       <div className="flex items-center justify-between w-full">
         <div>
           <label

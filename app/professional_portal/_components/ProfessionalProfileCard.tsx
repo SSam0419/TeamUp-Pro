@@ -11,6 +11,7 @@ import { useQuery } from "react-query";
 import { MoonLoader } from "react-spinners";
 import GlobalPopUp from "@/components/GlobalPopUp";
 import ProfessionalAuthForm from "./ProfessionalAuthForm";
+import { RxAvatar } from "react-icons/rx";
 
 const ProfessionalProfileCard = () => {
   const {
@@ -67,14 +68,21 @@ const ProfessionalProfileCard = () => {
         href={"/professional_portal/profile"}
         className="flex items-center space-x-2"
       >
-        <Image
-          className="w-10 h-10 rounded-full border flex justify-center items-center"
-          loader={({ src }) => src}
-          src={sessionState?.user?.user_metadata?.avatar_url || "_"}
-          alt=""
-          width={40}
-          height={40}
-        />
+        {sessionState?.user?.user_metadata.avatar_url !== null &&
+        sessionState?.user?.user_metadata.avatar_url !== undefined ? (
+          <Image
+            className="w-10 h-10 rounded-full border flex justify-center items-center"
+            loader={({ src }) => src}
+            src={sessionState.user.user_metadata.avatar_url}
+            alt={""}
+            width={40}
+            height={40}
+          />
+        ) : (
+          <div>
+            <RxAvatar size={30} />
+          </div>
+        )}
         <span className="text-gray-800">
           {sessionState?.user?.user_metadata?.user_name ||
             sessionState?.user?.id}

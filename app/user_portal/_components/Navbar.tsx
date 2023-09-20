@@ -38,11 +38,6 @@ const Navbar = () => {
   const supabase = createClientComponentClient();
 
   supabase.auth.onAuthStateChange((event, session) => {
-    if (session !== null) {
-      console.log("if (session!==null)");
-      console.log(event);
-      console.log(session);
-    }
     if (
       event == "INITIAL_SESSION" &&
       sessionState === null &&
