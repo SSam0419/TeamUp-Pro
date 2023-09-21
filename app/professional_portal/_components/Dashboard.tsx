@@ -12,7 +12,9 @@ const Dashboard = () => {
   const { data: requestFreeViewData, isLoading } = useQuery(
     ["fetchRequestDetails"],
     async () => {
-      const data = await axios.get("/api/request/professional/all_request");
+      const data = await axios.get(
+        "/api/request/professional/restricted_request"
+      );
       return data;
     }
   );

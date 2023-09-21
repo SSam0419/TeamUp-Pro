@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   ConsoleLog({
     requestType: "GET",
-    route: "/api/user/profile/route",
+    route: "/api/profile/user/route",
   });
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   ConsoleLog({
     requestType: "POST",
-    route: "/api/user/profile/route",
+    route: "/api/profile/user/route",
   });
   const userProfileData: UserProfileFormType = await request.json();
   console.log("userProfileData: ", userProfileData);

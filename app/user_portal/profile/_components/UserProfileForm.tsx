@@ -28,7 +28,7 @@ export default function UserProfileForm() {
 
   const mutation = useMutation({
     mutationFn: async (userProfileData: UserProfileFormType) => {
-      return await axios.post("/api/user/profile", userProfileData);
+      return await axios.post("/api/profile/user", userProfileData);
     },
     onSuccess: ({ data, status }) => {
       console.log("onSuccess: ", data);

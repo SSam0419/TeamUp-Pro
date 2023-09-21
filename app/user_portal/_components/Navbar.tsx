@@ -30,7 +30,9 @@ const Navbar = () => {
   const { data, isLoading } = useQuery(
     ["fetchUserProfile", sessionState, session],
     async () => {
-      const data = await axios.get("/api/user?id=" + sessionState?.user.id);
+      const data = await axios.get(
+        "/api/profile/user?id=" + sessionState?.user.id
+      );
       return data;
     }
   );

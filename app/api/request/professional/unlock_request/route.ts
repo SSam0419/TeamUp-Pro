@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   ConsoleLog({
     requestType: "POST",
-    route: "/api/request/professional/all_request/route",
+    route: "/api/request/professional/restricted_request/route",
   });
   const supabase = createServerComponentClient({ cookies });
   const unlockRequestData = await request.json();

@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   ConsoleLog({
     requestType: "GET",
-    route: "/api/request/professional/all_request/route",
+    route: "/api/request/professional/restricted_request/route",
   });
   const supabase = createServerComponentClient({ cookies });
   const { data, error } = await supabase

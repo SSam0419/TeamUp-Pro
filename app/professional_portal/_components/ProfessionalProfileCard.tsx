@@ -27,7 +27,7 @@ const ProfessionalProfileCard = () => {
     ["fetchUserProfile", sessionState],
     async () => {
       const data = await axios.get(
-        "/api/professional/profile?id=" + sessionState?.user.id
+        "/api/profile/professional?id=" + sessionState?.user.id
       );
       return data;
     }

@@ -43,7 +43,7 @@ export default function ProfessionalProfileForm() {
       professionalProfile: ProfessionalProfileFormType;
       skills: string[];
     }) => {
-      return await axios.post("/api/professional/profile", data);
+      return await axios.post("/api/profile/professional", data);
     },
     onSuccess: ({ data, status }) => {
       console.log("onSuccess: ", data);

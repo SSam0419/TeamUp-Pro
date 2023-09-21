@@ -17,7 +17,7 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
     ["fetchSingleRequestDetails", session, params.requestDetailsId],
     async () => {
       const requestDetails = await axios.get(
-        "/api/request/single_request_details?id=" + params.requestDetailsId
+        `/api/request/user_request?user_id=${session?.user.id}&request_id=${params.requestDetailsId}`
       );
 
       return requestDetails;

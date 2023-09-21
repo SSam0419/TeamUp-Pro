@@ -19,7 +19,9 @@ const Dashboard = () => {
     ["fetchRequestDetails", session],
     async () => {
       if (session == null) return;
-      const data = await axios.get("/api/request?id=" + session?.user.id);
+      const data = await axios.get(
+        "/api/request/user_request?user_id=" + session?.user.id
+      );
 
       return data;
     }
@@ -28,7 +30,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (requestDetailsData)
       setFetchedRequestDetails(requestDetailsData.data.data);
-    console.log(requestDetailsData?.data.data[0]);
+    console.log(requestDetailsData?.data.data);
   }, [requestDetailsData, setFetchedRequestDetails]);
 
   return (

@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  ConsoleLog({ requestType: "GET", route: "/api/professional/profile/route" });
+  ConsoleLog({ requestType: "GET", route: "/api/profile/professional/route" });
   const supabase = createRouteHandlerClient({ cookies });
 
   const { searchParams } = new URL(request.url);
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   ConsoleLog({
     requestType: "POST",
-    route: "/api/professional/profile/route",
+    route: "/api/profile/professional/route",
   });
   const supabase = createRouteHandlerClient({ cookies });
   const {

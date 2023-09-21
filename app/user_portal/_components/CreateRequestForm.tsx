@@ -33,14 +33,13 @@ const CreateRequestForm = ({ onClose }: props) => {
 
   const { mutate, isLoading, error } = useMutation(
     async (formData: CreateRequestFormDataType) => {
-      const result = await axios.post("/api/request", formData, {
+      const result = await axios.post("/api/request/user_request", formData, {
         validateStatus: (status) => status >= 200 && status < 300,
       });
       if (result.status !== 201) {
         throw new Error(
           "Please create your user profile before you create a request"
         );
-        throw new Error(result.data.error.message);
       }
       return result;
     },
