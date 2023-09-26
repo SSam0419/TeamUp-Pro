@@ -11,10 +11,11 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   const data = await supabase
-    .from("professional_profile")
-    .select()
+    .from("professional_profile_view")
+    .select("*")
     .eq("id", id)
     .single();
+
   return NextResponse.json(data);
 }
 

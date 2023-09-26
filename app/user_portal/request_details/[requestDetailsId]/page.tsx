@@ -14,7 +14,7 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
   } = useAppStore();
 
   const { data, isLoading } = useQuery(
-    ["fetchSingleRequestDetails", session, params.requestDetailsId],
+    ["retrieveSingleRequestDetails", session, params.requestDetailsId],
     async () => {
       const requestDetails = await axios.get(
         `/api/request/user_request?user_id=${session?.user.id}&request_id=${params.requestDetailsId}`

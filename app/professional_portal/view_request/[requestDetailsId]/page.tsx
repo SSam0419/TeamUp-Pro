@@ -15,7 +15,7 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
     data: requestDetailsData,
     isLoading,
     error,
-  } = useQuery(["fetchUnlockedRequest", profileInfo], async () => {
+  } = useQuery(["retrieveUnlockedRequest", profileInfo, params], async () => {
     if (profileInfo?.id === null || profileInfo?.id === undefined) return null;
     const data = await axios.get(
       `/api/request/professional/unlock_request?request_id=${params.requestDetailsId}&professional_id=${profileInfo.id}`

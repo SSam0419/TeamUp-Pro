@@ -46,7 +46,7 @@ const CreateRequestForm = ({ onClose }: props) => {
     {
       onSuccess: () => {
         onClose();
-        queryClient.invalidateQueries({ queryKey: ["fetchRequestDetails"] });
+        queryClient.invalidateQueries({ queryKey: ["retrieveRequestDetails"] });
       },
       onError: (error: Error) => {
         toast(error.toString());

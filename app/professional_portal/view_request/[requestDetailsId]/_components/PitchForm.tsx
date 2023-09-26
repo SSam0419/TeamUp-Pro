@@ -38,7 +38,6 @@ const PitchForm = ({
           pitchFormData
         );
       }
-      console.log(data);
       return data;
     },
     {
@@ -48,16 +47,19 @@ const PitchForm = ({
         } else {
           toast("Pitch Edited!");
         }
-        queryClient.invalidateQueries({ queryKey: ["fetchUnlockedRequest"] });
+        queryClient.invalidateQueries({
+          queryKey: ["retrieveUnlockedRequest"],
+        });
       },
     }
   );
 
   const [pitchFormData, setPitchFormData] = useState<PitchFormDataType>({
-    message: requestDetails.pitch?.message || "",
-    price: requestDetails.pitch?.price | requestDetails.budget,
-    deliveryTime: requestDetails.duration,
-    deliveryUnit: "Days",
+    message: requestDetails.pitch.message || "",
+    price: requestDetails.pitch.price || requestDetails.budget,
+    deliveryTime:
+      requestDetails.pitch.delivery_time.toString() || requestDetails.duration,
+    deliveryUnit: requestDetails.pitch.delivery_unit || "Days",
   });
 
   const handleFormDataChange = (
@@ -70,7 +72,6 @@ const PitchForm = ({
       [name]: fieldValue,
     }));
   };
-
   return (
     <form
       className="flex p-5 flex-col gap-3 shadow w-full border rounded-xl"

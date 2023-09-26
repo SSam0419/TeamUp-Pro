@@ -1,20 +1,38 @@
 "use client";
 import React from "react";
+import MoonLoader from "react-spinners/MoonLoader";
 
 type props = {
   action: Function;
   text: string;
+  isLoading?: boolean;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 };
 
-const PrimaryButton = ({ action, text }: props) => {
+const PrimaryButton = ({ action, text, isLoading, type, disabled }: props) => {
   return (
     <button
-      className="bg-primary 
+      className={`bg-primary w-full
       text-white h-[40px] 
-        font-medium px-10 py-2 rounded-[45px] hover:opacity-70"
-      onClick={(e) => action(e)}
+        font-medium px-10 py-2 rounded hover:opacity-70
+        flex items-center justify-center gap-2
+        ${
+          isLoading || disabled
+            ? "opacity-70"
+            : "active:bg-white active:border-black active:text-black active:border"
+        }`}
+      type={`${type !== undefined ? type : "button"}`}
+      disabled={disabled || (isLoading !== undefined ? isLoading : false)}
+      onClick={(e) => {
+        action(e);
+      }}
     >
-      {text}
+      {isLoading && (
+        <MoonLoader size={15} color="white" />
+        // <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"></svg>
+      )}
+      {!isLoading && text}
     </button>
   );
 };

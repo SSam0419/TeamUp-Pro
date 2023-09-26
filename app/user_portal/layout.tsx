@@ -12,7 +12,7 @@ export default async function UserPortalLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-between">
+    <div className="flex flex-col items-center justify-between  p-[100px] ">
       <Navbar />
       <div className="mt-10">{children}</div>
     </div>

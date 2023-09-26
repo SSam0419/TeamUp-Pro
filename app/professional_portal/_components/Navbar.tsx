@@ -19,21 +19,21 @@ const Navbar = () => {
           href={"/professional_portal"}
           className={`${
             pathName === "/professional_portal" ? "text-primary" : ""
-          }  px-10 py-2 rounded-[45px] shadow-md flex justify-center items-center gap-3`}
+          }  px-10 py-2 rounded-[45px] shadow border flex justify-center items-center gap-3`}
         >
           <RiDashboardFill size={"20px"} />
-          Dashboard
+          <div className="hidden md:block">Dashbaord</div>
         </Link>
         <Link
-          href={"/professional_portal"}
+          href={"/professional_portal/my_pitch"}
           className={`${
-            pathName === "/professional_portal" ? "text-primary" : ""
-          }  px-10 py-2 rounded-[45px] shadow-md flex justify-center items-center gap-3`}
+            pathName === "/professional_portal/my_pitch" ? "text-primary" : ""
+          }  px-10 py-2 rounded-[45px] shadow border flex justify-center items-center gap-3`}
         >
           <PiTargetLight size={"20px"} />
-          My Pitches
+          <div className="hidden md:block">My Pitches</div>
         </Link>
-        <Link
+        {/* <Link
           href={"/professional_portal"}
           className={`${
             pathName === "/professional_portal" ? "text-primary" : ""
@@ -41,15 +41,15 @@ const Navbar = () => {
         >
           <BiMessageAlt size={"20px"} />
           Messages
-        </Link>
+        </Link> */}
         <Link
           href={"/"}
           className={`${
             pathName === "/FAQ" ? "text-primary" : "text-black"
-          } shadow-md px-10 py-2 rounded-[45px] flex justify-center items-center gap-3`}
+          } shadow px-10 py-2 rounded-[45px] flex justify-center items-center gap-3 border`}
         >
           <FaQuestionCircle size={"20px"} />
-          FAQ
+          <div className="hidden md:block">FAQ</div>
         </Link>
       </div>
       <ProfessionalProfileCard />

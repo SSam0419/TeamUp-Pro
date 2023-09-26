@@ -2,7 +2,8 @@ type ProfessionalProfile = {
   id: number;
   username: string;
   email: string;
-  name: string;
+  firstname: string;
+  lastname: string;
   location: string;
   industry: string;
   skills: string[];

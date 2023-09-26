@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
   if (session) {
     await supabase.auth.signOut();
   }
+
   // return NextResponse.redirect(new URL("/user_portal"));
   return NextResponse.redirect(new URL("/", req.url), {
     status: 302,

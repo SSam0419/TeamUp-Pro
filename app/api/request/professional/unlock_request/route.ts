@@ -45,9 +45,12 @@ export async function GET(request: NextRequest) {
     .from("professional_pitch")
     .select("*")
     .eq("professional_id", professional_id)
+    .eq("request_details_id", request_id)
     .maybeSingle();
 
   data.pitch = pitch;
+  console.log({ request_id, professional_id, data });
+
   if (pitchRequestError)
     return new NextResponse("Error", {
       status: 400,

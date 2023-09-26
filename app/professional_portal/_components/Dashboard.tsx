@@ -1,20 +1,31 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import DashboardTable from "./DashboardTable";
 import { useQuery } from "react-query";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
+import { useSearchParams } from "next/navigation";
+import IndustryFilter from "./IndustryFilter";
+import SearchQuery from "./SearchQuery";
+import DashboardToolBar from "./DashboardToolBar";
 const Dashboard = () => {
-  const { session, setFetchedRequestDetails } = useAppStore();
+  const { setFetchedRequestDetails, profileInfo } = useAppStore();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    setQuery(current.toString());
+  }, [searchParams]);
 
   const { data: requestFreeViewData, isLoading } = useQuery(
-    ["fetchRequestDetails"],
+    ["retrieveRequestDetails", query, profileInfo],
     async () => {
-      const data = await axios.get(
-        "/api/request/professional/restricted_request"
-      );
+      const route = "/api/request/professional/restricted_request?" + query;
+
+      const data = await axios.get(route);
       return data;
     }
   );
@@ -24,14 +35,12 @@ const Dashboard = () => {
   }, [requestFreeViewData, setFetchedRequestDetails]);
 
   return (
-    <div className="px-[30px] py-[10px]  bg-white min-w-[1000px] rounded-[15px] shadow flex flex-col gap-5">
-      <div className="flex items-start justify-center">
-        <button className="shadow px-10 py-2">
-          maybe change this to a search bar
-        </button>
+    <div className="px-[30px] py-[10px]  bg-white min-w-[1000px] rounded-[15px] shadow flex flex-col gap-5 items-center">
+      <div className="w-[800px]">
+        <DashboardToolBar isLoading={isLoading} />
       </div>
       {!isLoading && (
-        <div className="min-h-[500px] flex items-start justify-center">
+        <div className="min-h-[500px] w-[800px] flex items-start justify-center ">
           <DashboardTable />
         </div>
       )}

@@ -26,11 +26,16 @@ const DashboardTable = () => {
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor("duration", {
-      header: "Duration",
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-    }),
+    // columnHelper.accessor("duration", {
+    //   header: "Duration",
+    //   cell: (info) => info.getValue(),
+    //   footer: (info) => info.column.id,
+    // }),
+    {
+      id: "Duration",
+      accessorFn: (row: RequestDetails) =>
+        `${row.duration} ${row.duration_unit}`,
+    },
     columnHelper.accessor("budget", {
       header: "Budget",
       cell: (info) => info.getValue(),
@@ -52,7 +57,6 @@ const DashboardTable = () => {
 
   useEffect(() => {
     setTableData(fetchedRequestDetails);
-    console.log(fetchedRequestDetails);
   }, [fetchedRequestDetails]);
 
   const table = useReactTable({
@@ -62,9 +66,9 @@ const DashboardTable = () => {
   });
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center w-[900px]">
       {fetchedRequestDetails && (
-        <table className="border-spacing-3 border-separate p-3">
+        <table className="border-spacing-6 border-separate p-3 ">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -90,14 +94,16 @@ const DashboardTable = () => {
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
-                <SecondaryButton
-                  text="Mange"
-                  action={() => {
-                    router.push(
-                      `user_portal/request_details/${row.original.id}`
-                    );
-                  }}
-                />
+                <td className="p-3">
+                  <SecondaryButton
+                    text="Mange"
+                    action={() => {
+                      router.push(
+                        `user_portal/request_details/${row.original.id}`
+                      );
+                    }}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

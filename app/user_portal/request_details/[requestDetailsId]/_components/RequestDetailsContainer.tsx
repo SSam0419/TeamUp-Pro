@@ -1,6 +1,11 @@
+import SecondaryButton from "@/components/SecondaryButton";
 import ToggleButton from "@/components/ToggleButton";
 import { useAppStore } from "@/libs/ZustandStore";
+import axios from "axios";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { useMutation } from "react-query";
+import PitchCard from "./PitchCard";
 
 const RequestDetailsContainer = () => {
   const { fetchedSingleRequestDetails } = useAppStore();
@@ -17,17 +22,46 @@ const RequestDetailsContainer = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    // if (requestDetails!==null)
-    //   {setRequestDetails((prev) => ({
-    //     ...prev,
-    //     [name]: value,
-    //   }));}
+
+    setRequestDetails((prev) => {
+      if (prev === null) {
+        return null;
+      } else {
+        if (name === "disclose_contact") {
+          return { ...prev, disclose_contact: value === "YES" ? true : false };
+        }
+
+        return {
+          ...prev,
+          [name]: value,
+        };
+      }
+    });
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Perform PUT request here with updated requestDetails
-    // You can use a library like Axios or fetch for making the request
+  const { mutate, isLoading } = useMutation(
+    ["updateRequestDetails"],
+    async (formData: RequestDetails) => {
+      const { data, statusText, status } = await axios.put(
+        "/api/request/user_request?request_id=" + formData.id,
+        formData
+      );
+
+      return { data, statusText, status };
+    },
+    {
+      onSuccess: ({ status }) => {
+        if (status === 200) toast("Update Successful");
+        else toast("Something went wrong, refresh and try again");
+      },
+    }
+  );
+
+  const handleSubmit = () => {
+    if (requestDetails !== null) {
+      setEditMode(false);
+      mutate(requestDetails);
+    }
   };
 
   if (fetchedSingleRequestDetails == null || requestDetails == null) {
@@ -43,6 +77,7 @@ const RequestDetailsContainer = () => {
             <p>{requestDetails.industry}</p>
           </div>
           <ToggleButton
+            checked={editMode}
             text={"Edit"}
             action={(editable: boolean) => {
               setEditMode(editable);
@@ -52,21 +87,37 @@ const RequestDetailsContainer = () => {
         <div className="border" />
         <div className="border" />
 
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <div className="flex flex-col gap-3 w-1/2">
             <div className="flex flex-col gap-1">
               <label htmlFor="duration" className="">
                 Duration :
               </label>
 
-              <input
-                disabled={!editMode}
-                id="duration"
-                className="bg-white shadow p-2 border rounded-xl"
-                name="duration"
-                value={requestDetails.duration}
-                onChange={handleInputChange}
-              />
+              <div className="flex justify-between bg-white shadow p-2 border rounded-xl">
+                <input
+                  type="number"
+                  disabled={!editMode}
+                  id="duration"
+                  className="w-full bg-white outline-none"
+                  name="duration"
+                  value={requestDetails.duration}
+                  onChange={handleInputChange}
+                />
+
+                <select
+                  disabled={!editMode}
+                  id="duration_unit"
+                  className="border-l-2 outline-none"
+                  name="duration_unit"
+                  value={requestDetails.duration_unit}
+                  onChange={handleInputChange}
+                >
+                  <option>Days</option>
+                  <option>Months</option>
+                  <option>Years</option>
+                </select>
+              </div>
             </div>
             <div className="flex flex-col gap-1">
               <label htmlFor="budget" className="">
@@ -128,6 +179,15 @@ const RequestDetailsContainer = () => {
           </div>
         </div>
 
+        <SecondaryButton
+          text={"CONFIRM"}
+          disabled={!editMode}
+          isLoading={isLoading}
+          action={() => {
+            handleSubmit();
+          }}
+        />
+
         <div className="my-6 w-full gap-3 grid grid-cols-7 items-center">
           <div className="border-secondary border col-span-3"></div>
           <p className="text-center text-base italic font-thin text-secondary">
@@ -139,9 +199,7 @@ const RequestDetailsContainer = () => {
         <div>
           <div className="flex flex-col gap-3">
             {requestDetails.professional_pitch?.map((pitch, index) => (
-              <div key={index} className="p-2 shadow w-full border rounded-2xl">
-                {pitch.message}
-              </div>
+              <PitchCard pitchData={pitch} key={index} />
             ))}
           </div>
         </div>

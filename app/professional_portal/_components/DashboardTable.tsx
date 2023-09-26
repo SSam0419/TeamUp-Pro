@@ -1,6 +1,5 @@
 "use client";
 
-import { IndustriesOptions } from "@/types/constants/industries";
 import { useAppStore } from "@/libs/ZustandStore";
 import {
   createColumnHelper,
@@ -12,7 +11,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { AiFillLock } from "react-icons/ai";
+import { AiFillLock, AiFillUnlock } from "react-icons/ai";
 import { useMutation } from "react-query";
 
 const DashboardTable = () => {
@@ -60,6 +59,11 @@ const DashboardTable = () => {
       footer: (info) => info.column.id,
       enableSorting: true,
     }),
+    // {
+    //   id: "Type",
+    //   accessorFn: (row: RequestDetails) =>
+    //     `${row.duration} ${row.duration_unit}`,
+    // },
     columnHelper.accessor("professional_pitch", {
       header: "Competitions",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
@@ -74,18 +78,10 @@ const DashboardTable = () => {
     }),
   ];
 
-  const [tableData, setTableData] = useState(
-    fetchedRequestDetails?.filter(
-      (request) => request.industry === IndustriesOptions[0]
-    )
-  );
+  const [tableData, setTableData] = useState(fetchedRequestDetails);
 
   useEffect(() => {
-    setTableData(
-      fetchedRequestDetails?.filter(
-        (request) => request.industry === IndustriesOptions[0]
-      )
-    );
+    setTableData(fetchedRequestDetails);
   }, [fetchedRequestDetails]);
 
   const table = useReactTable({
@@ -94,36 +90,11 @@ const DashboardTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const [selectedIndustry, setSelectedIndustry] = useState(0);
-
   return (
     <div className="flex flex-col items-center justify-start">
-      <div className="flex my-4 rounded-full shadow border p-3">
-        {IndustriesOptions.map((option, idx) => (
-          <div key={idx} className="flex">
-            <button
-              className={`${selectedIndustry == idx ? "text-primary" : ""}`}
-              type="button"
-              onClick={() => {
-                setSelectedIndustry(idx);
-                setTableData(
-                  fetchedRequestDetails?.filter(
-                    (request) => request.industry === IndustriesOptions[idx]
-                  )
-                );
-              }}
-            >
-              {option}
-            </button>
-            <div className="mx-2">
-              {idx !== IndustriesOptions.length - 1 ? "|" : ""}
-            </div>
-          </div>
-        ))}
-      </div>
       {fetchedRequestDetails && (
-        <table className="border-spacing-4 border-collapse">
-          <thead className="text-gray-700 uppercase bg-gray-50">
+        <table className="border-spacing-5 border-collapse ">
+          <thead className="text-gray-700 uppercase border-b">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -148,13 +119,13 @@ const DashboardTable = () => {
             {table.getRowModel().rows.map((row, idx) => {
               const beforeContent =
                 tableData[idx].unlocked && profileInfo
-                  ? "before:content-['View_Details'] before:text-primary "
-                  : "before:content-['UNLOCK_TO_VIEW_DETAILS']";
+                  ? "before:content-['View_Details'] before:text-[#67ca8d] "
+                  : "before:content-['Click_To_Unlock'] before:text-primary";
               return (
                 <tr
                   key={row.id}
-                  className="bg-white border-b hover:cursor-pointer hover:opacity-50 
-                hover:backdrop-blur-sm hover:bg-white/30 group
+                  className="bg-white even:bg-slate-50 hover:cursor-pointer hover:opacity-50 
+                  hover:backdrop-blur-sm hover:bg-white/30 group
                "
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -172,7 +143,6 @@ const DashboardTable = () => {
                     align="center"
                     onClick={(e) => {
                       if (tableData[idx].unlocked && profileInfo) {
-                        console.log(tableData[idx]);
                         router.push(
                           "/professional_portal/view_request/" +
                             tableData[idx].id
@@ -189,8 +159,12 @@ const DashboardTable = () => {
                     }}
                   >
                     <button
-                      className="text-center rounded-full bg-secondary w-[30px] h-[30px]
-                  text-white p-2 flex items-center justify-center"
+                      className={`text-center rounded-full w-[30px] h-[30px]
+                  text-white p-2 flex items-center justify-center ${
+                    tableData[idx].unlocked && profileInfo
+                      ? "bg-[#67ca8d]"
+                      : "bg-primary"
+                  }`}
                       onClick={() => {
                         if (profileInfo == null) {
                           toast("You have to sign in to make a pitch", {
@@ -200,7 +174,11 @@ const DashboardTable = () => {
                         }
                       }}
                     >
-                      <AiFillLock />
+                      {tableData[idx].unlocked && profileInfo !== null ? (
+                        <AiFillUnlock />
+                      ) : (
+                        <AiFillLock />
+                      )}
                     </button>
                   </td>
                 </tr>

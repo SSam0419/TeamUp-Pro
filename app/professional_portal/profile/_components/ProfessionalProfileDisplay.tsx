@@ -21,7 +21,6 @@ const ProfessionalProfileDisplay = () => {
             <p className="mt-1 max-w-2xl text-sm text-gray-500">
               Personal details and information.
             </p>
-            <div className="px-4 py-5 ">ID: {userProfileInfo.id}</div>
           </div>
           <div className="border-t border-gray-200">
             <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -31,9 +30,15 @@ const ProfessionalProfileDisplay = () => {
               </div>
             </div>
             <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Username</dt>
+              <dt className="text-sm font-medium text-gray-500">Lastname</dt>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {userProfileInfo.username}
+                {userProfileInfo.lastname}
+              </div>
+            </div>
+            <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Firstname</dt>
+              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                {userProfileInfo.firstname}
               </div>
             </div>
             <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -63,6 +68,13 @@ const ProfessionalProfileDisplay = () => {
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 {userProfileInfo.occupation}
               </div>
+            </div>
+            <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ">
+              <dt className="text-sm font-medium text-gray-500">Skill</dt>
+
+              {userProfileInfo.skill?.map((skill, idx) => {
+                return <div key={idx}>{skill}</div>;
+              })}
             </div>
           </div>
         </div>

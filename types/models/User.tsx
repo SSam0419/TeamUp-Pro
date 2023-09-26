@@ -6,4 +6,7 @@ type UserProfile = {
   phone_number: string;
   verify_status: boolean;
   occupation: string;
+  lastname: string;
+  firstname: string;
+  skill: string[];
 };
