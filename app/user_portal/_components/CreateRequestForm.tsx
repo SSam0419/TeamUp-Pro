@@ -212,8 +212,14 @@ const CreateRequestForm = ({ onClose }: props) => {
             ></input>
           </div>
           <ToggleButton
+            checked={formData.disclose_contact}
             text="Allow Professionals Contact You Directly"
-            action={() => {}}
+            action={() => {
+              setFormData((prevFormData) => ({
+                ...prevFormData,
+                disclose_contact: !formData.disclose_contact,
+              }));
+            }}
           />
           <div className="my-3 flex items-center justify-center">
             <PrimaryButton

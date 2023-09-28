@@ -31,17 +31,17 @@ export default function Home() {
           <div className="text-lg text-center">User Portal</div>
           <div className="border w-full"></div>
 
-          <p className="w-3/4 text-justify h-[150px]">
+          <div className="w-3/4 text-justify h-[150px]">
             Are you in need of professional services?
-            <p></p>
+            <div></div>
             Our User Portal allows you to effortlessly submit your requests, and
             wait for professional to send their pitches! you can manage your
             requests from a centralized dashboard. Edit, delete, or track the
             status of each request with ease.
-          </p>
-          <p className="italic">
+          </div>
+          <div className="italic">
             Find the right talents for your projects now!
-          </p>
+          </div>
           <div className="p-2 bg-primary text-white flex justify-center items-center rounded-xl w-1/2">
             <Link href={"/user_portal"}>
               <h1>Go to User Portal</h1>
@@ -52,16 +52,16 @@ export default function Home() {
         <div className="w-[500px] flex flex-col items-center gap-3 shadow p-3 border rounded-lg h-[400px] justify-evenly">
           <div className="text-lg text-center">Professional Portal</div>
           <div className="border w-full"></div>
-          <p className="w-3/4 text-justify h-[150px]">
+          <div className="w-3/4 text-justify h-[150px]">
             Are you a skilled professional looking for exciting opportunities?
-            <p></p>
+            <div></div>
             Our Professional Portal offers a platform where you can discover
             relevant requests tailored to your industry and skills. Explore a
             range of projects and unlock those that catch your interest.
-          </p>{" "}
-          <p className="italic">
+          </div>{" "}
+          <div className="italic">
             Find the right projects for your talents now!
-          </p>
+          </div>
           <div className="p-2 bg-primary text-white flex justify-center items-center rounded-xl w-1/2">
             <Link href={"/professional_portal"}>
               <h1>Go to Professional Portal</h1>

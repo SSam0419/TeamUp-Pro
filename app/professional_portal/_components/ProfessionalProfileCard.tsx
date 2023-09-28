@@ -8,7 +8,6 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import { useMutation, useQuery } from "react-query";
-import { MoonLoader } from "react-spinners";
 import GlobalPopUp from "@/components/GlobalPopUp";
 import ProfessionalAuthForm from "./ProfessionalAuthForm";
 import { RxAvatar } from "react-icons/rx";
@@ -30,7 +29,7 @@ const ProfessionalProfileCard = () => {
     useState(false);
 
   const { data, isLoading, error, isSuccess } = useQuery(
-    ["retrieveUserProfile", sessionState],
+    ["retrieveProfessionalProfile", sessionState],
     async () => {
       const data = await axios.get(
         "/api/profile/professional?id=" + sessionState?.user.id
@@ -42,9 +41,16 @@ const ProfessionalProfileCard = () => {
   const { mutate, isLoading: isSigningOut } = useMutation(
     ["signOut"],
     async () => {
-      const data = await axios.post("/api/auth/signout");
-      console.log(data);
+      const data = await supabase.auth.signOut();
+
       return data;
+    },
+    {
+      onSuccess: () => {
+        router.push("/");
+        setUserSession(null);
+        setUserProfile(null);
+      },
     }
   );
 
@@ -64,6 +70,7 @@ const ProfessionalProfileCard = () => {
     }
     if (event == "SIGNED_OUT") {
       setUserProfile(null);
+      setUserSession(null);
     }
   });
 
@@ -116,7 +123,6 @@ const ProfessionalProfileCard = () => {
             setUserSession(null);
             toast("You are now signing out .. ");
             mutate();
-            router.push("/");
           }}
         >
           Sign out

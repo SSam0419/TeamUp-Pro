@@ -4,8 +4,11 @@ import { IndustriesOptions } from "@/types/constants/industries";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { RxCross2 } from "react-icons/rx";
+import toast from "react-hot-toast";
+import PrimaryButton from "@/components/PrimaryButton";
+import SecondaryButton from "@/components/SecondaryButton";
 
 export type ProfessionalProfileFormType = {
   id: string;
@@ -18,22 +21,31 @@ export type ProfessionalProfileFormType = {
   resume: File | null;
   industry: (typeof IndustriesOptions)[number] | string;
 };
-
-export default function ProfessionalProfileForm() {
+type props = {
+  profileData?: UserProfile;
+  closeForm?: Function;
+  professional_skills?: string[];
+};
+export default function ProfessionalProfileForm({
+  profileData,
+  closeForm,
+  professional_skills,
+}: props) {
   const { session } = useAppStore();
+  const queryClient = useQueryClient();
 
-  const [skills, setSkills] = useState<string[]>([]);
+  const [skills, setSkills] = useState<string[]>(professional_skills || []);
   const [enteredSkill, setEnteredSkill] = useState<string>("");
 
   const [professionalProfile, setProfessionalProfile] =
     useState<ProfessionalProfileFormType>({
-      id: "",
-      bio: "",
-      firstname: "",
-      lastname: "",
-      email: "",
-      phone_number: "",
-      occupation: "",
+      id: profileData?.id || "",
+      bio: profileData?.bio || "",
+      firstname: profileData?.firstname || "",
+      lastname: profileData?.lastname || "",
+      email: profileData?.email || "",
+      phone_number: profileData?.phone_number || "",
+      occupation: profileData?.occupation || "",
       industry: IndustriesOptions[0],
       resume: null,
     });
@@ -46,7 +58,13 @@ export default function ProfessionalProfileForm() {
       return await axios.post("/api/profile/professional", data);
     },
     onSuccess: ({ data, status }) => {
-      console.log("onSuccess: ", data);
+      if (status >= 200 && status <= 300) {
+        if (closeForm) closeForm();
+        toast("Update Successful, wait a while to see changes");
+        queryClient.invalidateQueries({
+          queryKey: ["retrieveProfessionalProfile"],
+        });
+      }
     },
   });
 
@@ -61,12 +79,12 @@ export default function ProfessionalProfileForm() {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (session == null) return;
     professionalProfile.id = session.user.id;
 
-    mutation.mutate({
+    await mutation.mutate({
       professionalProfile,
       skills,
     });
@@ -230,13 +248,23 @@ export default function ProfessionalProfileForm() {
           </button>
         </div>
       </div>
+      <div className="flex gap-2">
+        <PrimaryButton
+          type="submit"
+          text={profileData ? "Update Profile" : "Create Profile"}
+          action={() => {}}
+        />
 
-      <button
-        type="submit"
-        className="w-full px-4 py-3 text-white bg-primary rounded-md hover:bg-primary focus:outline-none focus:bg-primary hover:opacity-70"
-      >
-        Create Profile
-      </button>
+        {profileData && closeForm && (
+          <SecondaryButton
+            type="button"
+            text="Cancel"
+            action={() => {
+              closeForm();
+            }}
+          />
+        )}
+      </div>
     </form>
   );
 }

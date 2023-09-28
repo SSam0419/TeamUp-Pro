@@ -1,29 +1,41 @@
 "use client";
 
+import PrimaryButton from "@/components/PrimaryButton";
+import SecondaryButton from "@/components/SecondaryButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useMutation } from "react-query";
+import { toast } from "react-hot-toast";
+import { useMutation, useQueryClient } from "react-query";
 
 export type UserProfileFormType = {
   id: string;
   bio: string;
   username: string;
+  firstname: string;
+  lastname: string;
   email: string;
   phone_number: string;
   occupation: string;
 };
 
-export default function UserProfileForm() {
-  const { session } = useAppStore();
+type props = {
+  profileData?: UserProfile;
+  closeForm?: Function;
+};
 
+export default function UserProfileForm({ profileData, closeForm }: props) {
+  const { session } = useAppStore();
+  const queryClient = useQueryClient();
   const [userProfile, setUserProfile] = useState<UserProfileFormType>({
-    id: "",
-    bio: "",
-    username: "",
-    email: "",
-    phone_number: "",
-    occupation: "",
+    id: profileData?.id || "",
+    bio: profileData?.bio || "",
+    username: profileData?.username || "",
+    firstname: profileData?.firstname || "",
+    lastname: profileData?.lastname || "",
+    email: profileData?.email || "",
+    phone_number: profileData?.phone_number || "",
+    occupation: profileData?.occupation || "",
   });
 
   const mutation = useMutation({
@@ -31,7 +43,13 @@ export default function UserProfileForm() {
       return await axios.post("/api/profile/user", userProfileData);
     },
     onSuccess: ({ data, status }) => {
-      console.log("onSuccess: ", data);
+      if (status >= 200 && status <= 300) {
+        if (closeForm) closeForm();
+        toast("Update Successful, wait a while to see changes");
+        queryClient.invalidateQueries({
+          queryKey: ["retrieveUserProfile"],
+        });
+      }
     },
   });
 
@@ -46,27 +64,16 @@ export default function UserProfileForm() {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (session == null) return;
+
     userProfile.id = session.user.id;
-    mutation.mutate(userProfile);
+    await mutation.mutate(userProfile);
   };
 
   return (
     <form className="max-w-md mx-auto" onSubmit={(e) => handleSubmit(e)}>
-      <div className="mb-4">
-        <label htmlFor="bio" className="block mb-2 font-medium text-gray-700">
-          Bio
-        </label>
-        <textarea
-          id="bio"
-          name="bio"
-          value={userProfile.bio}
-          onChange={(e) => handleChange(e)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></textarea>
-      </div>
       <div className="mb-4">
         <label
           htmlFor="username"
@@ -82,6 +89,50 @@ export default function UserProfileForm() {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="lastname"
+          className="block mb-2 font-medium text-gray-700"
+        >
+          Lastname
+        </label>
+        <input
+          type="text"
+          id="lastname"
+          name="lastname"
+          value={userProfile.lastname}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="firstname"
+          className="block mb-2 font-medium text-gray-700"
+        >
+          Firstname
+        </label>
+        <input
+          type="text"
+          id="firstname"
+          name="firstname"
+          value={userProfile.firstname}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="bio" className="block mb-2 font-medium text-gray-700">
+          Bio
+        </label>
+        <textarea
+          id="bio"
+          name="bio"
+          value={userProfile.bio}
+          onChange={(e) => handleChange(e)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        ></textarea>
       </div>
       <div className="mb-4">
         <label htmlFor="email" className="block mb-2 font-medium text-gray-700">
@@ -129,12 +180,23 @@ export default function UserProfileForm() {
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <button
-        type="submit"
-        className="w-full px-4 py-2 text-white bg-primary rounded-md hover:bg-primary focus:outline-none focus:bg-primary"
-      >
-        Create Profile
-      </button>
+      <div className="flex gap-2">
+        <PrimaryButton
+          type="submit"
+          text={profileData ? "Update Profile" : "Create Profile"}
+          action={() => {}}
+        />
+
+        {profileData && closeForm && (
+          <SecondaryButton
+            type="button"
+            text="Cancel"
+            action={() => {
+              closeForm();
+            }}
+          />
+        )}
+      </div>
     </form>
   );
 }

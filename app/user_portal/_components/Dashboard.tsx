@@ -14,15 +14,15 @@ import { useSearchParams } from "next/navigation";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
-  const { session, setFetchedRequestDetails } = useAppStore();
+  const { session, setFetchedRequestDetails, profileInfo } = useAppStore();
 
   const [openCreateRequestForm, setOpenCreateRequestForm] =
     useState<boolean>(false);
 
   const { data: requestDetailsData, isLoading } = useQuery(
-    ["retrieveRequestDetails", session],
+    ["retrieveRequestDetails", session, profileInfo],
     async () => {
-      if (session == null) return;
+      if (session == null) return null;
       const data = await axios.get(
         "/api/request/user_request?user_id=" + session?.user.id
       );
@@ -34,6 +34,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (requestDetailsData)
       setFetchedRequestDetails(requestDetailsData.data.data);
+    else setFetchedRequestDetails([]);
   }, [requestDetailsData, setFetchedRequestDetails]);
 
   return (

@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     .from("professional_pitch_view")
     .select("*")
     .eq("professional_id", professional_id);
+  console.log({ professional_id, data, error });
   if (error)
     return new NextResponse("Error", {
       status: 400,

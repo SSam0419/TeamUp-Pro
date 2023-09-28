@@ -7,9 +7,11 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
   const isProfessional = searchParams.get("professional");
+
   if (code) {
     await supabase.auth.exchangeCodeForSession(code);
   }
+
   if (isProfessional == null) {
     return NextResponse.redirect(new URL("/user_portal", req.url));
   } else {

@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     .from("professional_profile_view")
     .select("*")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   return NextResponse.json(data);
 }
@@ -37,10 +37,15 @@ export async function POST(request: Request) {
 
   const response = await supabase
     .from("professional_profile")
-    .insert(professionalProfile);
+    .upsert(professionalProfile);
+
+  await supabase
+    .from("professional_skill")
+    .delete()
+    .eq("professional_id", professionalProfile.id);
 
   skills.map(async (skill) => {
-    const res = await supabase.from("professional_skill").insert({
+    await supabase.from("professional_skill").upsert({
       professional_id: professionalProfile.id,
       skill_name: skill,
     });

@@ -15,7 +15,6 @@ const PitchList = () => {
         const { data } = await axios.get(
           "/api/pitch?professional_id=" + profileInfo?.id
         );
-        console.log(data);
         return data as Pitch[];
       }
     }
