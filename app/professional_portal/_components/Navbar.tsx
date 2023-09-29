@@ -7,7 +7,7 @@ import { PiTargetLight } from "react-icons/pi";
 import { RiDashboardFill } from "react-icons/ri";
 import { BiMessageAlt } from "react-icons/bi";
 import { FaQuestionCircle } from "react-icons/fa";
-import ProfessionalProfileCard from "./ProfessionalProfileCard";
+import ProfileCard from "@/components/ProfileCard";
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -52,7 +52,7 @@ const Navbar = () => {
           <div className="hidden md:block">FAQ</div>
         </Link>
       </div>
-      <ProfessionalProfileCard />
+      <ProfileCard isUserCard={true} />
     </div>
   );
 };

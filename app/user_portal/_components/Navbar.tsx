@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import UserProfileCard from "./UserProfileCard";
+import UserProfileCard from "../../../components/ProfileCard";
 import GlobalPopUp from "@/components/GlobalPopUp";
 // import AuthForm from "./AuthForm";
 import {
@@ -14,6 +14,7 @@ import { useAppStore } from "@/libs/ZustandStore";
 import { useQuery } from "react-query";
 import axios from "axios";
 import AuthForm from "@/components/AuthForm";
+import ProfileCard from "../../../components/ProfileCard";
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -41,7 +42,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <UserProfileCard />
+      <ProfileCard isUserCard={true} />
     </div>
   );
 };

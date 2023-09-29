@@ -9,13 +9,14 @@ import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import GlobalPopUp from "@/components/GlobalPopUp";
-import ProfessionalAuthForm from "./ProfessionalAuthForm";
+
 import { RxAvatar } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
+import AuthForm from "@/components/AuthForm";
 
-const ProfessionalProfileCard = () => {
+const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
   const router = useRouter();
 
   const {
@@ -25,19 +26,27 @@ const ProfessionalProfileCard = () => {
     setUserSession,
   } = useAppStore();
 
-  const [openProfessionalAuthForm, setOpenProfessionalAuthForm] =
-    useState(false);
+  const [openAuthForm, setOpenAuthForm] = useState(false);
 
   const { data, isLoading, error, isSuccess } = useQuery(
-    ["retrieveProfessionalProfile", sessionState],
+    ["retrieveUserProfile", sessionState],
     async () => {
-      const data = await axios.get(
-        "/api/profile/professional?id=" + sessionState?.user.id
-      );
+      let url = isUserCard
+        ? "/api/profile/user?id="
+        : "/api/profile/professional?id=";
+      const data = await axios.get(url + sessionState?.user.id);
+      console.log({ data });
+      console.log(sessionState?.user.id);
       return data;
+    },
+    {
+      onSuccess: ({ data }) => {
+        if (data) setUserProfile(data.data?.data);
+      },
     }
   );
 
+  const supabase = createClientComponentClient();
   const { mutate, isLoading: isSigningOut } = useMutation(
     ["signOut"],
     async () => {
@@ -47,14 +56,11 @@ const ProfessionalProfileCard = () => {
     },
     {
       onSuccess: () => {
-        router.push("/");
-        setUserSession(null);
         setUserProfile(null);
+        setUserSession(null);
       },
     }
   );
-
-  const supabase = createClientComponentClient();
 
   supabase.auth.onAuthStateChange((event, session) => {
     if (
@@ -63,22 +69,14 @@ const ProfessionalProfileCard = () => {
       session !== null
     ) {
       setUserSession(session as Session);
-    }
-    if (event == "SIGNED_IN") {
-      setOpenProfessionalAuthForm(false);
+    } else if (event == "SIGNED_IN") {
+      setOpenAuthForm(false);
       setUserSession(session as Session);
-    }
-    if (event == "SIGNED_OUT") {
+    } else if (event == "SIGNED_OUT") {
       setUserProfile(null);
       setUserSession(null);
     }
   });
-
-  useEffect(() => {
-    if (data?.data.data) {
-      setUserProfile(data?.data.data);
-    }
-  }, [data, setUserProfile]);
 
   if (isLoading || isSigningOut) {
     return <Spinner size={35} />;
@@ -88,7 +86,9 @@ const ProfessionalProfileCard = () => {
     <div className="flex gap-4">
       {sessionState !== null && (
         <Link
-          href={"/professional_portal/profile"}
+          href={
+            isUserCard ? "/user_portal/profile" : "/professional_portal/profile"
+          }
           className="flex items-center space-x-2"
         >
           {sessionState?.user?.user_metadata.avatar_url !== null &&
@@ -114,36 +114,35 @@ const ProfessionalProfileCard = () => {
         </Link>
       )}
       {sessionState !== null && (
-        // <form action="/api/auth/signout" method="post">
         <button
           type="submit"
           className="bg-secondary text-white font-medium px-10 py-2 rounded-[45px] "
           onClick={() => {
-            setUserProfile(null);
-            setUserSession(null);
             toast("You are now signing out .. ");
             mutate();
+            router.push("/");
+            setUserProfile(null);
+            setUserSession(null);
           }}
         >
           Sign out
         </button>
-        // </form>
       )}
       {sessionState === null && (
         <button
           className="bg-secondary text-white font-medium px-10 py-2 rounded-[45px] "
-          onClick={() => setOpenProfessionalAuthForm(true)}
+          onClick={() => setOpenAuthForm(true)}
         >
           Sign In
         </button>
       )}
-      {openProfessionalAuthForm && (
-        <GlobalPopUp onClose={() => setOpenProfessionalAuthForm(false)}>
-          <ProfessionalAuthForm />
+      {openAuthForm && (
+        <GlobalPopUp onClose={() => setOpenAuthForm(false)}>
+          <AuthForm />
         </GlobalPopUp>
       )}
     </div>
   );
 };
 
-export default ProfessionalProfileCard;
+export default ProfileCard;
