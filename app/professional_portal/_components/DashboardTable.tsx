@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiFillLock, AiFillUnlock } from "react-icons/ai";
 import { useMutation } from "react-query";
+import DashboardCard from "./DashboardCard";
 
 const DashboardTable = () => {
   const { mutate, isLoading } = useMutation({
@@ -59,12 +60,7 @@ const DashboardTable = () => {
       footer: (info) => info.column.id,
       enableSorting: true,
     }),
-    // {
-    //   id: "Type",
-    //   accessorFn: (row: RequestDetails) =>
-    //     `${row.duration} ${row.duration_unit}`,
-    // },
-    columnHelper.accessor("professional_pitch", {
+    columnHelper.accessor("professional_pitch_view", {
       header: "Competitions",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
       footer: (info) => info.column.id,
@@ -91,7 +87,19 @@ const DashboardTable = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-start">
+    <div className="flex flex-wrap gap-3">
+      {fetchedRequestDetails.map((request, idx) => {
+        return (
+          <div key={idx}>
+            <DashboardCard requestDetails={request} />
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col items-center justify-start shadow border">
       {fetchedRequestDetails && (
         <table className="border-spacing-5 border-collapse ">
           <thead className="text-gray-700 uppercase border-b">

@@ -1,5 +1,5 @@
-import PrimaryButton from "@/components/PrimaryButton";
-import SecondaryButton from "@/components/SecondaryButton";
+import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import axios from "axios";
 import React, { useState } from "react";
 import { useMutation } from "react-query";

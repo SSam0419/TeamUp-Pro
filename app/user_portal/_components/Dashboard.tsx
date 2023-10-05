@@ -1,5 +1,5 @@
 "use client";
-import PrimaryButton from "@/components/PrimaryButton";
+import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import React, { useCallback, useEffect, useState } from "react";
 
 import DashboardTable from "./DashboardTable";

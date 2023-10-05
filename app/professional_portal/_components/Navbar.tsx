@@ -8,6 +8,7 @@ import { RiDashboardFill } from "react-icons/ri";
 import { BiMessageAlt } from "react-icons/bi";
 import { FaQuestionCircle } from "react-icons/fa";
 import ProfileCard from "@/components/ProfileCard";
+import { AiFillMail } from "react-icons/ai";
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -33,6 +34,19 @@ const Navbar = () => {
           <PiTargetLight size={"20px"} />
           <div className="hidden md:block">My Pitches</div>
         </Link>
+        <Link
+          href={"/professional_portal/mailbox"}
+          className={`${
+            pathName === "/professional_portal/mailbox" ? "text-primary" : ""
+          }  px-10 py-2 rounded-[45px] shadow border flex justify-center items-center gap-3 relative`}
+        >
+          <span className="flex h-3 w-3 absolute top-0 left-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+          </span>
+          <AiFillMail size={"20px"} />
+          <div className="hidden md:block">Mailbox</div>
+        </Link>
         {/* <Link
           href={"/professional_portal"}
           className={`${
@@ -52,7 +66,7 @@ const Navbar = () => {
           <div className="hidden md:block">FAQ</div>
         </Link>
       </div>
-      <ProfileCard isUserCard={true} />
+      <ProfileCard isUserCard={false} />
     </div>
   );
 };

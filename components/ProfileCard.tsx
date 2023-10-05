@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useAppStore } from "@/libs/ZustandStore";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "react-query";
 import GlobalPopUp from "@/components/GlobalPopUp";
 
@@ -28,20 +28,21 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
 
   const [openAuthForm, setOpenAuthForm] = useState(false);
 
-  const { data, isLoading, error, isSuccess } = useQuery(
+  const { isLoading } = useQuery(
     ["retrieveUserProfile", sessionState],
     async () => {
+      if (sessionState == null) return { data: null };
+
       let url = isUserCard
         ? "/api/profile/user?id="
         : "/api/profile/professional?id=";
-      const data = await axios.get(url + sessionState?.user.id);
-      console.log({ data });
-      console.log(sessionState?.user.id);
+      const { data } = await axios.get(url + sessionState?.user.id);
+
       return data;
     },
     {
       onSuccess: ({ data }) => {
-        if (data) setUserProfile(data.data?.data);
+        if (data) setUserProfile(data);
       },
     }
   );
@@ -138,7 +139,7 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
       )}
       {openAuthForm && (
         <GlobalPopUp onClose={() => setOpenAuthForm(false)}>
-          <AuthForm />
+          <AuthForm isUserPortal={isUserCard} />
         </GlobalPopUp>
       )}
     </div>

@@ -7,8 +7,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
-import PrimaryButton from "@/components/PrimaryButton";
-import SecondaryButton from "@/components/SecondaryButton";
+import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 
 export type ProfessionalProfileFormType = {
   id: string;

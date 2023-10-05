@@ -1,4 +1,4 @@
-import SecondaryButton from "@/components/SecondaryButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { ChangeEvent, useState } from "react";
@@ -55,11 +55,12 @@ const PitchForm = ({
   );
 
   const [pitchFormData, setPitchFormData] = useState<PitchFormDataType>({
-    message: requestDetails.pitch.message || "",
-    price: requestDetails.pitch.price || requestDetails.budget,
+    message: requestDetails.pitch?.message || "",
+    price: requestDetails.pitch?.price || requestDetails.budget,
     deliveryTime:
-      requestDetails.pitch.delivery_time.toString() || requestDetails.duration,
-    deliveryUnit: requestDetails.pitch.delivery_unit || "Days",
+      requestDetails.pitch?.delivery_time.toString() ||
+      requestDetails?.duration,
+    deliveryUnit: requestDetails.pitch?.delivery_unit || "Days",
   });
 
   const handleFormDataChange = (

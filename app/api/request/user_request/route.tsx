@@ -10,30 +10,33 @@ export async function GET(request: Request) {
     route: "/api/request/user_request/route",
   });
   const { searchParams } = new URL(request.url);
-  const user_id = searchParams.get("user_id");
-  const request_id = searchParams.get("request_id");
+  const userId = searchParams.get("user_id");
+  const breifOnly = searchParams.get("breif_only");
+  const requestId = searchParams.get("request_id");
   const supabase = createServerComponentClient({ cookies });
 
-  if (user_id && request_id) {
-    const requestDetailsFromUserId = await supabase
+  let query;
+
+  if (breifOnly) {
+    query = supabase.from("request_details").select(`title,id,content`);
+  } else {
+    query = supabase
       .from("request_details")
       .select(
         `* , user_profile(*), professional_pitch_view(*, professional_profile(*) )`
-      )
-      .eq("id", request_id)
+      );
+  }
+
+  if (userId && requestId) {
+    const requestDetailsFromUserId = await query
+      .eq("id", requestId)
       .maybeSingle();
-    if (requestDetailsFromUserId.data) {
-      requestDetailsFromUserId.data.professional_pitch =
-        requestDetailsFromUserId.data.professional_pitch_view;
-    }
+
     return NextResponse.json(requestDetailsFromUserId);
   } else {
-    const requestDetailsFromUserId = await supabase
-      .from("request_details")
-      .select(`* , user_profile(*), professional_pitch(*)`)
+    const requestDetailsFromUserId = await query
       .order("created_at", { ascending: false })
-      .eq("created_by", user_id);
-
+      .eq("created_by", userId);
     return NextResponse.json(requestDetailsFromUserId);
   }
 }

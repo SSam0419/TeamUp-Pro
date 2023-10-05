@@ -1,7 +1,7 @@
 "use client";
 
-import PrimaryButton from "@/components/PrimaryButton";
-import SecondaryButton from "@/components/SecondaryButton";
+import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";

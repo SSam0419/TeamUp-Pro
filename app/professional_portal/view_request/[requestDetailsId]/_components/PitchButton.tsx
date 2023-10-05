@@ -1,4 +1,4 @@
-import SecondaryButton from "@/components/SecondaryButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import React, { useState } from "react";
 import PitchForm from "./PitchForm";
 

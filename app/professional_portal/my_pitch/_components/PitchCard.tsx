@@ -1,4 +1,4 @@
-import SecondaryButton from "@/components/SecondaryButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import { useRouter } from "next/navigation";
 import React from "react";
 

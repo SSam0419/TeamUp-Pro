@@ -20,6 +20,14 @@ const PitchList = () => {
     }
   );
 
+  if (profileInfo == null) {
+    return (
+      <div className="bg-white p-3 rounded-xl shadow-lg text-gray-800 h-[200px] w-[450px] flex items-center justify-center text-lg">
+        Please Sign In before viewing your pitches
+      </div>
+    );
+  }
+
   return (
     <div>
       {pitchList?.map((pitch: Pitch, idx: number) => {

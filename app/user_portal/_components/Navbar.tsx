@@ -33,6 +33,14 @@ const Navbar = () => {
           Dashboard
         </Link>
         <Link
+          href={"/user_portal/find_talents"}
+          className={`${
+            pathName === "/user_portal/find_talents" ? "text-primary" : ""
+          }  px-10 py-2 rounded-[45px] shadow-md `}
+        >
+          Talents
+        </Link>
+        <Link
           href={"/"}
           className={`${
             pathName === "/FAQ" ? "text-primary" : "text-black"

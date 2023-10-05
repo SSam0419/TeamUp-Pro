@@ -1,5 +1,5 @@
-import SecondaryButton from "@/components/SecondaryButton";
-import ToggleButton from "@/components/ToggleButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import ToggleButton from "@/components/CustomButtons/ToggleButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
@@ -198,7 +198,7 @@ const RequestDetailsContainer = () => {
 
         <div>
           <div className="flex flex-col gap-3">
-            {requestDetails.professional_pitch?.map((pitch, index) => (
+            {requestDetails.professional_pitch_view?.map((pitch, index) => (
               <PitchCard pitchData={pitch} key={index} />
             ))}
           </div>

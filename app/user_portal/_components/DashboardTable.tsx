@@ -1,5 +1,5 @@
 "use client";
-import SecondaryButton from "@/components/SecondaryButton";
+import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import {
   createColumnHelper,
@@ -41,7 +41,7 @@ const DashboardTable = () => {
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
     }),
-    columnHelper.accessor("professional_pitch", {
+    columnHelper.accessor("professional_pitch_view", {
       header: "Pitches",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
       footer: (info) => info.column.id,

@@ -1,8 +1,8 @@
 "use client";
 
 import { IndustriesOptions } from "@/types/constants/industries";
-import PrimaryButton from "@/components/PrimaryButton";
-import ToggleButton from "@/components/ToggleButton";
+import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import ToggleButton from "@/components/CustomButtons/ToggleButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { useState } from "react";

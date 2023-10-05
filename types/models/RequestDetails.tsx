@@ -11,7 +11,8 @@ type RequestDetails = {
   budget: number;
   disclose_contact: boolean;
   status: "Active" | "Expired" | "Cancelled" | "Hired";
-  professional_pitch: Pitch[];
+  // professional_pitch: Pitch[];
+  professional_pitch_view: Pitch[];
   pitch: Pitch;
   unlocked: boolean;
 };

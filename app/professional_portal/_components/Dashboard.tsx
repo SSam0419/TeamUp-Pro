@@ -7,8 +7,6 @@ import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import { useSearchParams } from "next/navigation";
-import IndustryFilter from "./IndustryFilter";
-import SearchQuery from "./SearchQuery";
 import DashboardToolBar from "./DashboardToolBar";
 const Dashboard = () => {
   const { setFetchedRequestDetails, profileInfo } = useAppStore();

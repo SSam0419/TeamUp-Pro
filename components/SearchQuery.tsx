@@ -3,11 +3,13 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 
-type props = {
-  setQuery: Function;
-};
-
-const SearchQuery = ({ isLoading }: { isLoading: boolean }) => {
+const SearchQuery = ({
+  isLoading,
+  placeholderText,
+}: {
+  isLoading: boolean;
+  placeholderText: string;
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -52,7 +54,7 @@ const SearchQuery = ({ isLoading }: { isLoading: boolean }) => {
             setQuery(e.target.value);
           }}
           value={query}
-          placeholder="search for request .. "
+          placeholder={placeholderText}
         ></input>
       </div>
     </div>

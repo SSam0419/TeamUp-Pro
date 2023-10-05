@@ -1,67 +1,149 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillGithub, AiOutlineMail } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { RiLockPasswordLine } from "react-icons/ri";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
+import PrimaryButton from "./CustomButtons/PrimaryButton";
+import SecondaryButton from "./CustomButtons/SecondaryButton";
 import Link from "next/link";
 import { useMutation } from "react-query";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import axios from "axios";
 
-const AuthForm = () => {
+const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
   const supabase = createClientComponentClient();
 
   const [signUp, setSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [hint, setHint] = useState("");
+  const [signingInWithOauth, setSigningInWithOauth] = useState(false);
+
+  const clearStates = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setHint("");
+  };
+
+  useEffect(() => {
+    clearStates();
+  }, [signUp]);
 
   const origin =
     typeof window !== "undefined" && window.location.origin
       ? window.location.origin
       : "";
 
-  const { mutate: signInWithGithub, isLoading: signingInWithGithub } =
-    useMutation(["signInWithGithub"], async () => {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "github",
-        options: {
-          redirectTo: origin ? `${origin}/user_portal` : "localhost:3000",
-        },
-      });
-      return { data, error };
-    });
-  const { mutate: signInWithGoogle, isLoading: signingInWithGoogle } =
-    useMutation(["signInWithGoogle"], async () => {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: origin ? `${origin}/user_portal` : "localhost:3000",
-        },
-      });
-      console.log({ data, error });
-      return { data, error };
-    });
+  const { mutate: signUpWithEmail, isLoading: signingUpWithEmail } =
+    useMutation(
+      ["signUpWithEmail"],
+      async () => {
+        if (password == confirmPassword && email && password) {
+          //check if email exists
+          //create a profile with this email by going to api/auth links
+          const { data: response } = await axios.get(
+            `/api/profile/${
+              isUserPortal ? "user" : "professional"
+            }?email=${email}`
+          );
+          if (response.data !== null) {
+            setHint("This email is already registered ");
+            return {
+              data: null,
+              error: "This email is already registered ",
+            };
+          } else {
+            const { data, error } = await supabase.auth.signUp({
+              email: email,
+              password: password,
+            });
 
+            setHint("an confirmation email has sent to your email");
+            return { data, error };
+          }
+        } else {
+          setHint("Please fill the valid information in the fields");
+          return {
+            data: null,
+            error: "Please fill the valid information in the fields",
+          };
+        }
+      },
+      {
+        onError: ({ error }) => {
+          setHint("Error" + error);
+        },
+      }
+    );
+  const { mutate: signInWithGithub, isLoading: signingInWithGithub } =
+    useMutation(
+      ["signInWithGithub"],
+      async () => {
+        setSigningInWithOauth(true);
+
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: "github",
+          options: {
+            redirectTo: origin
+              ? `${origin}/${
+                  isUserPortal ? "user_portal" : "professional_portal"
+                }`
+              : "localhost:3000",
+          },
+        });
+        return { data, error };
+      },
+      {
+        onError: () => {
+          setSigningInWithOauth(false);
+        },
+      }
+    );
+  const { mutate: signInWithGoogle, isLoading: signingInWithGoogle } =
+    useMutation(
+      ["signInWithGoogle"],
+      async () => {
+        setSigningInWithOauth(true);
+
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: origin
+              ? `${origin}/${
+                  isUserPortal ? "user_portal" : "professional_portal"
+                }`
+              : "localhost:3000",
+          },
+        });
+        console.log({ data, error });
+        return { data, error };
+      },
+      {
+        onError: () => {
+          setSigningInWithOauth(false);
+        },
+      }
+    );
   return (
-    <div className="w-[500px] flex flex-col gap-5">
-      {(signingInWithGithub || signingInWithGoogle) && (
-        <div className="italic ">Signing In ..</div>
+    <div className="w-[500px] flex flex-col gap-5 h-[450px] justify-center">
+      {signingInWithOauth && (
+        <div className="italic text-center">Signing In ..</div>
       )}
 
-      {!signingInWithGithub && !signingInWithGoogle && (
+      {!signingInWithOauth && (
         <>
           <div className="flex gap-3 items-center justify-between">
             <button
-              className="border rounded-lg py-2 px-4 text-sm font-semibold w-[230px] flex items-center justify-center gap-2"
+              className="border rounded-lg py-2 px-4 text-sm font-semibold w-[230px] flex items-center justify-center gap-2 hover:opacity-80"
               onClick={() => signInWithGoogle()}
             >
               <FcGoogle size={25} />
               Sign In With Google
             </button>
             <button
-              className="border rounded-lg py-2 px-4 text-sm font-semibold w-[230px] flex items-center justify-center gap-2"
+              className="border rounded-lg py-2 px-4 text-sm font-semibold w-[230px] flex items-center justify-center gap-2 hover:opacity-80"
               onClick={() => signInWithGithub()}
             >
               <AiFillGithub size={25} />
@@ -122,15 +204,34 @@ const AuthForm = () => {
               </div>
             </div>
           )}
-          <div className="flex gap-2 justify-center items-center text-sm">
-            <PrimaryButton text="Sign In" action={() => {}} />
-            <SecondaryButton
-              text="Sign Up"
-              action={() => {
-                setSignUp(true);
-              }}
-            />
-          </div>
+          <div className="italic text-primary h-[10px]">{hint}</div>
+          {signUp && (
+            <div className="flex gap-2 justify-center items-center text-sm">
+              <PrimaryButton
+                text="Sign Up"
+                action={() => {
+                  signUpWithEmail();
+                }}
+              />
+              <SecondaryButton
+                text="Cancel"
+                action={() => {
+                  setSignUp(false);
+                }}
+              />
+            </div>
+          )}
+          {!signUp && (
+            <div className="flex gap-2 justify-center items-center text-sm">
+              <PrimaryButton text="Sign In" action={() => {}} />
+              <SecondaryButton
+                text="Sign Up"
+                action={() => {
+                  setSignUp(true);
+                }}
+              />
+            </div>
+          )}
           <div className="">
             <p className="underline">
               <Link href="/">Forgot Password?</Link>

@@ -9,13 +9,18 @@ export async function GET(request: Request) {
     requestType: "GET",
     route: "/api/profile/user/route",
   });
+  let query = supabase.from("user_profile").select();
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
-  const data = await supabase
-    .from("user_profile")
-    .select()
-    .eq("id", id)
-    .maybeSingle();
+  const email = searchParams.get("email");
+  if (id) {
+    query.eq("id", id);
+  }
+  if (email) {
+    query.eq("email", email);
+  }
+
+  const data = await query.maybeSingle();
 
   return NextResponse.json(data);
 }

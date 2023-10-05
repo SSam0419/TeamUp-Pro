@@ -1,11 +1,14 @@
 import React from "react";
-import SearchQuery from "./SearchQuery";
-import IndustryFilter from "./IndustryFilter";
+import SearchQuery from "../../../components/SearchQuery";
+import IndustryFilter from "../../../components/IndustryFilter";
 
 const DashboardToolBar = ({ isLoading }: { isLoading: boolean }) => {
   return (
     <div className="flex border rounded-md shadow justify-center items-center px-5 ">
-      <SearchQuery isLoading={isLoading} />
+      <SearchQuery
+        isLoading={isLoading}
+        placeholderText="Search for request "
+      />
       <div className="border h-5 mx-4"></div>
       <IndustryFilter isLoading={isLoading} />
     </div>
