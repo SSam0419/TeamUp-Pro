@@ -77,6 +77,25 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
         },
       }
     );
+  const { mutate: signInWithEmail, isLoading: signingInWithEmail } =
+    useMutation(
+      ["signInWithEmail"],
+      async () => {
+        console.log("{ data, error }");
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        console.log({ data, error });
+        return { data, error };
+      },
+      {
+        onError: () => {
+          setSigningInWithOauth(false);
+        },
+      }
+    );
   const { mutate: signInWithGithub, isLoading: signingInWithGithub } =
     useMutation(
       ["signInWithGithub"],
@@ -223,7 +242,12 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
           )}
           {!signUp && (
             <div className="flex gap-2 justify-center items-center text-sm">
-              <PrimaryButton text="Sign In" action={() => {}} />
+              <PrimaryButton
+                text="Sign In"
+                action={() => {
+                  signInWithEmail();
+                }}
+              />
               <SecondaryButton
                 text="Sign Up"
                 action={() => {

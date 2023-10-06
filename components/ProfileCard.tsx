@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Session } from "@supabase/supabase-js";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useAppStore } from "@/libs/ZustandStore";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 
 import { RxAvatar } from "react-icons/rx";
