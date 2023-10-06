@@ -1,3 +1,4 @@
+import { Modal, useDisclosure } from "@nextui-org/react";
 import React, { ReactNode } from "react";
 
 type props = {
@@ -6,9 +7,13 @@ type props = {
 };
 
 const GlobalPopUp = ({ onClose, children }: props) => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
-      <div
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        {children}
+      </Modal>
+      {/* <div
         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 shadow-md rounded"
         onClick={() => {
           onClose();
@@ -29,7 +34,7 @@ const GlobalPopUp = ({ onClose, children }: props) => {
           </div>
         </div>
       </div>
-      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div> */}
     </>
   );
 };

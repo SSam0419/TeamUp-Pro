@@ -1,5 +1,6 @@
 "use client";
 import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import StatusChip from "@/components/StatusChip";
 import { useAppStore } from "@/libs/ZustandStore";
 import {
   createColumnHelper,
@@ -26,21 +27,16 @@ const DashboardTable = () => {
       cell: (info) => info.getValue(),
       footer: (info) => info.column.id,
     }),
-    // columnHelper.accessor("duration", {
-    //   header: "Duration",
-    //   cell: (info) => info.getValue(),
-    //   footer: (info) => info.column.id,
-    // }),
     {
       id: "Duration",
       accessorFn: (row: RequestDetails) =>
         `${row.duration} ${row.duration_unit}`,
     },
-    columnHelper.accessor("budget", {
-      header: "Budget",
-      cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-    }),
+    {
+      id: "Budget",
+      accessorFn: (row: RequestDetails) =>
+        `${row.budget_lower_limit} - ${row.budget_upper_limit}`,
+    },
     columnHelper.accessor("professional_pitch_view", {
       header: "Pitches",
       cell: (info) => (info.getValue() == null ? 0 : info.getValue().length),
@@ -48,7 +44,7 @@ const DashboardTable = () => {
     }),
     columnHelper.accessor("status", {
       header: "Status",
-      cell: (info) => info.getValue(),
+      cell: (info) => <StatusChip status={info.getValue()} />,
       footer: (info) => info.column.id,
     }),
   ];

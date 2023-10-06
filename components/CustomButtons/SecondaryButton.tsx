@@ -24,7 +24,7 @@ const SecondaryButton = ({
   return (
     <Button
       className="bg-secondary w-full
-      text-white h-[40px]  font-normal px-10 py-2 rounded-lg
+      text-white h-[40px]  font-normal px-10 py-2 rounded-2xl
         flex items-center justify-center gap-2 hover:opacity-80"
       type={`${type !== undefined ? type : "button"}`}
       isLoading={isLoading}

@@ -73,8 +73,8 @@ export async function PUT(request: Request) {
       content: requestDetails.content,
       duration: requestDetails.duration,
       duration_unit: requestDetails.duration_unit,
-      budget: requestDetails.budget,
-      disclose_contact: requestDetails.disclose_contact,
+      budget_lower_limit: requestDetails.budget_lower_limit,
+      budget_upper_limit: requestDetails.budget_upper_limit,
       status: requestDetails.status,
     })
     .eq("id", request_id)
@@ -94,10 +94,10 @@ export async function POST(request: Request) {
     title: requestDetails.title,
     content: requestDetails.content,
     duration: requestDetails.duration,
-    budget: requestDetails.budget,
+    budget_upper_limit: requestDetails.budget_upper_limit,
+    budget_lower_limit: requestDetails.budget_lower_limit,
     industry: requestDetails.industry,
-    createdBy: requestDetails.createdBy,
-    disclose_contact: requestDetails.disclose_contact,
+    created_by: requestDetails.createdBy,
     status: "Active",
   });
   return NextResponse.json(data);

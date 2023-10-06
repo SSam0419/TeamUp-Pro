@@ -8,8 +8,8 @@ type RequestDetails = {
   created_at: Date;
   duration_unit: string;
   month_until_expiration: number;
-  budget: number;
-  disclose_contact: boolean;
+  budget_lower_limit: number;
+  budget_upper_limit: number;
   status: "Active" | "Expired" | "Cancelled" | "Hired";
   // professional_pitch: Pitch[];
   professional_pitch_view: Pitch[];

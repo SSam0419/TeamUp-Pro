@@ -26,7 +26,11 @@ const StatusChip = ({
     case "Hired":
       color = "success";
   }
-  return <Chip color={color}>{status}</Chip>;
+  return (
+    <Chip color={color} className="text-white">
+      {status}
+    </Chip>
+  );
 };
 
 export default StatusChip;

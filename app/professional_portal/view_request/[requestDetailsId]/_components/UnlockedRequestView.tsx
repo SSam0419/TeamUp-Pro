@@ -22,9 +22,12 @@ const UnlockedRequestView = ({ requestDetails }: props) => {
         {requestDetails.duration_unit}
       </div>
       <div className="mt-3  italic">
-        Estimated Project Budget: {requestDetails.budget}
+        Estimated Project Budget: $ {requestDetails.budget_lower_limit} -{" "}
+        {requestDetails.budget_upper_limit}
       </div>
-      <div className="mt-3 leading-relaxed">{requestDetails.content}</div>
+      <div className="mt-3 leading-relaxed text-content">
+        {requestDetails.content}
+      </div>
     </div>
   );
 };

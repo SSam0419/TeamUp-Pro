@@ -45,14 +45,13 @@ const ProfileList = () => {
   if (profileInfo == null) return <UnauthorizedPage />;
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 items-center justify-center">
       <SearchBar isLoading={false} />
 
-      {isLoading && <Spinner />}
-
-      {!isLoading && (
-        <div className="flex flex-wrap gap-7 items-center justify-center">
-          {profiles.map((profile, idx) => {
+      <div className="flex flex-wrap gap-7 items-center justify-center">
+        {isLoading && <Spinner />}
+        {!isLoading &&
+          profiles.map((profile, idx) => {
             return (
               <ProfileCard
                 key={idx}
@@ -79,10 +78,9 @@ const ProfileList = () => {
               />
             );
           })}
-        </div>
-      )}
+      </div>
 
-      <div className="">
+      <div className="fixed bottom-10 w-[550px]">
         <SendRequestButton
           professionalIds={profiles
             .filter((profile, index) => check[index])

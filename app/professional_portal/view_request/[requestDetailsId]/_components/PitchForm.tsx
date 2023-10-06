@@ -56,7 +56,7 @@ const PitchForm = ({
 
   const [pitchFormData, setPitchFormData] = useState<PitchFormDataType>({
     message: requestDetails.pitch?.message || "",
-    price: requestDetails.pitch?.price || requestDetails.budget,
+    price: requestDetails.pitch?.price || requestDetails.budget_lower_limit,
     deliveryTime:
       requestDetails.pitch?.delivery_time.toString() ||
       requestDetails?.duration,

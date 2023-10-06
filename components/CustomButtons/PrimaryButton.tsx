@@ -15,6 +15,7 @@ type props = {
 const PrimaryButton = ({ action, text, isLoading, type, disabled }: props) => {
   return (
     <Button
+      isLoading={isLoading}
       className="bg-primary w-full h-full 
       text-white 
       font-normal px-10 py-2 rounded-2xl 

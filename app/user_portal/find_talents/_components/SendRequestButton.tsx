@@ -41,38 +41,39 @@ const SendRequestButton = ({
       },
     }
   );
-  const { mutate: createMailboxMessage } = useMutation(
-    ["createMailboxMessage"],
-    async ({ index }: { index: number }) => {
-      if (index == 0) {
-        toast("Please select a valid request");
-        return { data: null };
+  const { mutate: createMailboxMessage, isLoading: isCreatingMailboxMessage } =
+    useMutation(
+      ["createMailboxMessage"],
+      async ({ index }: { index: number }) => {
+        if (index == 0) {
+          toast("Please select a valid request");
+          return { data: null, error: "select a valid request" };
+        }
+
+        const message = `You are invited to view the request details of ${origin}/professional_portal/view_request/${requestTitles?.data[index].id} by the owner of the request`;
+
+        const { data, status, statusText } = await axios.post(
+          "/api/mailbox?user_id=" + session?.user.id,
+          {
+            message,
+            professionalIds,
+          }
+        );
+        return { data, status, statusText };
+      },
+      {
+        onSuccess: () => {
+          toast("Invitation Sent Successful!");
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error)) {
+            if (error.response) toast(error.response.statusText.toString());
+          }
+
+          console.log(error);
+        },
       }
-
-      const message = `You are invited to view the request details of ${origin}/professional_portal/view_request/${requestTitles?.data[index].id} by the owner of the request`;
-
-      const { data, status, statusText } = await axios.post(
-        "/api/mailbox?user_id=" + session?.user.id,
-        {
-          message,
-          professionalIds,
-        }
-      );
-      return { data, status, statusText };
-    },
-    {
-      onSuccess: () => {
-        toast("You have sent invitation to selected professional");
-      },
-      onError: (error) => {
-        if (axios.isAxiosError(error)) {
-          if (error.response) toast(error.response.statusText.toString());
-        }
-
-        console.log(error);
-      },
-    }
-  );
+    );
   return (
     <div className="flex w-full shadow rounded-lg">
       <div className="bg-white flex justify-center items-center p-3 gap-5 w-full rounded-xl">
@@ -104,6 +105,7 @@ const SendRequestButton = ({
           <PrimaryTooltip tooltipText="Invite selected professionals to view your selected request">
             <div className="h-full w-full">
               <PrimaryButton
+                isLoading={isCreatingMailboxMessage}
                 text="Send Request"
                 action={() => {
                   createMailboxMessage({ index: selectedIdx });

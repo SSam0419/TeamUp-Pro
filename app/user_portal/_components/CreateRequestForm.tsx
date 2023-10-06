@@ -17,14 +17,15 @@ type props = {
 export type CreateRequestFormDataType = {
   title: string;
   content: string;
-  email: string;
-  phone_number: string;
-  budget: string;
+  budget_lower_limit: string;
+  budget_upper_limit: string;
   duration: string;
-  contact_person: string;
   industry: (typeof IndustriesOptions)[number];
-  disclose_contact: boolean;
   createdBy: string;
+  // email: string;
+  // phone_number: string;
+  // disclose_contact: boolean;
+  // contact_person: string;
 };
 
 const CreateRequestForm = ({ onClose }: props) => {
@@ -36,11 +37,11 @@ const CreateRequestForm = ({ onClose }: props) => {
       const result = await axios.post("/api/request/user_request", formData, {
         validateStatus: (status) => status >= 200 && status < 300,
       });
-      if (result.status !== 201) {
-        throw new Error(
-          "Please create your user profile before you create a request"
-        );
+
+      if (result.status < 200 || result.status >= 300) {
+        throw new Error(result.statusText);
       }
+
       return result;
     },
     {
@@ -57,18 +58,19 @@ const CreateRequestForm = ({ onClose }: props) => {
   const [formData, setFormData] = useState<CreateRequestFormDataType>({
     title: "",
     content: "",
-    email: profileInfo?.email || session?.user?.email || "",
-    phone_number: "",
-    budget: "100",
+    budget_lower_limit: "0.00",
+    budget_upper_limit: "0.00",
     duration: "",
-    contact_person: profileInfo?.username || "",
     industry: IndustriesOptions[0],
-    disclose_contact: false,
     createdBy: profileInfo?.id || session?.user?.id || "",
+    // phone_number: "",
+    // email: profileInfo?.email || session?.user?.email || "",
+    // contact_person: profileInfo?.username || "",
+    // disclose_contact: false,
   });
 
   return (
-    <form className="flex-col gap-4 h-[580px] w-[600px] p-4 overflow-y-scroll">
+    <form className="flex-col gap-4  p-4">
       {isLoading && (
         <div className="flex items-center justify-center">
           <Spinner />
@@ -77,7 +79,7 @@ const CreateRequestForm = ({ onClose }: props) => {
       {!isLoading && (
         <>
           <div className="flex gap-3 mb-4 items-center">
-            <label htmlFor="industries">Industries</label>
+            {/* <label htmlFor="industries">Industries</label> */}
             <select
               id="industries"
               className="bg-gray-50 border border-gray-300 rounded-lg p-2"
@@ -128,19 +130,53 @@ const CreateRequestForm = ({ onClose }: props) => {
           </div>
           <div className="mb-4">
             <label htmlFor="budget">Budget (HKD)</label>
-            <input
-              required
-              id="budget"
-              type="number"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={formData.budget}
-              onChange={(e) => {
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  budget: e.target.value,
-                }));
-              }}
-            ></input>
+            <div className="flex gap-4 items-center">
+              <input
+                required
+                id="budget"
+                type="number"
+                placeholder="0.00"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={formData.budget_lower_limit}
+                onChange={(e) => {
+                  if (
+                    parseFloat(e.target.value) >
+                    parseFloat(formData.budget_upper_limit)
+                  ) {
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      budget_upper_limit: e.target.value,
+                    }));
+                  }
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    budget_lower_limit: e.target.value,
+                  }));
+                }}
+              ></input>
+              -
+              <input
+                required
+                id="budget_upper_limit"
+                type="number"
+                placeholder="0.00"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={formData.budget_upper_limit}
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      budget_upper_limit: formData.budget_lower_limit,
+                    }));
+                    return;
+                  }
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    budget_upper_limit: e.target.value,
+                  }));
+                }}
+              ></input>
+            </div>
           </div>
           <div className="mb-4">
             <label htmlFor="duration">Duration</label>
@@ -165,7 +201,7 @@ const CreateRequestForm = ({ onClose }: props) => {
               </select>
             </div>
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="contact">Contact Person</label>
             <input
               required
@@ -220,7 +256,7 @@ const CreateRequestForm = ({ onClose }: props) => {
                 disclose_contact: !formData.disclose_contact,
               }));
             }}
-          />
+          /> */}
           <div className="my-3 flex items-center justify-center">
             <PrimaryButton
               action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -233,7 +269,13 @@ const CreateRequestForm = ({ onClose }: props) => {
                   toast("Please filled in all requested field(s)");
                   return;
                 }
-
+                if (
+                  parseFloat(formData.budget_lower_limit) >
+                  parseFloat(formData.budget_upper_limit)
+                ) {
+                  toast("Please filled in valid budget range");
+                  return;
+                }
                 if (session == null) {
                   toast("Please Log In before submitting your rquest! ");
                   return;

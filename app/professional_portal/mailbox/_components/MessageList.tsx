@@ -22,7 +22,7 @@ const MessageList = () => {
   );
 
   return (
-    <div>
+    <div className="flex flex-wrap gap-4">
       {messsages &&
         messsages.map((message, idx) => {
           return (

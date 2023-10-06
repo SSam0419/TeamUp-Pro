@@ -123,32 +123,27 @@ const RequestDetailsContainer = () => {
               <label htmlFor="budget" className="">
                 Budget (HKD) :
               </label>
+              <div className="flex gap-3 items-center">
+                <input
+                  disabled={!editMode}
+                  id="budget"
+                  className="bg-white shadow p-2 border rounded-xl"
+                  name="budget_lower_limit"
+                  value={requestDetails.budget_lower_limit}
+                  onChange={handleInputChange}
+                />
+                -
+                <input
+                  disabled={!editMode}
+                  id="budget_upper_limit"
+                  className="bg-white shadow p-2 border rounded-xl"
+                  name="budget_upper_limit"
+                  value={requestDetails.budget_upper_limit}
+                  onChange={handleInputChange}
+                />{" "}
+              </div>
+            </div>
 
-              <input
-                disabled={!editMode}
-                id="budget"
-                className="bg-white shadow p-2 border rounded-xl"
-                name="budget"
-                value={requestDetails.budget}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="flex gap-1 items-center">
-              <label htmlFor="disclose_contact" className="">
-                Disclose Contact To Professional :
-              </label>
-              <select
-                disabled={!editMode}
-                id="disclose_contact"
-                className="bg-white shadow p-2 border rounded-xl"
-                name="disclose_contact"
-                value={requestDetails.disclose_contact ? "YES" : "NO"}
-                onChange={handleInputChange}
-              >
-                <option>YES</option>
-                <option>NO</option>
-              </select>
-            </div>
             <div className="flex gap-1 items-center">
               <label htmlFor="status" className="">
                 Status :

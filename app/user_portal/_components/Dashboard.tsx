@@ -11,13 +11,16 @@ import axios from "axios";
 import Spinner from "@/components/Spinner";
 import { LuClipboardList } from "react-icons/lu";
 import { useSearchParams } from "next/navigation";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  useDisclosure,
+} from "@nextui-org/react";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
   const { session, setFetchedRequestDetails, profileInfo } = useAppStore();
-
-  const [openCreateRequestForm, setOpenCreateRequestForm] =
-    useState<boolean>(false);
 
   const { data: requestDetailsData, isLoading } = useQuery(
     ["retrieveRequestDetails", session, profileInfo],
@@ -36,24 +39,28 @@ const Dashboard = () => {
       setFetchedRequestDetails(requestDetailsData.data.data);
     else setFetchedRequestDetails([]);
   }, [requestDetailsData, setFetchedRequestDetails]);
-
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div className="px-[30px] py-[10px]  bg-white min-w-[1000px] rounded-[15px] shadow">
-      {openCreateRequestForm && (
-        <GlobalPopUp
-          onClose={() => {
-            setOpenCreateRequestForm(false);
-          }}
-        >
-          {
-            <CreateRequestForm
-              onClose={() => {
-                setOpenCreateRequestForm(false);
-              }}
-            />
-          }
-        </GlobalPopUp>
-      )}
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="4xl"
+        scrollBehavior="normal"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <ModalBody>
+              <CreateRequestForm
+                onClose={() => {
+                  onClose();
+                }}
+              />
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
+
       <div className="flex justify-between items-center m-3">
         {/* <div className="rounded-full bg-white border shadow px-5 py-2 flex justify-between items-center">
           <div className="flex items-center justify-between">
@@ -71,7 +78,7 @@ const Dashboard = () => {
         <div>
           <PrimaryButton
             action={() => {
-              setOpenCreateRequestForm(true);
+              onOpen();
             }}
             text="Create"
           />
