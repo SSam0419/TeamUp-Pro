@@ -3,7 +3,6 @@ import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import React, { useCallback, useEffect, useState } from "react";
 
 import DashboardTable from "./DashboardTable";
-import GlobalPopUp from "@/components/GlobalPopUp";
 import CreateRequestForm from "./CreateRequestForm";
 import { useQuery } from "react-query";
 import { useAppStore } from "@/libs/ZustandStore";

@@ -2,24 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import UserProfileCard from "../../../components/ProfileCard";
-import GlobalPopUp from "@/components/GlobalPopUp";
-// import AuthForm from "./AuthForm";
-import {
-  Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import React from "react";
 import { useAppStore } from "@/libs/ZustandStore";
-import { useQuery } from "react-query";
-import axios from "axios";
-import AuthForm from "@/components/AuthForm";
 import ProfileCard from "../../../components/ProfileCard";
 
 const Navbar = () => {
   const pathName = usePathname();
-
-  const { session: sessionState, setUserProfile } = useAppStore();
 
   return (
     <div className="fixed top-0 left-0 w-full flex justify-between px-[50px] py-5 bg-white shadow z-50">

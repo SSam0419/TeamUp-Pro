@@ -8,25 +8,23 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "react-query";
-import GlobalPopUp from "@/components/GlobalPopUp";
 
 import { RxAvatar } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/components/AuthForm";
+import { Modal, ModalContent, useDisclosure } from "@nextui-org/react";
 
 const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
   const router = useRouter();
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     session: sessionState,
     profileInfo,
     setUserProfile,
     setUserSession,
   } = useAppStore();
-
-  const [openAuthForm, setOpenAuthForm] = useState(false);
 
   const { isLoading } = useQuery(
     ["retrieveUserProfile", sessionState],
@@ -71,7 +69,7 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
     ) {
       setUserSession(session as Session);
     } else if (event == "SIGNED_IN") {
-      setOpenAuthForm(false);
+      onClose();
       setUserSession(session as Session);
     } else if (event == "SIGNED_OUT") {
       setUserProfile(null);
@@ -132,16 +130,21 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
       {sessionState === null && (
         <button
           className="bg-secondary text-white font-medium px-10 py-2 rounded-[45px] "
-          onClick={() => setOpenAuthForm(true)}
+          onClick={() => onOpen()}
         >
           Sign In
         </button>
       )}
-      {openAuthForm && (
-        <GlobalPopUp onClose={() => setOpenAuthForm(false)}>
-          <AuthForm isUserPortal={isUserCard} />
-        </GlobalPopUp>
-      )}
+
+      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+        <ModalContent className="h-[670px] flex items-center justify-center">
+          {(onClose) => (
+            <div>
+              <AuthForm isUserPortal={isUserCard} />
+            </div>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
