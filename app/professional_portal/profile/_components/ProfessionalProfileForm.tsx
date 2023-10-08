@@ -230,7 +230,7 @@ export default function ProfessionalProfileForm({
             );
           })}
         </div>
-        <div className="flex items-center justify-between border-1 border rounded-full py-1 px-2 w-[260px] shadow">
+        <div className="flex items-center justify-between border rounded-full py-1 px-2 w-[260px] shadow">
           <input
             className="outline-none p-2 rounded-full"
             placeholder="skill .."

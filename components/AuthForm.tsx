@@ -142,14 +142,14 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
       }
     );
   return (
-    <div className="w-[500px] flex flex-col gap-5 h-[450px] justify-center">
+    <div className="md:w-[500px] flex flex-col gap-5 h-[450px] justify-center">
       {signingInWithOauth && (
         <div className="italic text-center">Signing In ..</div>
       )}
 
       {!signingInWithOauth && (
         <>
-          <div className="flex gap-3 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
             <button
               className="border rounded-lg py-2 px-4 text-sm font-semibold w-[230px] flex items-center justify-center gap-2 hover:opacity-80"
               onClick={() => signInWithGoogle()}
