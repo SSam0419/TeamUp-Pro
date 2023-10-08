@@ -14,7 +14,7 @@ const UserProfileDisplay = () => {
   }
 
   return (
-    <div className="text-gray-600 w-full relative">
+    <div className="text-gray-600 w-[300px] md:w-full relative">
       {!openEditForm && (
         <div
           className="absolute right-5 top-5 hover:cursor-pointer hover:bg-black p-2 hover:text-white rounded-full"

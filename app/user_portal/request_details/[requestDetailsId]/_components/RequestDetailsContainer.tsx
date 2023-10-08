@@ -6,6 +6,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useMutation } from "react-query";
 import PitchCard from "./PitchCard";
+import { notFound } from "next/navigation";
 
 const RequestDetailsContainer = () => {
   const { fetchedSingleRequestDetails } = useAppStore();
@@ -27,10 +28,6 @@ const RequestDetailsContainer = () => {
       if (prev === null) {
         return null;
       } else {
-        if (name === "disclose_contact") {
-          return { ...prev, disclose_contact: value === "YES" ? true : false };
-        }
-
         return {
           ...prev,
           [name]: value,
@@ -65,7 +62,11 @@ const RequestDetailsContainer = () => {
   };
 
   if (fetchedSingleRequestDetails == null || requestDetails == null) {
-    return <div>...</div>;
+    return (
+      <div className="bg-white text-center text-subheading">
+        Invalid Request
+      </div>
+    );
   }
 
   return (
@@ -73,7 +74,7 @@ const RequestDetailsContainer = () => {
       <div className="flex gap-3 flex-col p-2 font-light w-full">
         <div className="flex justify-between items-center">
           <div>
-            <p className="text-lg font-medium">{requestDetails.title}</p>
+            <p className="text-lg font-medium w-3/4">{requestDetails.title}</p>
             <p>{requestDetails.industry}</p>
           </div>
           <ToggleButton
@@ -87,8 +88,8 @@ const RequestDetailsContainer = () => {
         <div className="border" />
         <div className="border" />
 
-        <div className="flex gap-4">
-          <div className="flex flex-col gap-3 w-1/2">
+        <div className="flex gap-4 md:flex-row flex-col">
+          <div className="flex flex-col gap-3 w-full md:w-1/2">
             <div className="flex flex-col gap-1">
               <label htmlFor="duration" className="">
                 Duration :
@@ -123,24 +124,30 @@ const RequestDetailsContainer = () => {
               <label htmlFor="budget" className="">
                 Budget (HKD) :
               </label>
-              <div className="flex gap-3 items-center">
-                <input
-                  disabled={!editMode}
-                  id="budget"
-                  className="bg-white shadow p-2 border rounded-xl"
-                  name="budget_lower_limit"
-                  value={requestDetails.budget_lower_limit}
-                  onChange={handleInputChange}
-                />
-                -
-                <input
-                  disabled={!editMode}
-                  id="budget_upper_limit"
-                  className="bg-white shadow p-2 border rounded-xl"
-                  name="budget_upper_limit"
-                  value={requestDetails.budget_upper_limit}
-                  onChange={handleInputChange}
-                />{" "}
+              <div className="flex flex-col md:flex-row items-start gap-3 md:items-center">
+                <div className="flex items-center w-full">
+                  <div className="w-1/5 md:hidden">From ~</div>
+                  <input
+                    disabled={!editMode}
+                    id="budget"
+                    className="bg-white shadow p-2 border rounded-xl"
+                    name="budget_lower_limit"
+                    value={requestDetails.budget_lower_limit}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <p className="hidden md:block">-</p>
+                <div className="flex items-center w-full">
+                  <label className="w-1/5 md:hidden">To ~</label>
+                  <input
+                    disabled={!editMode}
+                    id="budget_upper_limit"
+                    className="bg-white shadow p-2 border rounded-xl"
+                    name="budget_upper_limit"
+                    value={requestDetails.budget_upper_limit}
+                    onChange={handleInputChange}
+                  />{" "}
+                </div>
               </div>
             </div>
 
@@ -162,11 +169,11 @@ const RequestDetailsContainer = () => {
               </select>
             </div>
           </div>
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <label htmlFor="content">Content</label>
             <textarea
               disabled={!editMode}
-              className="bg-white w-full h-4/5 shadow p-2 border rounded"
+              className="bg-white w-full md:h-4/5 shadow p-2 border rounded"
               name="content"
               value={requestDetails.content}
               onChange={handleInputChange}
@@ -183,12 +190,12 @@ const RequestDetailsContainer = () => {
           }}
         />
 
-        <div className="my-6 w-full gap-3 grid grid-cols-7 items-center">
-          <div className="border-secondary border col-span-3"></div>
+        <div className="my-6 w-full gap-3 grid grid-cols-3 md:grid-cols-7 items-center">
+          <div className="border-secondary border col-span-1 md:col-span-3"></div>
           <p className="text-center text-base italic font-thin text-secondary">
             Received Pitch
           </p>
-          <div className="border-secondary border col-span-3"></div>
+          <div className="border-secondary border col-span-1 md:col-span-3"></div>
         </div>
 
         <div>
@@ -196,6 +203,14 @@ const RequestDetailsContainer = () => {
             {requestDetails.professional_pitch_view?.map((pitch, index) => (
               <PitchCard pitchData={pitch} key={index} />
             ))}
+            {requestDetails.professional_pitch_view == null ||
+              (requestDetails.professional_pitch_view.length == 0 && (
+                <div>
+                  {" "}
+                  Have not receive any pitches yet. Try invite professionals to
+                  review your request.{" "}
+                </div>
+              ))}
           </div>
         </div>
       </div>

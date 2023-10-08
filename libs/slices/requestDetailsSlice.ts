@@ -5,7 +5,7 @@ export interface RequestDetailsSlice {
   fetchedSingleRequestDetails: RequestDetails | null;
   setFetchedRequestDetails: (fetchedRequestDetails: RequestDetails[]) => void;
   setFetchedSingleRequestDetails: (
-    fetchedRequestDetails: RequestDetails
+    fetchedRequestDetails: RequestDetails | null
   ) => void;
 }
 
@@ -20,7 +20,7 @@ export const createRequestDetailsSlice: StateCreator<RequestDetailsSlice> = (
     });
   },
   setFetchedSingleRequestDetails: (
-    fetchedSingleRequestDetails: RequestDetails
+    fetchedSingleRequestDetails: RequestDetails | null
   ) => {
     set({
       fetchedSingleRequestDetails: fetchedSingleRequestDetails,

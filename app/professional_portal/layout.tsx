@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "./_components/Navbar";
 import { Suspense } from "react";
+import NavBar from "@/components/NewNavbar";
 
 export const metadata: Metadata = {
   title: "Professional Portal",
@@ -13,8 +14,29 @@ export default function UserPortalLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-between  p-[100px]">
-      <Navbar />
+    <div className="flex flex-col items-center justify-between">
+      {/* <Navbar /> */}
+      <NavBar
+        isUserPortal={false}
+        menuItems={[
+          {
+            name: "Dashboard",
+            link: "/professional_portal",
+          },
+          {
+            name: "Pitch",
+            link: "/professional_portal/my_pitch",
+          },
+          {
+            name: "Mailbox",
+            link: "/professional_portal/mailbox",
+          },
+          {
+            name: "FAQ",
+            link: "/professional_portal/faq",
+          },
+        ]}
+      />
       <Suspense fallback={<p>loading ... </p>}>
         <div className="mt-10">{children}</div>
       </Suspense>

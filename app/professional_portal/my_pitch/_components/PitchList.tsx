@@ -9,7 +9,7 @@ const PitchList = () => {
   const { profileInfo } = useAppStore();
 
   const { data: pitchList, isLoading } = useQuery(
-    ["retrieveProfessionalPitch"],
+    ["retrieveProfessionalPitch", profileInfo],
     async () => {
       if (profileInfo !== null) {
         const { data } = await axios.get(

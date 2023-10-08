@@ -88,7 +88,7 @@ const PitchForm = ({
             timeStyle: "long",
           }).format(new Date(requestDetails.pitch.updated_at))}`}
       </div>
-      <div className="flex items-center justify-between w-full">
+      <div className="flex md:items-center justify-between w-full  flex-col gap-3 md:gap-0 md:flex-row ">
         <div>
           <label
             htmlFor="price"
@@ -105,7 +105,7 @@ const PitchForm = ({
             className="px-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div>
+        <div className="">
           <label
             htmlFor="deliveryTime"
             className="block mb-2 font-medium text-gray-700"

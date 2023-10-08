@@ -33,12 +33,12 @@ const Dashboard = () => {
   }, [requestFreeViewData, setFetchedRequestDetails]);
 
   return (
-    <div className="px-[30px] py-[10px]  bg-white min-w-[1000px] rounded-[15px] shadow flex flex-col gap-5 items-center">
-      <div className="w-[800px]">
+    <div className="md:px-[30px] md:py-[10px]  bg-white md:min-w-[1000px] rounded-[15px] shadow flex flex-col gap-5 items-center p-5">
+      <div className="md:w-[800px]">
         <DashboardToolBar isLoading={isLoading} />
       </div>
       {!isLoading && (
-        <div className="min-h-[500px] w-[800px] flex items-start justify-center ">
+        <div className="min-h-[500px] md:w-[800px] flex items-start justify-center ">
           <DashboardTable />
         </div>
       )}

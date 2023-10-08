@@ -1,6 +1,6 @@
 "use client";
 import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import DashboardTable from "./DashboardTable";
 import CreateRequestForm from "./CreateRequestForm";
@@ -9,7 +9,6 @@ import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import { LuClipboardList } from "react-icons/lu";
-import { useSearchParams } from "next/navigation";
 import {
   Modal,
   ModalBody,
@@ -18,7 +17,6 @@ import {
 } from "@nextui-org/react";
 
 const Dashboard = () => {
-  const searchParams = useSearchParams();
   const { session, setFetchedRequestDetails, profileInfo } = useAppStore();
 
   const { data: requestDetailsData, isLoading } = useQuery(
@@ -40,7 +38,7 @@ const Dashboard = () => {
   }, [requestDetailsData, setFetchedRequestDetails]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <div className="px-[30px] py-[10px]  bg-white min-w-[1000px] rounded-[15px] shadow">
+    <div className="md:px-[30px] md:py-[10px]  bg-white md:min-w-[1000px] rounded-[15px] shadow p-4">
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -60,16 +58,7 @@ const Dashboard = () => {
         </ModalContent>
       </Modal>
 
-      <div className="flex justify-between items-center m-3">
-        {/* <div className="rounded-full bg-white border shadow px-5 py-2 flex justify-between items-center">
-          <div className="flex items-center justify-between">
-            <label className="">
-              <AiOutlineSearch />
-            </label>
-            <div className="border-l h-6 mx-2"></div>
-          </div>
-          <input className="outline-none bg-white text-base"></input>
-        </div> */}
+      <div className="flex flex-row justify-between items-center m-3 p-2">
         <div className="text-xl flex items-center justify-center gap-2">
           <LuClipboardList />
           Your Requests
@@ -83,10 +72,10 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <div className="my-3 min-h-[500px] flex justify-start items-center flex-col w-full shadow border rounded-md">
+      <div className="my-3 min-h-[500px] md:max-w-7xl flex justify-start items-center flex-col w-full md:shadow md:border rounded-md md:p-10">
         {isLoading ? <Spinner /> : <DashboardTable />}
         {!session && !isLoading && (
-          <div className="italic font-light text-lg text-secondary">
+          <div className="text-subheading text-secondary">
             sign in now to view your requests!
           </div>
         )}

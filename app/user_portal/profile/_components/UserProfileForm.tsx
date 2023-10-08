@@ -73,7 +73,10 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
   };
 
   return (
-    <form className="max-w-md mx-auto" onSubmit={(e) => handleSubmit(e)}>
+    <form
+      className="w-[300px] md:w-full md:max-w-md mx-auto"
+      onSubmit={(e) => handleSubmit(e)}
+    >
       <div className="mb-4">
         <label
           htmlFor="username"

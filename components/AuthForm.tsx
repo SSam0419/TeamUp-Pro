@@ -81,13 +81,10 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
     useMutation(
       ["signInWithEmail"],
       async () => {
-        console.log("{ data, error }");
-
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
-        console.log({ data, error });
         return { data, error };
       },
       {
@@ -136,7 +133,6 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
               : "localhost:3000",
           },
         });
-        console.log({ data, error });
         return { data, error };
       },
       {

@@ -75,8 +75,8 @@ const SendRequestButton = ({
       }
     );
   return (
-    <div className="flex w-full shadow rounded-lg">
-      <div className="bg-white flex justify-center items-center p-3 gap-5 w-full rounded-xl">
+    <div className="flex items-center justify-center w-full border shadow rounded-lg">
+      <div className="bg-white flex flex-col md:flex-row justify-center items-center p-3 gap-5 w-full rounded-xl">
         {requestTitles?.data && (
           <Select
             value={selected}
@@ -101,7 +101,7 @@ const SendRequestButton = ({
             })}
           </Select>
         )}
-        <div className="w-1/2 h-full">
+        <div className="md:w-1/2 h-full">
           <PrimaryTooltip tooltipText="Invite selected professionals to view your selected request">
             <div className="h-full w-full">
               <PrimaryButton

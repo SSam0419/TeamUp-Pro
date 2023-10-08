@@ -91,7 +91,10 @@ export default function ProfessionalProfileForm({
   };
 
   return (
-    <form className="max-w-md mx-auto" onSubmit={(e) => handleSubmit(e)}>
+    <form
+      className="w-[300px] md:max-w-md mx-auto"
+      onSubmit={(e) => handleSubmit(e)}
+    >
       <div className="flex justify-between">
         <div className="mb-4">
           <label

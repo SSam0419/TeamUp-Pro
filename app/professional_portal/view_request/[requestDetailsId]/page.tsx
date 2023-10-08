@@ -41,7 +41,7 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
   }
 
   return (
-    <div className="w-[880px] bg-white p-4 rounded-lg flex gap-3 flex-col justify-between items-start">
+    <div className="md:w-[880px] bg-white p-4 rounded-lg flex gap-3 flex-col justify-between items-start">
       {isLoading && (
         <div className="flex w-full h-[300px] justify-center items-center">
           <Spinner />

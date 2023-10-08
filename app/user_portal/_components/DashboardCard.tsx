@@ -50,9 +50,7 @@ const DashboardCard = ({
             text="Read More"
             action={() => {
               setRedirecting(true);
-              router.push(
-                "/professional_portal/view_request/" + requestDetails.id
-              );
+              router.push(`/user_portal/request_details/${requestDetails.id}`);
             }}
             icon={<MdReadMore size={20} />}
           />

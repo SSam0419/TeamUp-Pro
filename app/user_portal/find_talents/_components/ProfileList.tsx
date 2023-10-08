@@ -9,6 +9,7 @@ import SearchBar from "./SearchBar";
 import { useSearchParams } from "next/navigation";
 import SendRequestButton from "./SendRequestButton";
 import ProfileCard from "./ProfileCard";
+import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
 
 const ProfileList = () => {
   const { profileInfo } = useAppStore();
@@ -79,8 +80,7 @@ const ProfileList = () => {
             );
           })}
       </div>
-
-      <div className="fixed bottom-10 w-[550px]">
+      <div className="sticky w-full bottom-0 md:bottom-10 md:w-[550px]">
         <SendRequestButton
           professionalIds={profiles
             .filter((profile, index) => check[index])

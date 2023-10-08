@@ -1,6 +1,9 @@
 import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import { Divider } from "@nextui-org/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { FiExternalLink } from "react-icons/fi";
 
 type props = {
   pitch: Pitch;
@@ -10,7 +13,7 @@ const PitchCard = ({ pitch }: props) => {
   const router = useRouter();
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6 my-2 flex items-start">
+    <div className="bg-white shadow-lg rounded-lg p-6 my-2 flex flex-col w-[300px] md:w-[600px] md:flex-row md:items-start ">
       <div className="flex flex-col justify-center items-start">
         <p className="text-gray-600 font-medium mb-2">
           Status: {pitch.is_read ? "Read" : "Unread"}
@@ -25,16 +28,18 @@ const PitchCard = ({ pitch }: props) => {
         <p className="text-gray-600 mb-2">
           Updated At: {new Date(pitch.updated_at).toLocaleDateString()}
         </p>
-        <SecondaryButton
-          text="Details"
-          action={() => {
-            router.push(
-              `/professional_portal/view_request/${pitch.request_details_id}`
-            );
-          }}
-        />
+        <div className=" text-primary flex justify-center items-center ">
+          <Link
+            href={`/professional_portal/view_request/${pitch.request_details_id}`}
+            className="flex justify-center items-center gap-2 "
+          >
+            <FiExternalLink size={20} />
+            <h1>Details</h1>
+          </Link>
+        </div>
       </div>
-      <div className="border-l mx-4 h-40"></div>
+      <Divider className="my-3 md:hidden" />
+      <div className="hidden md:block border-l mx-4 h-40"></div>
       <div className="">{pitch.message}</div>
     </div>
   );

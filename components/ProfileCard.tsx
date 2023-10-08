@@ -105,7 +105,7 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
               <RxAvatar size={30} />
             </div>
           )}
-          <span className="text-gray-800">
+          <span className="text-gray-800 hidden  xl:block">
             {profileInfo == null
               ? "Create Profile Now"
               : `${profileInfo.firstname} ${profileInfo.lastname}`}

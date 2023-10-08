@@ -26,13 +26,14 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
 
   useEffect(() => {
     if (data) setFetchedSingleRequestDetails(data.data.data);
+    else setFetchedSingleRequestDetails(null);
   }, [setFetchedSingleRequestDetails, data]);
 
   return (
     <div>
       {isLoading && <Spinner />}
-      {!isLoading && fetchedSingleRequestDetails && (
-        <div className="bg-white  rounded p-5 w-[1000px]">
+      {!isLoading && (
+        <div className="bg-white  rounded p-5 md:w-[1000px]">
           <RequestDetailsContainer />
         </div>
       )}
