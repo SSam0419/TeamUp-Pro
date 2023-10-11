@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Navbar from "./_components/Navbar";
 import { Suspense } from "react";
 import NavBar from "@/components/NewNavbar";
 

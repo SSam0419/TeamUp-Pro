@@ -9,6 +9,9 @@ import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
 import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import Image from "next/image";
 
 export type ProfessionalProfileFormType = {
   id: string;
@@ -18,8 +21,9 @@ export type ProfessionalProfileFormType = {
   email: string;
   phone_number: string;
   occupation: string;
-  resume: File | null;
   industry: (typeof IndustriesOptions)[number] | string;
+  avatar_file: File | null;
+  avatar_link: string;
 };
 type props = {
   profileData?: UserProfile;
@@ -47,14 +51,34 @@ export default function ProfessionalProfileForm({
       phone_number: profileData?.phone_number || "",
       occupation: profileData?.occupation || "",
       industry: IndustriesOptions[0],
-      resume: null,
+      avatar_file: null,
+      avatar_link: profileData?.avatar_link || "",
     });
+  const supabase = createClientComponentClient();
 
   const mutation = useMutation({
     mutationFn: async (data: {
       professionalProfile: ProfessionalProfileFormType;
       skills: string[];
     }) => {
+      if (data.professionalProfile.avatar_file) {
+        await supabase.storage
+          .from("avatar")
+          .upload(
+            `public/${data.professionalProfile.id}.jpeg`,
+            data.professionalProfile.avatar_file,
+            {
+              cacheControl: "0",
+              upsert: true,
+              contentType: "image/jpeg",
+            }
+          );
+        const { data: link } = await supabase.storage
+          .from("avatar")
+          .getPublicUrl(`public/${data.professionalProfile.id}.jpeg`);
+
+        data.professionalProfile.avatar_link = link.publicUrl;
+      }
       return await axios.post("/api/profile/professional", data);
     },
     onSuccess: ({ data, status }) => {
@@ -92,10 +116,45 @@ export default function ProfessionalProfileForm({
 
   return (
     <form
-      className="w-[300px] md:max-w-md mx-auto"
+      className="w-[300px] md:w-[500px] mx-auto"
       onSubmit={(e) => handleSubmit(e)}
     >
-      <div className="flex justify-between">
+      <div className="mb-4 flex flex-col justify-center items-start gap-3">
+        <div className="border w-[250px] h-[250px] relative">
+          <Image
+            loader={({ src }) => src}
+            src={
+              professionalProfile.avatar_link !== null
+                ? professionalProfile.avatar_link
+                : ""
+            }
+            alt="Avatar"
+            layout="fill"
+            objectFit="contain"
+          />
+        </div>
+        <div className="shadow border p-2 rounded-xl relative">
+          <p className="absolute top-1/2 -translate-y-1/2 flex items-center gap-3">
+            <AiOutlineCloudUpload />
+            Upload Photo
+          </p>
+          <input
+            type="file"
+            className="w-full opacity-0 placeholder:upload your avatar"
+            onChange={async (e) => {
+              if (e.target.files) {
+                const file = e.target.files[0];
+                setProfessionalProfile((prevProfile) => ({
+                  ...prevProfile,
+                  avatar_file: file,
+                  avatar_link: URL.createObjectURL(file),
+                }));
+              }
+            }}
+          ></input>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row justify-between">
         <div className="mb-4">
           <label
             htmlFor="firstname"

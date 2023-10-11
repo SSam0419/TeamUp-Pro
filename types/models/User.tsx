@@ -9,4 +9,5 @@ type UserProfile = {
   lastname: string;
   firstname: string;
   skill: string[];
+  avatar_link: string;
 };

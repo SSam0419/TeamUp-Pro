@@ -59,7 +59,7 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
 
       <NavbarContent justify="end" className="hidden sm:flex">
         <NavbarItem>
-          <ProfileCard isUserCard={true} />
+          <ProfileCard isUserCard={isUserPortal} />
         </NavbarItem>
       </NavbarContent>
 

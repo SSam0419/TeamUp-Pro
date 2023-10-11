@@ -14,7 +14,7 @@ import { toast } from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/components/AuthForm";
-import { Modal, ModalContent, useDisclosure } from "@nextui-org/react";
+import { Avatar, Modal, ModalContent, useDisclosure } from "@nextui-org/react";
 
 const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
   const router = useRouter();
@@ -90,25 +90,28 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
           }
           className="flex items-center space-x-2"
         >
-          {sessionState?.user?.user_metadata.avatar_url !== null &&
-          sessionState?.user?.user_metadata.avatar_url !== undefined ? (
-            <Image
-              className="w-10 h-10 rounded-full border flex justify-center items-center"
-              loader={({ src }) => src}
-              src={sessionState.user.user_metadata.avatar_url}
-              alt={""}
-              width={40}
-              height={40}
-            />
-          ) : (
-            <div>
-              <RxAvatar size={30} />
-            </div>
-          )}
-          <span className="text-gray-800 hidden  xl:block">
-            {profileInfo == null
-              ? "Create Profile Now"
-              : `${profileInfo.firstname} ${profileInfo.lastname}`}
+          <span className="text-gray-800 relative">
+            {profileInfo == null ? (
+              <div className="flex gap-2 items-center">
+                <RxAvatar size={30} />
+                <p className="hidden md:block">Create Profile</p>
+              </div>
+            ) : profileInfo.avatar_link == null ? (
+              <Avatar
+                name={`${profileInfo.firstname} ${profileInfo.lastname}`}
+              />
+            ) : (
+              // <Image
+              //   loader={({ src }) => src}
+              //   src={
+              //     "https://dcfwqwmdkmegdflynbqw.supabase.co/storage/v1/object/public/avatar/public/91d182fe-1fff-45fd-8a1a-05d39c47f106.jpeg"
+              //   }
+              //   alt="Avatar"
+              //   width={100}
+              //   height={50}
+              // />
+              <Avatar src={profileInfo.avatar_link} />
+            )}
           </span>
         </Link>
       )}
@@ -135,7 +138,6 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
           Sign In
         </button>
       )}
-
       <Modal isOpen={isOpen} onClose={onClose} size="3xl">
         <ModalContent className="h-[670px] flex items-center justify-center">
           {(onClose) => (

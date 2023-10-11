@@ -63,10 +63,19 @@ export async function POST(request: Request) {
     return NextResponse.error();
   }
 
-  const response = await supabase
-    .from("professional_profile")
-    .upsert(professionalProfile);
-
+  const response = await supabase.from("professional_profile").upsert({
+    id: professionalProfile.id,
+    bio: professionalProfile.bio,
+    firstname: professionalProfile.firstname,
+    lastname: professionalProfile.lastname,
+    email: professionalProfile.email,
+    phone_number: professionalProfile.phone_number,
+    occupation: professionalProfile.occupation,
+    ...(professionalProfile.avatar_file !== null && {
+      avatar_link: professionalProfile.avatar_link,
+    }),
+  });
+  console.log(response);
   await supabase
     .from("professional_skill")
     .delete()

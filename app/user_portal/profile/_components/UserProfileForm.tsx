@@ -3,9 +3,13 @@
 import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import { useAppStore } from "@/libs/ZustandStore";
+import { Avatar } from "@nextui-org/react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
+import Image from "next/image";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "react-hot-toast";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import { useMutation, useQueryClient } from "react-query";
 
 export type UserProfileFormType = {
@@ -17,6 +21,8 @@ export type UserProfileFormType = {
   email: string;
   phone_number: string;
   occupation: string;
+  avatar_file: File | null;
+  avatar_link: string;
 };
 
 type props = {
@@ -36,10 +42,32 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
     email: profileData?.email || "",
     phone_number: profileData?.phone_number || "",
     occupation: profileData?.occupation || "",
+    avatar_file: null,
+    avatar_link: profileData?.avatar_link || "",
   });
+  const supabase = createClientComponentClient();
 
   const mutation = useMutation({
     mutationFn: async (userProfileData: UserProfileFormType) => {
+      if (userProfileData.avatar_file) {
+        const { data, error } = await supabase.storage
+          .from("avatar")
+          .upload(
+            `public/${userProfileData.id}.jpeg`,
+            userProfileData.avatar_file,
+            {
+              cacheControl: "0",
+              upsert: true,
+              contentType: "image/jpeg",
+            }
+          );
+        const { data: link } = await supabase.storage
+          .from("avatar")
+          .getPublicUrl(`public/${userProfileData.id}.jpeg`);
+
+        userProfileData.avatar_link = link.publicUrl;
+      }
+
       return await axios.post("/api/profile/user", userProfileData);
     },
     onSuccess: ({ data, status }) => {
@@ -71,12 +99,44 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
     userProfile.id = session.user.id;
     await mutation.mutate(userProfile);
   };
-
   return (
     <form
       className="w-[300px] md:w-full md:max-w-md mx-auto"
       onSubmit={(e) => handleSubmit(e)}
     >
+      <div className="mb-4 flex flex-col justify-center items-start gap-3">
+        <div className="border w-[250px] h-[250px] relative">
+          <Image
+            loader={({ src }) => src}
+            src={
+              userProfile.avatar_link !== null ? userProfile.avatar_link : ""
+            }
+            alt="Avatar"
+            layout="fill"
+            objectFit="contain"
+          />
+        </div>
+        <div className="shadow border p-2 rounded-xl relative">
+          <p className="absolute top-1/2 -translate-y-1/2 flex items-center gap-3">
+            <AiOutlineCloudUpload />
+            Upload Photo
+          </p>
+          <input
+            type="file"
+            className="w-full opacity-0 placeholder:upload your avatar"
+            onChange={async (e) => {
+              if (e.target.files) {
+                const file = e.target.files[0];
+                setUserProfile((prevProfile) => ({
+                  ...prevProfile,
+                  avatar_file: file,
+                  avatar_link: URL.createObjectURL(file),
+                }));
+              }
+            }}
+          ></input>
+        </div>
+      </div>
       <div className="mb-4">
         <label
           htmlFor="username"

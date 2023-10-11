@@ -4,11 +4,13 @@ import { useAppStore } from "@/libs/ZustandStore";
 import React, { useState } from "react";
 import UserProfileForm from "./UserProfileForm";
 import { AiFillEdit } from "react-icons/ai";
+import { Avatar } from "@nextui-org/react";
 
 const UserProfileDisplay = () => {
   const { profileInfo: userProfileInfo } = useAppStore();
 
   const [openEditForm, setOpenEditForm] = useState(false);
+
   if (userProfileInfo == null) {
     return <div>Error : Null profile</div>;
   }
@@ -33,8 +35,8 @@ const UserProfileDisplay = () => {
         <div className="max-w-3xl mx-auto">
           <div className=" ">
             <div className="px-4 py-5 sm:px-6">
-              <div className="text-lg leading-6 font-medium text-gray-900">
-                My Profile
+              <div className="text-lg leading-6 font-medium text-gray-900 flex items-center gap-4">
+                <Avatar src={userProfileInfo.avatar_link} /> My Profile
               </div>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
                 Personal details and information.
