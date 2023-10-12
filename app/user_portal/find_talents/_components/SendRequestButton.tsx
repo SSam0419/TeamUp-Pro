@@ -50,7 +50,7 @@ const SendRequestButton = ({
           return { data: null, error: "select a valid request" };
         }
 
-        const message = `You are invited to view the request details of ${origin}/professional_portal/view_request/${requestTitles?.data[index].id} by the owner of the request`;
+        const message = `You are invited to view the request details of **${origin}/professional_portal/view_request/${requestTitles?.data[index].id}** by the owner of the request`;
 
         const { data, status, statusText } = await axios.post(
           "/api/mailbox?user_id=" + session?.user.id,

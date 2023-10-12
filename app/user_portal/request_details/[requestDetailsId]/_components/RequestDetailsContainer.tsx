@@ -71,19 +71,29 @@ const RequestDetailsContainer = () => {
 
   return (
     <div className="flex w-full">
-      <div className="flex gap-3 flex-col p-2 font-light w-full">
+      <div className="flex gap-3 flex-col p-2 font-light w-full flex-wrap">
         <div className="flex justify-between items-center">
           <div>
             <p className="text-lg font-medium w-3/4">{requestDetails.title}</p>
             <p>{requestDetails.industry}</p>
           </div>
-          <ToggleButton
-            checked={editMode}
-            text={"Edit"}
-            action={(editable: boolean) => {
-              setEditMode(editable);
+          <div
+            className=""
+            onClick={() => {
+              if (requestDetails.status === "Hired") {
+                toast("You cannot edit hired requerst");
+              }
             }}
-          />
+          >
+            <ToggleButton
+              disabled={requestDetails.status === "Hired"}
+              checked={editMode}
+              text={"Edit"}
+              action={(editable: boolean) => {
+                setEditMode(editable);
+              }}
+            />
+          </div>
         </div>
         <div className="border" />
         <div className="border" />
@@ -199,9 +209,13 @@ const RequestDetailsContainer = () => {
         </div>
 
         <div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 flex-wrap">
             {requestDetails.professional_pitch_view?.map((pitch, index) => (
-              <PitchCard pitchData={pitch} key={index} />
+              <PitchCard
+                pitchData={pitch}
+                requestId={requestDetails.id}
+                key={index}
+              />
             ))}
             {requestDetails.professional_pitch_view == null ||
               (requestDetails.professional_pitch_view.length == 0 && (

@@ -2,15 +2,17 @@ import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import axios from "axios";
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import { useMutation } from "react-query";
 
 type props = {
   pitchData: Pitch;
+  requestId: string;
 };
 
-const PitchCard = ({ pitchData }: props) => {
-  console.log(pitchData);
+const PitchCard = ({ pitchData, requestId }: props) => {
   const [read, setRead] = useState(pitchData.is_read);
+  const [accepted, setAccepted] = useState(pitchData.is_accepted || false);
 
   const { mutate: updatePitchReadStatus, isLoading } = useMutation(
     ["updatePitchReadStatus"],
@@ -22,9 +24,30 @@ const PitchCard = ({ pitchData }: props) => {
       return { data, status, statusText };
     }
   );
+  const {
+    mutate: updatePitchAcceptStatus,
+    isLoading: isUpdatingPitchAcceptStatus,
+  } = useMutation(
+    ["updatePitchReadStatus"],
+    async ({ pitchId }: { pitchId: string }) => {
+      const { data, status, statusText } = await axios.put(
+        `/api/pitch?pitch_id=${pitchId}&is_accepted=true&request_id=${requestId}&professional_id=${pitchData.professional_profile.id}`
+      );
+      console.log({ data, status, statusText });
+      return { data, status, statusText };
+    },
+    {
+      onSuccess: () => {
+        toast(
+          "Congrats! You have accepted a pitch from the professional! \n We will notify the professional shortly!"
+        );
+        setAccepted(true);
+      },
+    }
+  );
 
   return (
-    <div className="shadow border p-3 w-1/3">
+    <div className="shadow border p-3 md:w-1/3">
       <div className="flex flex-col gap-2">
         <div className="italic">
           {`Pitch Created At: ${new Intl.DateTimeFormat("en-HK", {
@@ -47,15 +70,11 @@ const PitchCard = ({ pitchData }: props) => {
           <div className="border my-2"></div>
           <div className="w-full flex gap-3 justify-between">
             <PrimaryButton
-              text="Accept"
+              disabled={accepted}
+              isLoading={isUpdatingPitchAcceptStatus}
+              text={accepted ? "You have accepted" : "Accept"}
               action={() => {
-                setRead(true);
-              }}
-            />
-            <SecondaryButton
-              text="Comment"
-              action={() => {
-                setRead(true);
+                updatePitchAcceptStatus({ pitchId: pitchData.id });
               }}
             />
           </div>

@@ -4,6 +4,8 @@ import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
 import PitchCard from "./PitchCard";
+import UnauthorizedPage from "@/components/UnauthorizedPage";
+import { Divider } from "@nextui-org/react";
 
 const PitchList = () => {
   const { profileInfo } = useAppStore();
@@ -21,18 +23,27 @@ const PitchList = () => {
   );
 
   if (profileInfo == null) {
-    return (
-      <div className="bg-white p-3 rounded-xl shadow-lg text-gray-800 h-[200px] w-[450px] flex items-center justify-center text-lg">
-        Please Sign In before viewing your pitches
-      </div>
-    );
+    return <UnauthorizedPage />;
   }
 
   return (
-    <div>
-      {pitchList?.map((pitch: Pitch, idx: number) => {
-        return <PitchCard key={idx} pitch={pitch} />;
-      })}
+    <div className="">
+      <p className="text-heading">Accepted</p>
+
+      {pitchList
+        ?.filter((p) => p.is_accepted)
+        .map((pitch: Pitch, idx: number) => (
+          <PitchCard key={idx} pitch={pitch} />
+        ))}
+
+      <Divider className="my-20" />
+
+      <p className="text-heading">Ongoing</p>
+      {pitchList
+        ?.filter((p) => !p.is_accepted)
+        .map((pitch: Pitch, idx: number) => (
+          <PitchCard key={idx} pitch={pitch} />
+        ))}
     </div>
   );
 };

@@ -3,10 +3,11 @@ import React from "react";
 type props = {
   text: string;
   checked: boolean;
+  disabled?: boolean;
   action: (param: boolean) => void;
 };
 
-const ToggleButton = ({ text, action, checked }: props) => {
+const ToggleButton = ({ text, action, checked, disabled }: props) => {
   return (
     <div className="flex items-center justify-center gap-1">
       <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -14,6 +15,7 @@ const ToggleButton = ({ text, action, checked }: props) => {
       </span>
       <label className="relative inline-flex items-center cursor-pointer ">
         <input
+          disabled={disabled || false}
           type="checkbox"
           className="sr-only peer"
           onChange={(e) => {

@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import MessageCard from "./MessageCard";
+import UnauthorizedPage from "@/components/UnauthorizedPage";
 
 const MessageList = () => {
   const { session } = useAppStore();
@@ -22,7 +23,8 @@ const MessageList = () => {
   );
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 items-center justify-center">
+      {!session && <UnauthorizedPage />}
       {messsages &&
         messsages.map((message, idx) => {
           return (

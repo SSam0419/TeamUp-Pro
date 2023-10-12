@@ -30,6 +30,11 @@ const DashboardCard = ({
 
           <StatusChip status={requestDetails.status} />
         </div>
+        <div className="flex justify-between items-center w-full">
+          <div className="w-3/4 max-h-20 truncate overflow-hidden">
+            Current Pitch : {requestDetails.professional_pitch_view.length}
+          </div>
+        </div>
         <div className="text-small text-default-500 w-full">
           {requestDetails.duration} {requestDetails.duration_unit}
         </div>

@@ -5,13 +5,13 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
 import ProfileCard from "@/components/ProfileCard";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 type props = {
   isUserPortal: boolean;
@@ -42,14 +42,18 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
-          <NavbarItem key={`${item}-${index}`}>
+          <NavbarItem
+            key={`${item}-${index}`}
+            className={`${
+              pathName === item.link ? "border-primary" : ""
+            } w-[120px] text-center border shadpw px-4 py-2 rounded-full`}
+          >
             <Link
               className={`w-full ${
                 pathName === item.link ? "text-primary font-medium" : ""
               } `}
               color={"foreground"}
               href={item.link}
-              size="lg"
             >
               {item.name}
             </Link>
@@ -63,14 +67,16 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
         </NavbarItem>
       </NavbarContent>
 
+      {/* mobile navbar */}
       <NavbarMenu className="w-screen">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              className="w-full"
+              className={`w-full ${
+                pathName === item.link ? "text-primary font-medium" : ""
+              } `}
               color={"foreground"}
               href={item.link}
-              size="lg"
             >
               {item.name}
             </Link>

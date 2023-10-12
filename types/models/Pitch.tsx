@@ -8,6 +8,7 @@ type Pitch = {
   professional_id: string;
   request_details_id: string;
   updated_at: Date;
-  professional_profile: ProfessionalProfile;
+  professional_profile: UserProfile;
   is_read: boolean;
+  is_accepted: boolean;
 };

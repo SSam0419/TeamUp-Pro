@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
+import Markdown from "react-markdown";
 
 const MessageCard = ({ message }: { message: Mailbox }) => {
   const [isRead, setIsRead] = useState(message.is_read);
@@ -36,10 +37,10 @@ const MessageCard = ({ message }: { message: Mailbox }) => {
           <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
         </div>
       )}
-      <Card className="max-w-[400px] relative">
+      <Card className="max-w-[400px] h-[200px] relative">
         <Divider />
-        <CardBody className="">
-          <p>{message.message}</p>
+        <CardBody className="overflow-y-scroll">
+          <Markdown>{message.message}</Markdown>
         </CardBody>
         <Divider />
         <CardFooter className="flex justify-between">

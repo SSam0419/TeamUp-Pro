@@ -59,6 +59,12 @@ export async function PUT(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const pitch_id = searchParams.get("pitch_id");
   const is_read = searchParams.get("is_read");
+  const is_accepted = searchParams.get("is_accepted");
+  const request_id = searchParams.get("request_id");
+  const professional_id = searchParams.get("professional_id");
+
+  const pitchData: PitchFormDataType =
+    !is_read && !is_accepted ? await request.json() : {};
 
   //update read status of a pitch
   if (pitch_id && is_read) {
@@ -76,12 +82,45 @@ export async function PUT(request: NextRequest) {
       });
     return NextResponse.json(data);
   }
+  //update accept status of a pitch
+  if (pitch_id && is_accepted) {
+    const { data, error } = await supabase
+      .from("professional_pitch_status")
+      .upsert({
+        id: pitch_id,
+        is_accepted: true,
+      });
+    const { data: mailboxData, error: mailboxError } = await supabase
+      .from("mailbox")
+      .insert({
+        message: "Congrats! Request Owner Have **Accepted Your Pitch!**",
+        sent_to: professional_id,
+      });
+    const { data: requestData, error: requestError } = await supabase
+      .from("request_details")
+      .update({
+        status: "Hired",
+      })
+      .eq("id", request_id);
+
+    console.log({
+      pitch_id,
+      data,
+      error,
+      mailboxData,
+      mailboxError,
+      requestData,
+      requestError,
+    });
+    if (error || mailboxError || requestError)
+      return new NextResponse("Error", {
+        status: 400,
+        statusText: "ERROR : Try Again Later",
+      });
+    return NextResponse.json(data);
+  }
 
   //update attributes of a pitch
-  const request_id = searchParams.get("request_id");
-  const professional_id = searchParams.get("professional_id");
-  const pitchData: PitchFormDataType = await request.json();
-
   const { data, error } = await supabase
     .from("professional_pitch")
     .update({
