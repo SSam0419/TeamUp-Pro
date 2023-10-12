@@ -9,10 +9,10 @@ export default function Home() {
       <div className="flex items-center justify-between gap-5 min-h-screen">
         <div className="md:w-[550px]">
           <div className="my-2 text-heading">
-            Find the right talents for the right projects with September!
+            Find the right talents for the right projects with ProMatch!
           </div>
           <div className="text-title">
-            September provide a platform where you can easily find talents and
+            ProMatch provide a platform where you can easily find talents and
             bring your projects to life.
           </div>
           <Link

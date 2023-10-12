@@ -4,6 +4,7 @@ import { useAppStore } from "@/libs/ZustandStore";
 import React, { useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import ProfessionalProfileForm from "./ProfessionalProfileForm";
+import { Avatar } from "@nextui-org/react";
 
 const ProfessionalProfileDisplay = () => {
   const { profileInfo: userProfileInfo } = useAppStore();
@@ -34,8 +35,8 @@ const ProfessionalProfileDisplay = () => {
         <div className="md:max-w-3xl mx-auto">
           <div className="overflow-hidden sm:rounded-lg">
             <div className="px-4 py-5 sm:px-6">
-              <div className="text-lg leading-6 font-medium text-gray-900">
-                My Profile
+              <div className="text-lg leading-6 font-medium text-gray-900 flex items-center gap-4">
+                <Avatar src={userProfileInfo.avatar_link} /> My Profile
               </div>
               <p className="mt-1 max-w-2xl text-base text-gray-500">
                 Personal details and information.

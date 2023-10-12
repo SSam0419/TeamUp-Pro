@@ -36,7 +36,7 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <p className="text-subheading">September</p>
+          <p className="text-subheading">ProMatch</p>
         </NavbarBrand>
       </NavbarContent>
 

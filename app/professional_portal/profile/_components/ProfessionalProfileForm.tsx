@@ -65,7 +65,7 @@ export default function ProfessionalProfileForm({
         await supabase.storage
           .from("avatar")
           .upload(
-            `public/${data.professionalProfile.id}.jpeg`,
+            `public/pro-${data.professionalProfile.id}.jpeg`,
             data.professionalProfile.avatar_file,
             {
               cacheControl: "0",
@@ -75,7 +75,7 @@ export default function ProfessionalProfileForm({
           );
         const { data: link } = await supabase.storage
           .from("avatar")
-          .getPublicUrl(`public/${data.professionalProfile.id}.jpeg`);
+          .getPublicUrl(`public/pro-${data.professionalProfile.id}.jpeg`);
 
         data.professionalProfile.avatar_link = link.publicUrl;
       }
@@ -312,6 +312,7 @@ export default function ProfessionalProfileForm({
       </div>
       <div className="flex gap-2">
         <PrimaryButton
+          isLoading={mutation.isLoading}
           type="submit"
           text={profileData ? "Update Profile" : "Create Profile"}
           action={() => {}}
@@ -319,6 +320,7 @@ export default function ProfessionalProfileForm({
 
         {profileData && closeForm && (
           <SecondaryButton
+            isLoading={mutation.isLoading}
             type="button"
             text="Cancel"
             action={() => {

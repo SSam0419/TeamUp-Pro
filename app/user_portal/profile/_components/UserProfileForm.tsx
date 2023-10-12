@@ -3,7 +3,6 @@
 import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import { useAppStore } from "@/libs/ZustandStore";
-import { Avatar } from "@nextui-org/react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 import Image from "next/image";
@@ -53,7 +52,7 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
         const { data, error } = await supabase.storage
           .from("avatar")
           .upload(
-            `public/${userProfileData.id}.jpeg`,
+            `public/user-${userProfileData.id}.jpeg`,
             userProfileData.avatar_file,
             {
               cacheControl: "0",
@@ -63,7 +62,7 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
           );
         const { data: link } = await supabase.storage
           .from("avatar")
-          .getPublicUrl(`public/${userProfileData.id}.jpeg`);
+          .getPublicUrl(`public/user-${userProfileData.id}.jpeg`);
 
         userProfileData.avatar_link = link.publicUrl;
       }
@@ -245,6 +244,7 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
       </div>
       <div className="flex gap-2">
         <PrimaryButton
+          isLoading={mutation.isLoading}
           type="submit"
           text={profileData ? "Update Profile" : "Create Profile"}
           action={() => {}}
@@ -252,6 +252,7 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
 
         {profileData && closeForm && (
           <SecondaryButton
+            isLoading={mutation.isLoading}
             type="button"
             text="Cancel"
             action={() => {
