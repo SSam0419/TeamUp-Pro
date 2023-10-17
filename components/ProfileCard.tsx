@@ -39,10 +39,7 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
     },
 
     {
-      // cacheTime: 1000 * 60 * 7,
-      // staleTime: 1000 * 60 * 3,
       onSuccess: ({ data }) => {
-        console.log("fetched");
         if (data) setUserProfile(data);
       },
     }

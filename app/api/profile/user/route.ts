@@ -11,6 +11,7 @@ export async function GET(request: Request) {
     requestType: "GET",
     route: "/api/profile/user/route",
   });
+  const supabase = createRouteHandlerClient({ cookies });
   let query = supabase.from("user_profile").select();
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
@@ -39,23 +40,6 @@ export async function POST(request: Request) {
   if (userProfileData.id === "") {
     return NextResponse.error();
   }
-  // if (userProfileData.avatar_file) {
-  //   const { data, error } = await supabase.storage
-  //     .from("avatar")
-  //     .upload(
-  //       `public/${userProfileData.id}.jpeg`,
-  //       userProfileData.avatar_file,
-  //       {
-  //         upsert: true,
-  //         contentType: "image/jpeg",
-  //       }
-  //     );
-  //   console.log({ data, error });
-  //   const { data: link } = await supabase.storage
-  //     .from("avatar")
-  //     .getPublicUrl(`public/${userProfileData.id}.jpeg`);
-  //   userProfileData.avatar_link = link.publicUrl;
-  // }
 
   console.log("userProfileData: ", userProfileData);
   const data = await supabase.from("user_profile").upsert({

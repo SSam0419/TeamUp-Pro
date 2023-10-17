@@ -71,11 +71,11 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
     },
     onSuccess: ({ data, status }) => {
       if (status >= 200 && status <= 300) {
-        if (closeForm) closeForm();
         toast("Update Successful, wait a while to see changes");
         queryClient.invalidateQueries({
           queryKey: ["retrieveUserProfile"],
         });
+        if (closeForm) closeForm();
       }
     },
   });
