@@ -1,5 +1,4 @@
 import { UserProfileFormType } from "@/app/user_portal/profile/_components/UserProfileForm";
-import supabase from "@/server-actions/supabase/supabase";
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";

@@ -1,6 +1,9 @@
 import { CreateRequestFormDataType } from "@/app/user_portal/_components/CreateRequestForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import {
+  createRouteHandlerClient,
+  createServerComponentClient,
+} from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -13,7 +16,7 @@ export async function GET(request: Request) {
   const userId = searchParams.get("user_id");
   const breifOnly = searchParams.get("breif_only");
   const requestId = searchParams.get("request_id");
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
 
   let query;
 
