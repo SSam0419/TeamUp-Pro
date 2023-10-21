@@ -53,7 +53,7 @@ export async function PUT(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const requestDetails: RequestDetails = await request.json();
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const request_id = searchParams.get("request_id");
   const pitch_id = searchParams.get("pitch_id");
 
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
     route: "/api/request/user_request/route",
   });
   const requestDetails: CreateRequestFormDataType = await request.json();
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const data = await supabase.from("request_details").insert({
     title: requestDetails.title,
     content: requestDetails.content,

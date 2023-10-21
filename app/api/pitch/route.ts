@@ -1,13 +1,13 @@
 import { PitchFormDataType } from "@/app/professional_portal/view_request/[requestDetailsId]/_components/PitchForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   ConsoleLog({ requestType: "GET", route: "/api/pitch/route" });
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
   const professional_id = searchParams.get("professional_id");
 
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   ConsoleLog({ requestType: "POST", route: "/api/pitch/route" });
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
   const request_id = searchParams.get("request_id");
   const professional_id = searchParams.get("professional_id");
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   ConsoleLog({ requestType: "PUT", route: "/api/pitch/route" });
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
   const pitch_id = searchParams.get("pitch_id");
   const is_read = searchParams.get("is_read");

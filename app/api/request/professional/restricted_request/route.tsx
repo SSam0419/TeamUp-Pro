@@ -1,6 +1,6 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { IndustriesOptions } from "@/types/constants/industries";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   const industry = searchParams.get("industry");
   const query = searchParams.get("query");
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   let fetchQuery = supabase
     .from("professional_free_request_view")
     .select(` *  `);

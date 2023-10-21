@@ -12,6 +12,7 @@ import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export type ProfessionalProfileFormType = {
   id: string;
@@ -37,7 +38,7 @@ export default function ProfessionalProfileForm({
 }: props) {
   const { session } = useAppStore();
   const queryClient = useQueryClient();
-
+  const router = useRouter();
   const [skills, setSkills] = useState<string[]>(professional_skills || []);
   const [enteredSkill, setEnteredSkill] = useState<string>("");
 
@@ -84,6 +85,7 @@ export default function ProfessionalProfileForm({
     onSuccess: ({ data, status }) => {
       if (status >= 200 && status <= 300) {
         if (closeForm) closeForm();
+        else router.refresh();
         toast("Update Successful, wait a while to see changes");
         queryClient.invalidateQueries({
           queryKey: ["retrieveProfessionalProfile"],

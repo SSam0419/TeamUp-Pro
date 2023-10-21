@@ -1,5 +1,5 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     route: "/api/request/professional/unlock_request/route",
   });
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
   const request_id = searchParams.get("request_id");
   const professional_id = searchParams.get("professional_id");
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     requestType: "POST",
     route: "/api/request/professional/restricted_request/route",
   });
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const unlockRequestData = await request.json();
   const { data, error } = await supabase.from("unlocked_request").insert({
     professional_id: unlockRequestData.professionalId,

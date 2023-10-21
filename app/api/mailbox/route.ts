@@ -1,11 +1,11 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(request: NextRequest) {
   ConsoleLog({ requestType: "PUT", route: "/api/mailbox/route" });
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { id, message } = await request.json();
 
   const { data, error } = await supabase
@@ -19,7 +19,7 @@ export async function PUT(request: NextRequest) {
 export async function GET(request: NextRequest) {
   ConsoleLog({ requestType: "GET", route: "/api/mailbox/route" });
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
   const professional_id = searchParams.get("professional_id");
 
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   ConsoleLog({ requestType: "POST", route: "/api/mailbox/route" });
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
   const { message, professionalIds } = await request.json();
 
