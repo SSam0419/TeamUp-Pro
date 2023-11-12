@@ -10,23 +10,26 @@ export async function GET(request: NextRequest) {
     route: "/api/request/professional/restricted_request/route",
   });
   const { searchParams } = new URL(request.url);
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
   const industry = searchParams.get("industry");
   const query = searchParams.get("query");
 
   const supabase = createRouteHandlerClient({ cookies });
   let fetchQuery = supabase
     .from("professional_free_request_view")
-    .select(` *  `);
+    .select(` *  `, { count: "exact" });
   if (industry) {
     fetchQuery = fetchQuery.eq("industry", industry);
   } else {
-    fetchQuery.eq("industry", IndustriesOptions[0]);
+    fetchQuery = fetchQuery.eq("industry", IndustriesOptions[0]);
   }
-
+  if (from && to) {
+    fetchQuery = fetchQuery.range(parseInt(from), parseInt(to));
+  }
   if (query) fetchQuery = fetchQuery.like("title", `%${query}%`);
 
-  const { data, error } = await fetchQuery;
+  const data = await fetchQuery;
 
-  if (error !== null) return NextResponse.json({ error });
   return NextResponse.json(data);
 }

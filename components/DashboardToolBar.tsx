@@ -1,6 +1,6 @@
 import React from "react";
-import SearchQuery from "../../../components/SearchQuery";
-import IndustryFilter from "../../../components/IndustryFilter";
+import SearchQuery from "./SearchQuery";
+import IndustryFilter from "./IndustryFilter";
 
 const DashboardToolBar = ({ isLoading }: { isLoading: boolean }) => {
   return (

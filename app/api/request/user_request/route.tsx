@@ -1,9 +1,6 @@
 import { CreateRequestFormDataType } from "@/app/user_portal/_components/CreateRequestForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import {
-  createRouteHandlerClient,
-  createServerComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -16,18 +13,31 @@ export async function GET(request: Request) {
   const userId = searchParams.get("user_id");
   const breifOnly = searchParams.get("breif_only");
   const requestId = searchParams.get("request_id");
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
   const supabase = createRouteHandlerClient({ cookies });
+
+  // const { count, error } = await supabase
+  //   .from("request_details")
+  //   .select("*", { count: "exact", head: true });
 
   let query;
 
   if (breifOnly) {
-    query = supabase.from("request_details").select(`title,id,content`);
+    query = supabase
+      .from("request_details")
+      .select(`title,id,content`, { count: "exact" });
   } else {
     query = supabase
       .from("request_details")
       .select(
-        `* , user_profile(*), professional_pitch_view(*, professional_profile(*) )`
+        `* , user_profile(*), professional_pitch_view(*, professional_profile(*) )`,
+        { count: "exact" }
       );
+  }
+
+  if (from && to) {
+    query = query.range(parseInt(from), parseInt(to));
   }
 
   if (userId && requestId) {
@@ -40,6 +50,7 @@ export async function GET(request: Request) {
     const requestDetailsFromUserId = await query
       .order("created_at", { ascending: false })
       .eq("created_by", userId);
+    console.log({ requestDetailsFromUserId, from, to });
     return NextResponse.json(requestDetailsFromUserId);
   }
 }

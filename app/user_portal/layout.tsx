@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import NavBar from "../../components/NewNavbar";
+import NavBar from "../../components/Navbar";
 import Link from "next/link";
 import ProfileCard from "@/components/ProfileCard";
 
@@ -16,13 +16,6 @@ export default async function UserPortalLayout({
 }) {
   return (
     <div className="flex flex-col items-center justify-between">
-      {/* <Navbar /> */}
-      {/* <div className="flex gap-3">
-        <Link href="/user_portal">aaaaaaaaa</Link>
-        <Link href="/user_portal/find_talents">bbbbbbbbbb</Link>
-        <Link href="/user_portal">cccccccc</Link>
-        <ProfileCard isUserCard={true} />
-      </div> */}
       <NavBar
         isUserPortal={true}
         menuItems={[
@@ -33,6 +26,10 @@ export default async function UserPortalLayout({
           {
             name: "Talents",
             link: "/user_portal/find_talents",
+          },
+          {
+            name: "Mailbox",
+            link: "/user_portal/mailbox",
           },
           {
             name: "FAQ",

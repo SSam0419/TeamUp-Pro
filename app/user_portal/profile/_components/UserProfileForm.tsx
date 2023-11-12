@@ -6,6 +6,7 @@ import { useAppStore } from "@/libs/ZustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineCloudUpload } from "react-icons/ai";
@@ -32,6 +33,8 @@ type props = {
 export default function UserProfileForm({ profileData, closeForm }: props) {
   const { session } = useAppStore();
   const queryClient = useQueryClient();
+  const router = useRouter();
+
   const [userProfile, setUserProfile] = useState<UserProfileFormType>({
     id: profileData?.id || "",
     bio: profileData?.bio || "",
@@ -76,6 +79,7 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
           queryKey: ["retrieveUserProfile"],
         });
         if (closeForm) closeForm();
+        else router.refresh();
       }
     },
   });

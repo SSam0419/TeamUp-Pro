@@ -18,7 +18,7 @@ const MessageCard = ({ message }: { message: Mailbox }) => {
     async () => {
       setIsRead(true);
       message.is_read = true;
-      const { data } = await axios.put("/api/professional_mailbox", {
+      const { data } = await axios.put("/api/user_mailbox", {
         id: message.id,
         message: {
           is_read: true,

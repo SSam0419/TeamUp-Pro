@@ -2,14 +2,15 @@ import { ConsoleLog } from "@/server-actions/utils/logger";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { professionalMailboxTb } from "../constant/table";
 
 export async function PUT(request: NextRequest) {
-  ConsoleLog({ requestType: "PUT", route: "/api/mailbox/route" });
+  ConsoleLog({ requestType: "PUT", route: "/api/professional_mailbox/route" });
   const supabase = createRouteHandlerClient({ cookies });
   const { id, message } = await request.json();
 
   const { data, error } = await supabase
-    .from("mailbox")
+    .from(professionalMailboxTb)
     .update(message)
     .eq("id", id);
 
@@ -17,7 +18,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  ConsoleLog({ requestType: "GET", route: "/api/mailbox/route" });
+  ConsoleLog({ requestType: "GET", route: "/api/professional_mailbox/route" });
 
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { data, error } = await supabase
-    .from("mailbox")
+    .from(professionalMailboxTb)
     .select("*, user_profile(*)")
     .eq("sent_to", user_id)
     .order("created_at", { ascending: false });
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  ConsoleLog({ requestType: "POST", route: "/api/mailbox/route" });
+  ConsoleLog({ requestType: "POST", route: "/api/professional_mailbox/route" });
 
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(request.url);
@@ -53,16 +54,21 @@ export async function POST(request: NextRequest) {
   let duplicateMessage = [];
 
   for (const id of userIds) {
-    const { data: check, error: checkError } = await supabase
-      .from("mailbox")
+    const { data: checkDuplicateMessage, error: checkError } = await supabase
+      .from(professionalMailboxTb)
       .select()
       .eq("message", message)
       .eq("sent_to", id)
       .maybeSingle();
-    if (check !== null) {
+    if (checkDuplicateMessage !== null) {
       duplicateMessage.push(id);
+    } else if (checkError !== null) {
+      return new NextResponse("Error", {
+        status: 400,
+        statusText: "ERROR : Try Again Later",
+      });
     } else {
-      const { data, error } = await supabase.from("mailbox").insert({
+      const { error } = await supabase.from(professionalMailboxTb).insert({
         message: message,
         sent_to: id,
         sent_from: user_id,

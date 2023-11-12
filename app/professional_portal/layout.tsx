@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import NavBar from "@/components/NewNavbar";
+import NavBar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Professional Portal",

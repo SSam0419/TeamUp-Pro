@@ -16,7 +16,7 @@ const MessageList = () => {
         return null;
       }
       const { data } = await axios.get(
-        "/api/professional_mailbox?user_id=" + session.user.id
+        "/api/user_mailbox?user_id=" + session.user.id
       );
       return data as Mailbox[];
     }
@@ -33,6 +33,7 @@ const MessageList = () => {
             </div>
           );
         })}
+      {messsages?.length === 0 && <div>No messages yet.</div>}
     </div>
   );
 };

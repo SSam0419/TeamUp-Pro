@@ -5,16 +5,14 @@ import DashboardCard from "./DashboardCard";
 
 const DashboardTable = () => {
   const { fetchedRequestDetails } = useAppStore();
-
   return (
-    <div className="flex flex-wrap gap-3 items-center justify-center p-3">
-      {fetchedRequestDetails.map((request, idx) => {
-        return (
-          <div key={idx}>
-            <DashboardCard requestDetails={request} />
-          </div>
-        );
-      })}
+    <div className="flex flex-col items-center justify-center">
+      <div className="grid md:grid-cols-3 flex-wrap gap-3 p-1 w-full">
+        {fetchedRequestDetails &&
+          fetchedRequestDetails.map((request, idx) => {
+            return <DashboardCard requestDetails={request} key={idx} />;
+          })}
+      </div>
     </div>
   );
 };

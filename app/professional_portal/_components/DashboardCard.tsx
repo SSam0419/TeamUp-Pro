@@ -21,7 +21,7 @@ const DashboardCard = ({
   const router = useRouter();
   const [redirecting, setRedirecting] = useState(false);
   return (
-    <Card className="w-[300px] md:w-[500px]">
+    <Card className="w-[300px] md:w-full h-[380px]">
       <CardHeader className="flex flex-col w-full">
         <div className="flex justify-between items-center w-full">
           <div className="w-3/4 max-h-20 truncate overflow-hidden">
@@ -40,7 +40,7 @@ const DashboardCard = ({
       </CardHeader>
       <Divider />
       <CardBody className="">
-        <div className="">{requestDetails.content}</div>
+        <div className="line-clamp-6">{requestDetails.content}</div>
       </CardBody>
       <Divider />
       <CardFooter>

@@ -2,7 +2,7 @@ import Dashboard from "./_components/Dashboard";
 
 export default async function Home() {
   return (
-    <div>
+    <div className="w-full">
       <Dashboard />
     </div>
   );

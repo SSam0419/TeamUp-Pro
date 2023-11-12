@@ -1,6 +1,6 @@
 "use client";
 import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
-import React, { useEffect } from "react";
+import React from "react";
 
 import DashboardTable from "./DashboardTable";
 import CreateRequestForm from "./CreateRequestForm";
@@ -13,32 +13,51 @@ import {
   Modal,
   ModalBody,
   ModalContent,
+  Pagination,
   useDisclosure,
 } from "@nextui-org/react";
 
 const Dashboard = () => {
   const { session, setFetchedRequestDetails, profileInfo } = useAppStore();
+  const resultsShownEachPage = 3;
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [totalPage, setTotalPage] = React.useState<number>(1);
+  const [totalRow, setTotalRow] = React.useState<number>(1);
 
-  const { data: requestDetailsData, isLoading } = useQuery(
-    ["retrieveRequestDetails", session, profileInfo],
+  const { isLoading } = useQuery(
+    ["retrieveRequestDetails", session, profileInfo, currentPage, totalRow],
     async () => {
-      if (session == null) return null;
+      if (session == null || currentPage == null) return null;
       const data = await axios.get(
-        "/api/request/user_request?user_id=" + session?.user.id
+        `/api/request/user_request?user_id=${session?.user.id}&from=${
+          (currentPage - 1) * resultsShownEachPage
+        }&to=${
+          currentPage == totalPage
+            ? totalRow
+            : currentPage * resultsShownEachPage - 1
+        }`
       );
 
-      return data;
+      return data as any;
+    },
+    {
+      onSuccess: (data) => {
+        if (data) {
+          setFetchedRequestDetails(data.data.data);
+          setTotalRow(parseInt(data.data.count));
+          setTotalPage(
+            Math.ceil(parseInt(data.data.count) / resultsShownEachPage)
+          );
+        } else {
+          setFetchedRequestDetails([]);
+        }
+      },
     }
   );
 
-  useEffect(() => {
-    if (requestDetailsData)
-      setFetchedRequestDetails(requestDetailsData.data.data);
-    else setFetchedRequestDetails([]);
-  }, [requestDetailsData, setFetchedRequestDetails]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <div className="md:px-[30px] md:py-[10px]  bg-white md:min-w-[1000px] rounded-[15px] shadow p-4">
+    <div className="md:px-4 md:py-2  bg-white md:min-w-[1000px] md:max-w-[1400px] rounded-[15px] shadow p-4 flex flex-col items-center justify-center gap-5">
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -58,12 +77,12 @@ const Dashboard = () => {
         </ModalContent>
       </Modal>
 
-      <div className="flex flex-row justify-between items-center m-3 p-2">
+      <div className="flex flex-row justify-between items-center p-2 w-full">
         <div className="text-xl flex items-center justify-center gap-2">
           <LuClipboardList />
           Your Requests
         </div>
-        <div>
+        <div className="w-1/4 md:w-[200px]">
           <PrimaryButton
             action={() => {
               onOpen();
@@ -72,12 +91,22 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <div className="my-3 min-h-[500px] md:max-w-7xl flex justify-start items-center flex-col w-full md:shadow md:border rounded-md md:p-10">
+
+      <div className="min-h-[500px] md:w-[900px] flex justify-center items-center flex-col gap-4 w-full rounded-md md:p-5">
         {isLoading ? <Spinner /> : <DashboardTable />}
         {!session && !isLoading && (
           <div className="text-subheading text-secondary">
             sign in now to view your requests!
           </div>
+        )}
+        {!isLoading && profileInfo && (
+          <Pagination
+            showControls
+            total={totalPage}
+            initialPage={1}
+            page={currentPage}
+            onChange={setCurrentPage}
+          />
         )}
       </div>
     </div>

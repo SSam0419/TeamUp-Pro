@@ -36,9 +36,20 @@ export default function Home() {
         </div>
       </div>
       <div className="border w-full my-10" id="portal-section"></div>
-      <div className="flex flex-col gap-5 min-h-screen w-full">
-        <div className=" flex flex-col items-center gap-3 p-3 md:h-[450px] justify-evenly w-full">
-          <div className="flex flex-col md:flex-row items-center justify-evenly w-full gap-4">
+      <div className="min-h-screen flex flex-col items-start justify-center">
+        <div className="text-subheading my-5 px-6">Timeline</div>
+        <ol className="relative border-s border-gray-200 dark:border-gray-700">
+          {timelineSteps.map((step, index) => (
+            <TimelineItem key={index} title={step.title} text={step.text} />
+          ))}
+        </ol>
+        <div className="border w-full my-10"></div>
+        <div className="flex justify-evenly items-center">
+          <Link
+            href={"/user_portal"}
+            className="hover:cursor-pointer flex flex-col 
+          md:flex-row items-center justify-evenly w-full gap-4"
+          >
             <Image
               alt={""}
               src={"/undraw_team_1.svg"}
@@ -48,79 +59,93 @@ export default function Home() {
             />
             <div className="flex flex-col justify-evenly h-full md:w-1/2 gap-3 text-start">
               <div className="flex flex-col gap-2">
-                <div className="text-lg text-left text-subheading">
-                  User Portal
+                <div className="text-lg text-left text-subheading flex items-center gap-2 text-primary">
+                  User Portal <FiExternalLink size={25} />
                 </div>
-                <p className="text-title">
-                  Are you seeking professional services?
-                </p>
-                <p className="text-title">
-                  Are you tired of endless talent searches?
-                </p>
-                <p className="text-title">
-                  Are you looking for a simpler way to connect with experts?
-                </p>
               </div>
               <div className="flex justify-start items-start md:items-center gap-3 flex-col md:flex-row">
                 <p className="italic font-bold">
                   Start Now and Find the Right Talents!
                 </p>
-                <div className=" text-primary flex justify-center items-center ">
-                  <Link
-                    href={"/user_portal"}
-                    className="flex justify-center items-center gap-2"
-                  >
-                    <FiExternalLink size={20} />
-                    <h1>User Portal</h1>
-                  </Link>
+              </div>
+            </div>
+          </Link>
+          <Link
+            href={"/professional_portal"}
+            className="hover:cursor-pointer flex flex-col 
+          md:flex-row items-center justify-evenly w-full gap-4"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-evenly w-full gap-4">
+              <Image
+                alt={""}
+                src={"/undraw_search_1.svg"}
+                width={230}
+                height={230}
+                className="rounded bg-white shadow border p-5"
+              />
+              <div className="flex flex-col justify-evenly h-full md:w-1/2 gap-3 text-start">
+                <div className="flex flex-col gap-2">
+                  <div className="text-lg text-left text-subheading flex gap-2 text-primary">
+                    Professional Portal <FiExternalLink size={25} />
+                  </div>
+                </div>
+                <div className="flex justify-start items-start md:items-center gap-3 flex-col md:flex-row">
+                  <p className="italic font-bold">
+                    Start Now and Find the Right Projects!
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className="border w-full my-10 sm:hidden"
-          id="portal-section"
-        ></div>
-        <div className=" flex flex-col items-center gap-3 p-3 md:h-[450px] justify-evenly w-full">
-          <div className="flex flex-col md:flex-row items-center justify-evenly w-full gap-4">
-            <Image
-              alt={""}
-              src={"/undraw_search_1.svg"}
-              width={230}
-              height={230}
-              className="rounded bg-white shadow border p-5"
-            />
-            <div className="flex flex-col justify-evenly h-full md:w-1/2 gap-3 text-start">
-              <div className="flex flex-col gap-2">
-                <div className="text-lg text-left text-subheading">
-                  Professional Portal
-                </div>
-                <p className="text-title">
-                  Want to showcase your professional profile?
-                </p>
-                <p className="text-title">
-                  Searching for new projects and opportunities?
-                </p>
-              </div>
-              <div className="flex justify-start items-start md:items-center gap-3 flex-col md:flex-row">
-                <p className="italic font-bold">
-                  Start Now and Find the Right Projects!
-                </p>
-                <div className=" text-primary flex justify-center items-center ">
-                  <Link
-                    href={"/professional_portal"}
-                    className="flex justify-center items-center gap-2"
-                  >
-                    <FiExternalLink size={20} />
-                    <h1>Professional Portal</h1>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
   );
 }
+
+// time line components
+
+const timelineSteps = [
+  {
+    title: "Request Submission",
+    text: "Users can submit their requests by filling out a form where they provide details such as the title, description, industry, budget, and deadline.",
+  },
+  {
+    title: "Request Management",
+    text: "Users can view and manage their submitted requests, including editing, deleting, and tracking the status of each request.",
+  },
+  {
+    title: "Pitch Selection",
+    text: "Once professionals send their pitches, users can view and compare the pitches received, and select the professionals they want to work with.",
+  },
+];
+
+const TimelineItem = ({ title, text }: { title: string; text: string }) => {
+  return (
+    <li className="mb-10 px-6">
+      <TimelineIcon />
+      <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+        {title}
+      </h3>
+      <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+        {text}
+      </p>
+    </li>
+  );
+};
+
+const TimelineIcon = () => {
+  return (
+    <span className="absolute flex items-center justify-center w-6 h-6 bg-primary rounded-full -start-3 ring-8 ring-white">
+      <svg
+        className="w-2.5 h-2.5 text-white"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+      </svg>
+    </span>
+  );
+};
