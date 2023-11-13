@@ -31,10 +31,10 @@ export default async function UserPortalLayout({
             name: "Mailbox",
             link: "/user_portal/mailbox",
           },
-          {
-            name: "FAQ",
-            link: "/user_portal/faq",
-          },
+          // {
+          //   name: "FAQ",
+          //   link: "/user_portal/faq",
+          // },
         ]}
       />
       <div className="mt-10">{children}</div>

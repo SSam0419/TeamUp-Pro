@@ -9,10 +9,10 @@ export default function Home() {
       <div className="flex items-center justify-between gap-5 min-h-screen">
         <div className="md:w-[550px]">
           <div className="my-2 text-heading">
-            Find the right talents for the right projects with ProMatch!
+            Find the right talents for the right projects with TeamUp Pro!
           </div>
           <div className="text-title">
-            ProMatch provide a platform where you can easily find talents and
+            TeamUp Pro provide a platform where you can easily find talents and
             bring your projects to life.
           </div>
           <Link
@@ -43,7 +43,7 @@ export default function Home() {
             <TimelineItem key={index} title={step.title} text={step.text} />
           ))}
         </ol>
-        <div className="border w-full my-10"></div>
+        <div className="my-10"></div>
         <div className="flex justify-evenly items-center">
           <Link
             href={"/user_portal"}

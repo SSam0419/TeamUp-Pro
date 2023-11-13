@@ -30,10 +30,10 @@ export default function UserPortalLayout({
             name: "Mailbox",
             link: "/professional_portal/mailbox",
           },
-          {
-            name: "FAQ",
-            link: "/professional_portal/faq",
-          },
+          // {
+          //   name: "FAQ",
+          //   link: "/professional_portal/faq",
+          // },
         ]}
       />
       <Suspense fallback={<p>loading ... </p>}>
