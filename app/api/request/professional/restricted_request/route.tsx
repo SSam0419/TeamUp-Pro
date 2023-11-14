@@ -1,5 +1,5 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { IndustriesOptions } from "@/types/constants/industries";
+import { IndustriesOptions } from "@/app/_types/constants/industries";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";

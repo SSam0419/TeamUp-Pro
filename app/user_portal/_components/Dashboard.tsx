@@ -88,6 +88,7 @@ const Dashboard = () => {
               onOpen();
             }}
             text="Create"
+            disabled={session === null}
           />
         </div>
       </div>
@@ -98,10 +99,12 @@ const Dashboard = () => {
             <Spinner />
           </div>
         ) : (
-          <DashboardTable />
+          <div className="md:min-h-[380px]">
+            <DashboardTable />
+          </div>
         )}
         {!session && !isLoading && (
-          <div className="text-subheading text-secondary">
+          <div className="text-subheading text-secondary h-[380px]">
             sign in now to view your requests!
           </div>
         )}

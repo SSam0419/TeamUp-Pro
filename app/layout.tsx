@@ -5,6 +5,7 @@ import { ReactQueryClientProvider } from "@/components/TanstackQueryProvider";
 import { Toaster } from "react-hot-toast";
 import { MyNextUIProvider } from "@/components/NextUIProvider";
 import { Analytics } from "@vercel/analytics/react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

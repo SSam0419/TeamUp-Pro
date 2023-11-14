@@ -4,4 +4,5 @@ type Mailbox = {
   created_at: string;
   is_read: boolean;
   user_profile: UserProfile;
+  professional_profile: UserProfile;
 };

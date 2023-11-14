@@ -1,6 +1,6 @@
 "use client";
 
-import { IndustriesOptions } from "@/types/constants/industries";
+import { IndustriesOptions } from "@/app/_types/constants/industries";
 import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import ToggleButton from "@/components/CustomButtons/ToggleButton";
 import { useAppStore } from "@/libs/ZustandStore";

@@ -18,6 +18,7 @@ const MessageList = () => {
       const { data } = await axios.get(
         "/api/user_mailbox?user_id=" + session.user.id
       );
+      console.log(data);
       return data as Mailbox[];
     }
   );

@@ -37,7 +37,7 @@ const SendRequestButton = ({
     },
     {
       onSuccess: ({ data }) => {
-        if (data) setSelected(data[0].title);
+        if (data && data[0]) setSelected(data[0].title);
       },
     }
   );
@@ -46,8 +46,7 @@ const SendRequestButton = ({
       ["createMailboxMessage"],
       async ({ index }: { index: number }) => {
         if (index == 0) {
-          toast("Please select a valid request");
-          return { data: null, error: "select a valid request" };
+          throw new Error("Please select a valid request");
         }
 
         const message = `You are invited to view the request details of **${origin}/professional_portal/view_request/${requestTitles?.data[index].id}** by the owner of the request`;
@@ -68,6 +67,8 @@ const SendRequestButton = ({
         onError: (error) => {
           if (axios.isAxiosError(error)) {
             if (error.response) toast(error.response.statusText.toString());
+          } else if (error instanceof Error) {
+            toast(error.message.toString());
           }
 
           console.log(error);

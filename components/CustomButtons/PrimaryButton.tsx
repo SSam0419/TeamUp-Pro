@@ -24,8 +24,8 @@ const PrimaryButton = ({
   return (
     <Button
       className="bg-primary w-full
-      text-white h-[40px]  font-normal px-10 py-2 rounded-2xl
-        flex items-center justify-center gap-2 hover:opacity-80"
+                  text-white h-[40px]  font-normal px-10 py-2 rounded-2xl
+                    flex items-center justify-center gap-2 hover:opacity-80"
       type={`${type !== undefined ? type : "button"}`}
       isLoading={isLoading}
       disabled={disabled || (isLoading !== undefined ? isLoading : false)}

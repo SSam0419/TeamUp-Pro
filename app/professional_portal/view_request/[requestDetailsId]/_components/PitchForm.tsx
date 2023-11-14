@@ -1,4 +1,5 @@
 import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import { notifyUserPitchMessage } from "@/components/MessageMarkdown";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { ChangeEvent, useState } from "react";
@@ -31,6 +32,16 @@ const PitchForm = ({
         data = await axios.post(
           `/api/pitch?request_id=${params.requestDetailsId}&professional_id=${profileInfo?.id}`,
           pitchFormData
+        );
+
+        const mailboxRes = await axios.post(
+          `/api/user_mailbox?user_id=${requestDetails.user_profile?.id}`,
+          {
+            message: notifyUserPitchMessage({
+              title: requestDetails.title,
+              url: `www.teamup-pro.com/user_portal/request_details/${params.requestDetailsId}`,
+            }),
+          }
         );
       } else {
         data = await axios.put(

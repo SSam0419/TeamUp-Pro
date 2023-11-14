@@ -10,6 +10,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import Markdown from "react-markdown";
+import { MessageMarkdown } from "../../../../components/MessageMarkdown";
 
 const MessageCard = ({ message }: { message: Mailbox }) => {
   const [isRead, setIsRead] = useState(message.is_read);
@@ -24,7 +25,6 @@ const MessageCard = ({ message }: { message: Mailbox }) => {
           is_read: true,
         },
       });
-      console.log(data);
       return { data };
     }
   );
@@ -37,20 +37,20 @@ const MessageCard = ({ message }: { message: Mailbox }) => {
           <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
         </div>
       )}
-      <Card className="max-w-[400px] h-[200px] relative">
+      <Card className="w-[400px] md:w-[600px] h-[200px] relative">
         <Divider />
-        <CardBody className="overflow-y-scroll">
-          <Markdown>{message.message}</Markdown>
+        <CardBody className="">
+          <MessageMarkdown message={message.message} />
         </CardBody>
         <Divider />
         <CardFooter className="flex justify-between">
           <div className="flex flex-col">
             <p className="text-md">
-              From: {message.user_profile.lastname}{" "}
-              {message.user_profile.firstname}
+              From: {message.professional_profile.lastname}{" "}
+              {message.professional_profile.firstname}
             </p>
             <p className="text-small text-default-500">
-              {message.user_profile.occupation}
+              {message.professional_profile.occupation}
             </p>
           </div>
 

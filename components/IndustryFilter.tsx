@@ -1,4 +1,4 @@
-import { IndustriesOptions } from "@/types/constants/industries";
+import { IndustriesOptions } from "@/app/_types/constants/industries";
 import React, { useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

@@ -49,7 +49,7 @@ const ProfileList = () => {
     <div className="flex flex-col gap-10 items-center justify-center">
       <SearchBar isLoading={false} />
 
-      <div className="flex flex-wrap gap-7 items-center justify-center">
+      <div className="grid grid-cols-4 gap-5 items-center justify-center p-5">
         {isLoading && <Spinner />}
         {!isLoading &&
           profiles.map((profile, idx) => {

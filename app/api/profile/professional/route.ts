@@ -1,6 +1,6 @@
 import { ProfessionalProfileFormType } from "@/app/professional_portal/profile/_components/ProfessionalProfileForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { IndustriesOptions } from "@/types/constants/industries";
+import { IndustriesOptions } from "@/app/_types/constants/industries";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
