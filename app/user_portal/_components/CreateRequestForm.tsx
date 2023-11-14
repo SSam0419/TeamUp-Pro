@@ -22,6 +22,7 @@ export type CreateRequestFormDataType = {
   duration: string;
   industry: (typeof IndustriesOptions)[number];
   createdBy: string;
+  duration_unit: string;
   // email: string;
   // phone_number: string;
   // disclose_contact: boolean;
@@ -61,6 +62,7 @@ const CreateRequestForm = ({ onClose }: props) => {
     budget_lower_limit: "0.00",
     budget_upper_limit: "0.00",
     duration: "",
+    duration_unit: "Days",
     industry: IndustriesOptions[0],
     createdBy: profileInfo?.id || session?.user?.id || "",
     // phone_number: "",
@@ -193,11 +195,20 @@ const CreateRequestForm = ({ onClose }: props) => {
                   }));
                 }}
               ></input>
-              <select name="" id="">
-                <option>Day(s)</option>
-                <option>Week(s)</option>
-                <option>Month(s)</option>
-                <option>Year(s)</option>
+              <select
+                name="duration_unit"
+                id=""
+                onChange={(e) => {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    duration_unit: e.target.value,
+                  }));
+                }}
+              >
+                <option value={"Days"}>Day(s)</option>
+                <option value={"Weeks"}>Week(s)</option>
+                <option value={"Months"}>Month(s)</option>
+                <option value={"Years"}>Year(s)</option>
               </select>
             </div>
           </div>

@@ -20,8 +20,61 @@ const DashboardCard = ({
 }) => {
   const router = useRouter();
   const [redirecting, setRedirecting] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+
   return (
-    <Card className="w-[300px] md:w-full h-[380px]">
+    <div
+      className="flex flex-col gap-2 border rounded-lg px-5 py-3 my-3 hover:cursor-pointer hover:bg-slate-200"
+      onClick={() => {
+        setShowContent((prev) => !prev);
+      }}
+    >
+      <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-7 gap-5 w-full text-sm text-gray-400">
+          <div className="col-span-3">Title</div>
+          <div className="col-span-1">Status</div>
+          <div className="col-span-2">Budget(HKD)</div>
+          <div className="col-span-1">Duration</div>
+        </div>
+        <div className="grid grid-cols-7 gap-5 w-full text-base">
+          <div className="col-span-3 line-clamp-1">{requestDetails.title}</div>
+          <div className="col-span-1">
+            <StatusChip status={requestDetails.status} />
+          </div>
+          <div className="col-span-2">
+            ${requestDetails.budget_lower_limit} - $
+            {requestDetails.budget_upper_limit}
+          </div>
+          <div className="col-span-1">
+            {requestDetails.duration} {requestDetails.duration_unit}
+          </div>
+        </div>
+      </div>
+      {showContent && (
+        <>
+          <Divider />
+          <div>{requestDetails.content}</div>
+
+          <div className="w-full">
+            <SecondaryButton
+              isLoading={redirecting}
+              text="Pitch Now"
+              action={() => {
+                setRedirecting(true);
+                router.push(
+                  "/professional_portal/view_request/" + requestDetails.id
+                );
+              }}
+              icon={<MdReadMore size={20} />}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  return (
+    <Card className="flex flex-row md:w-full h-[380px] ">
       <CardHeader className="flex flex-col w-full">
         <div className="flex justify-between items-center w-full">
           <div className="w-3/4 max-h-20 truncate overflow-hidden">

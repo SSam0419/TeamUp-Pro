@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPage, setTotalPage] = React.useState(1);
   const [totalRow, setTotalRow] = React.useState(1);
-  const resultsShownEachPage = 3;
+  const resultsShownEachPage = 6;
 
   useEffect(() => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -31,6 +31,7 @@ const Dashboard = () => {
       profileInfo,
       currentPage,
       resultsShownEachPage,
+      totalRow,
     ],
     async () => {
       const route =
@@ -61,29 +62,25 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="md:px-[30px] md:py-[10px]  bg-white md:min-w-[1000px] rounded-[15px] shadow flex flex-col gap-5 items-center p-5 mb-10">
-      <div className="md:w-[800px]">
+    <div className="md:px-[20px] md:py-[30px]  bg-white rounded-[15px] shadow flex flex-col gap-5 items-center p-5 mb-10">
+      <div className="md:w-[650px]">
         <DashboardToolBar isLoading={isLoading} />
       </div>
-      {!isLoading && (
-        <div className="py-3 md:w-[800px] flex items-start justify-center ">
-          <DashboardTable />
-        </div>
-      )}
+      {!isLoading && <DashboardTable />}
       {isLoading && (
         <div className="my-3 min-h-[500px] flex items-center justify-center">
           <Spinner />
         </div>
       )}
-      {!isLoading && profileInfo && (
-        <Pagination
-          showControls
-          total={totalPage}
-          initialPage={1}
-          page={currentPage}
-          onChange={setCurrentPage}
-        />
-      )}
+
+      <Pagination
+        showControls
+        total={totalPage}
+        initialPage={1}
+        page={currentPage}
+        onChange={setCurrentPage}
+        isDisabled={profileInfo === null}
+      />
     </div>
   );
 };

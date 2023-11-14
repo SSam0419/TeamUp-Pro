@@ -93,21 +93,28 @@ const Dashboard = () => {
       </div>
 
       <div className="min-h-[500px] md:w-[900px] flex justify-center items-center flex-col gap-4 w-full rounded-md md:p-5">
-        {isLoading ? <Spinner /> : <DashboardTable />}
+        {isLoading ? (
+          <div className="h-[380px]">
+            <Spinner />
+          </div>
+        ) : (
+          <DashboardTable />
+        )}
         {!session && !isLoading && (
           <div className="text-subheading text-secondary">
             sign in now to view your requests!
           </div>
         )}
-        {!isLoading && profileInfo && (
+        {
           <Pagination
             showControls
             total={totalPage}
             initialPage={1}
             page={currentPage}
             onChange={setCurrentPage}
+            isDisabled={profileInfo === null}
           />
-        )}
+        }
       </div>
     </div>
   );

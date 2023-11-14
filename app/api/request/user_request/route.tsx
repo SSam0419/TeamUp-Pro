@@ -112,6 +112,7 @@ export async function POST(request: Request) {
     budget_lower_limit: requestDetails.budget_lower_limit,
     industry: requestDetails.industry,
     created_by: requestDetails.createdBy,
+    duration_unit: requestDetails.duration_unit,
     status: "Active",
   });
   return NextResponse.json(data);

@@ -24,70 +24,72 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <Navbar
-      isBordered
-      isMenuOpen={isMenuOpen}
-      onMenuOpenChange={setIsMenuOpen}
-      className="w-screen"
-    >
-      <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
-        <NavbarBrand>
-          <p className="text-subheading">TeamUp Pro</p>
-        </NavbarBrand>
-      </NavbarContent>
+    <div className="bg-white">
+      <Navbar
+        isBordered
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        className="w-screen"
+      >
+        <NavbarContent>
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="sm:hidden"
+          />
+          <NavbarBrand>
+            <p className="text-subheading">TeamUp Pro</p>
+          </NavbarBrand>
+        </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {menuItems.map((item, index) => (
-          <NavbarItem
-            key={`${item}-${index}`}
-            className={`${
-              pathName === item.link ? "border-primary" : ""
-            } w-[120px] text-center border shadpw px-4 py-2 rounded-full`}
-          >
-            <Link
-              className={`w-full ${
-                pathName === item.link ? "text-primary font-medium" : ""
-              } `}
-              color={"foreground"}
-              href={item.link}
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          {menuItems.map((item, index) => (
+            <NavbarItem
+              key={`${item}-${index}`}
+              className={`${
+                pathName === item.link ? "border-primary" : ""
+              } w-[120px] text-center border shadpw px-4 py-2 rounded-full`}
             >
-              {item.name}
-            </Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
+              <Link
+                className={`w-full ${
+                  pathName === item.link ? "text-primary font-medium" : ""
+                } `}
+                color={"foreground"}
+                href={item.link}
+              >
+                {item.name}
+              </Link>
+            </NavbarItem>
+          ))}
+        </NavbarContent>
 
-      <NavbarContent justify="end" className="hidden sm:flex">
-        <NavbarItem>
-          <ProfileCard isUserCard={isUserPortal} />
-        </NavbarItem>
-      </NavbarContent>
-
-      {/* mobile navbar */}
-      <NavbarMenu className="w-screen">
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              className={`w-full ${
-                pathName === item.link ? "text-primary font-medium" : ""
-              } `}
-              color={"foreground"}
-              href={item.link}
-            >
-              {item.name}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-        <NavbarMenuItem>
+        <NavbarContent justify="end" className="hidden sm:flex">
           <NavbarItem>
             <ProfileCard isUserCard={isUserPortal} />
           </NavbarItem>
-        </NavbarMenuItem>
-      </NavbarMenu>
-    </Navbar>
+        </NavbarContent>
+
+        {/* mobile navbar */}
+        <NavbarMenu className="w-screen">
+          {menuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link
+                className={`w-full ${
+                  pathName === item.link ? "text-primary font-medium" : ""
+                } `}
+                color={"foreground"}
+                href={item.link}
+              >
+                {item.name}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+          <NavbarMenuItem>
+            <NavbarItem>
+              <ProfileCard isUserCard={isUserPortal} />
+            </NavbarItem>
+          </NavbarMenuItem>
+        </NavbarMenu>
+      </Navbar>
+    </div>
   );
 }
