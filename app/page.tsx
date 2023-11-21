@@ -1,3 +1,4 @@
+import NavBar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 import { BsMouse } from "react-icons/bs";
@@ -5,101 +6,116 @@ import { FiExternalLink } from "react-icons/fi";
 
 export default function Home() {
   return (
-    <div className="bg-white p-5 min-h-screen min-w-full flex items-center justify-center flex-col py-10">
-      <div className="flex items-center justify-between gap-5 min-h-screen">
-        <div className="md:w-[550px]">
-          <div className="my-2 text-heading">
-            Find the right talents for the right projects with TeamUp Pro!
-          </div>
-          <div className="text-title">
-            TeamUp Pro provide a platform where you can easily find talents and
-            bring your projects to life.
-          </div>
-          <Link
-            className="mt-16 text-subtitle flex items-center justify-center gap-5 hover:cursor-pointer"
-            href={"#portal-section"}
-          >
-            <div className="animate-bounce">
-              <BsMouse size={25} />
+    <>
+      <NavBar
+        portalType="main"
+        menuItems={[
+          {
+            name: "Professional Portal",
+            link: "/user_portal",
+          },
+          {
+            name: "User Portal",
+            link: "/user_portal",
+          },
+        ]}
+      />
+      <div className="bg-white p-5 min-h-screen min-w-full flex items-center justify-center flex-col py-10">
+        <div className="flex items-center justify-between gap-5 min-h-screen">
+          <div className="md:w-[550px]">
+            <div className="my-2 text-heading">
+              Find the right talents for the right projects with TeamUp Pro!
             </div>
-            Scroll to Read More
-          </Link>
-        </div>{" "}
-        <div className="hidden md:block">
-          <Image
-            alt={""}
-            src={"/undraw_2.svg"}
-            width={450}
-            height={450}
-            className="rounded"
-          />
-        </div>
-      </div>
-      <div className="border w-full my-10" id="portal-section"></div>
-      <div className="min-h-screen flex flex-col items-start justify-center">
-        <div className="text-subheading my-5 px-6">Timeline</div>
-        <ol className="relative border-s border-gray-200 dark:border-gray-700">
-          {timelineSteps.map((step, index) => (
-            <TimelineItem key={index} title={step.title} text={step.text} />
-          ))}
-        </ol>
-        <div className="my-10"></div>
-        <div className="flex justify-evenly items-center">
-          <Link
-            href={"/user_portal"}
-            className="hover:cursor-pointer flex flex-col 
-          md:flex-row items-center justify-evenly w-full gap-4"
-          >
+            <div className="text-title">
+              TeamUp Pro provide a platform where you can easily find talents
+              and bring your projects to life.
+            </div>
+            <Link
+              className="mt-16 text-subtitle flex items-center justify-center gap-5 hover:cursor-pointer"
+              href={"#portal-section"}
+            >
+              <div className="animate-bounce">
+                <BsMouse size={25} />
+              </div>
+              Scroll to Read More
+            </Link>
+          </div>{" "}
+          <div className="hidden md:block">
             <Image
               alt={""}
-              src={"/undraw_team_1.svg"}
-              width={230}
-              height={230}
-              className="rounded bg-white shadow border p-5"
+              src={"/undraw_2.svg"}
+              width={450}
+              height={450}
+              className="rounded"
             />
-            <div className="flex flex-col justify-evenly h-full md:w-1/2 gap-3 text-start">
-              <div className="flex flex-col gap-2">
-                <div className="text-lg text-left text-subheading flex items-center gap-2 text-primary">
-                  User Portal <FiExternalLink size={25} />
-                </div>
-              </div>
-              <div className="flex justify-start items-start md:items-center gap-3 flex-col md:flex-row">
-                <p className="italic font-bold">
-                  Start Now and Find the Right Talents!
-                </p>
-              </div>
-            </div>
-          </Link>
-          <Link
-            href={"/professional_portal"}
-            className="hover:cursor-pointer flex flex-col 
+          </div>
+        </div>
+        <div className="border w-full my-10" id="portal-section"></div>
+        <div className="min-h-screen flex flex-col items-start justify-center">
+          <div className="text-subheading my-5 px-6">Timeline</div>
+          <ol className="relative border-s border-gray-200 dark:border-gray-700">
+            {timelineSteps.map((step, index) => (
+              <TimelineItem key={index} title={step.title} text={step.text} />
+            ))}
+          </ol>
+          <div className="my-10"></div>
+          <div className="flex justify-evenly items-center">
+            <Link
+              href={"/user_portal"}
+              className="hover:cursor-pointer flex flex-col 
           md:flex-row items-center justify-evenly w-full gap-4"
-          >
-            <div className="flex flex-col md:flex-row items-center justify-evenly w-full gap-4">
+            >
               <Image
                 alt={""}
-                src={"/undraw_search_1.svg"}
+                src={"/undraw_team_1.svg"}
                 width={230}
                 height={230}
                 className="rounded bg-white shadow border p-5"
               />
               <div className="flex flex-col justify-evenly h-full md:w-1/2 gap-3 text-start">
                 <div className="flex flex-col gap-2">
-                  <div className="text-lg text-left text-subheading flex gap-2 text-primary">
-                    Professional Portal <FiExternalLink size={25} />
+                  <div className="text-lg text-left text-subheading flex items-center gap-2 text-primary">
+                    User Portal <FiExternalLink size={25} />
                   </div>
                 </div>
                 <div className="flex justify-start items-start md:items-center gap-3 flex-col md:flex-row">
                   <p className="italic font-bold">
-                    Start Now and Find the Right Projects!
+                    Start Now and Find the Right Talents!
                   </p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <Link
+              href={"/professional_portal"}
+              className="hover:cursor-pointer flex flex-col 
+          md:flex-row items-center justify-evenly w-full gap-4"
+            >
+              <div className="flex flex-col md:flex-row items-center justify-evenly w-full gap-4">
+                <Image
+                  alt={""}
+                  src={"/undraw_search_1.svg"}
+                  width={230}
+                  height={230}
+                  className="rounded bg-white shadow border p-5"
+                />
+                <div className="flex flex-col justify-evenly h-full md:w-1/2 gap-3 text-start">
+                  <div className="flex flex-col gap-2">
+                    <div className="text-lg text-left text-subheading flex gap-2 text-primary">
+                      Professional Portal <FiExternalLink size={25} />
+                    </div>
+                  </div>
+                  <div className="flex justify-start items-start md:items-center gap-3 flex-col md:flex-row">
+                    <p className="italic font-bold">
+                      Start Now and Find the Right Projects!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -15,7 +15,11 @@ import { useRouter } from "next/navigation";
 import AuthForm from "@/components/AuthForm";
 import { Avatar, Modal, ModalContent, useDisclosure } from "@nextui-org/react";
 
-const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
+const ProfileCard = ({
+  portalType,
+}: {
+  portalType: "main" | "user" | "professional";
+}) => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -26,13 +30,14 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
   } = useAppStore();
 
   const { isLoading } = useQuery(
-    ["retrieveUserProfile", sessionState],
+    ["retrieveUserProfile", sessionState, portalType],
     async () => {
       if (sessionState == null) return { data: null };
-
-      let url = isUserCard
-        ? "/api/profile/user?id="
-        : "/api/profile/professional?id=";
+      if (portalType === "main") return { data: null };
+      let url =
+        portalType === "user"
+          ? "/api/profile/user?id="
+          : "/api/profile/professional?id=";
       const { data } = await axios.get(url + sessionState?.user.id);
 
       return data;
@@ -86,7 +91,11 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
       {sessionState !== null && (
         <Link
           href={
-            isUserCard ? "/user_portal/profile" : "/professional_portal/profile"
+            portalType === "user"
+              ? "/user_portal/profile"
+              : portalType === "professional"
+              ? "/professional_portal/profile"
+              : ""
           }
           className="flex items-center space-x-2"
         >
@@ -101,15 +110,6 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
                 name={`${profileInfo.firstname} ${profileInfo.lastname}`}
               />
             ) : (
-              // <Image
-              //   loader={({ src }) => src}
-              //   src={
-              //     "https://dcfwqwmdkmegdflynbqw.supabase.co/storage/v1/object/public/avatar/public/91d182fe-1fff-45fd-8a1a-05d39c47f106.jpeg"
-              //   }
-              //   alt="Avatar"
-              //   width={100}
-              //   height={50}
-              // />
               <Avatar src={profileInfo.avatar_link} />
             )}
           </span>
@@ -142,7 +142,7 @@ const ProfileCard = ({ isUserCard }: { isUserCard: boolean }) => {
         <ModalContent className="h-[670px] flex items-center justify-center">
           {(onClose) => (
             <div>
-              <AuthForm isUserPortal={isUserCard} />
+              <AuthForm portalType={portalType} />
             </div>
           )}
         </ModalContent>

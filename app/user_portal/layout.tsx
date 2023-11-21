@@ -17,7 +17,7 @@ export default async function UserPortalLayout({
   return (
     <div className="flex flex-col items-center justify-between">
       <NavBar
-        isUserPortal={true}
+        portalType="user"
         menuItems={[
           {
             name: "Dashboard",
@@ -31,10 +31,6 @@ export default async function UserPortalLayout({
             name: "Mailbox",
             link: "/user_portal/mailbox",
           },
-          // {
-          //   name: "FAQ",
-          //   link: "/user_portal/faq",
-          // },
         ]}
       />
       <div className="mt-10">{children}</div>

@@ -16,7 +16,7 @@ export default function UserPortalLayout({
     <div className="flex flex-col items-center justify-between">
       {/* <Navbar /> */}
       <NavBar
-        isUserPortal={false}
+        portalType="professional"
         menuItems={[
           {
             name: "Dashboard",

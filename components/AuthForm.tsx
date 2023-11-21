@@ -10,9 +10,19 @@ import { useMutation } from "react-query";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 
-const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
-  const supabase = createClientComponentClient();
+const PortalUrl = {
+  main: "/",
+  user: "user_portal",
+  professional: "professional_portal",
+};
 
+const AuthForm = ({
+  portalType,
+}: {
+  portalType: "main" | "user" | "professional";
+}) => {
+  const supabase = createClientComponentClient();
+  const portalUrl = PortalUrl[portalType];
   const [signUp, setSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,9 +54,7 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
           //check if email exists
           //create a profile with this email by going to api/auth links
           const { data: response } = await axios.get(
-            `/api/profile/${
-              isUserPortal ? "user" : "professional"
-            }?email=${email}`
+            `/api/profile/${portalType}?email=${email}`
           );
           if (response.data !== null) {
             setHint("This email is already registered ");
@@ -102,11 +110,7 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: "github",
           options: {
-            redirectTo: origin
-              ? `${origin}/${
-                  isUserPortal ? "user_portal" : "professional_portal"
-                }`
-              : "localhost:3000",
+            redirectTo: origin ? `${origin}/${portalUrl}` : "localhost:3000",
           },
         });
         return { data, error };
@@ -126,11 +130,7 @@ const AuthForm = ({ isUserPortal }: { isUserPortal: boolean }) => {
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: origin
-              ? `${origin}/${
-                  isUserPortal ? "user_portal" : "professional_portal"
-                }`
-              : "localhost:3000",
+            redirectTo: origin ? `${origin}/${portalType}` : "localhost:3000",
           },
         });
         return { data, error };

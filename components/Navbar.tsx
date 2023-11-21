@@ -14,11 +14,11 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 type props = {
-  isUserPortal: boolean;
+  portalType: "main" | "user" | "professional";
   menuItems: { name: string; link: string }[];
 };
 
-export default function NavBar({ isUserPortal, menuItems }: props) {
+export default function NavBar({ portalType, menuItems }: props) {
   const pathName = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -29,7 +29,7 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
         isBordered
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
-        className="w-screen"
+        className="w-screen fixed"
       >
         <NavbarContent>
           <NavbarMenuToggle
@@ -45,9 +45,9 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
           {menuItems.map((item, index) => (
             <NavbarItem
               key={`${item}-${index}`}
-              className={`${
-                pathName === item.link ? "border-primary" : ""
-              } w-[120px] text-center border shadpw px-4 py-2 rounded-full`}
+              className={`${pathName === item.link ? "border-primary" : ""} ${
+                portalType === "main" ? "w-[200px]" : "w-[150px]"
+              } text-center border shadpw px-4 py-2 rounded-full`}
             >
               <Link
                 className={`w-full ${
@@ -64,7 +64,7 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
 
         <NavbarContent justify="end" className="hidden sm:flex">
           <NavbarItem>
-            <ProfileCard isUserCard={isUserPortal} />
+            <ProfileCard portalType={portalType} />
           </NavbarItem>
         </NavbarContent>
 
@@ -85,7 +85,7 @@ export default function NavBar({ isUserPortal, menuItems }: props) {
           ))}
           <NavbarMenuItem>
             <NavbarItem>
-              <ProfileCard isUserCard={isUserPortal} />
+              <ProfileCard portalType={portalType} />
             </NavbarItem>
           </NavbarMenuItem>
         </NavbarMenu>
