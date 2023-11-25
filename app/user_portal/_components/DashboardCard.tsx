@@ -53,9 +53,11 @@ const DashboardCard = ({
           <SecondaryButton
             isLoading={redirecting}
             text="Read More"
-            action={() => {
+            action={async () => {
               setRedirecting(true);
-              router.push(`/user_portal/request_details/${requestDetails.id}`);
+              await router.push(
+                `/user_portal/request_details/${requestDetails.id}`
+              );
             }}
             icon={<MdReadMore size={20} />}
           />

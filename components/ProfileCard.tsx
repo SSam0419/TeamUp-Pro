@@ -88,7 +88,7 @@ const ProfileCard = ({
 
   return (
     <div className="flex gap-4">
-      {sessionState !== null && (
+      {!(portalType === "main") && sessionState !== null && (
         <Link
           href={
             portalType === "user"
@@ -115,6 +115,7 @@ const ProfileCard = ({
           </span>
         </Link>
       )}
+
       {sessionState !== null && (
         <button
           type="submit"

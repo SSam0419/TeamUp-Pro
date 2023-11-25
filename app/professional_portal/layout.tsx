@@ -37,7 +37,7 @@ export default function UserPortalLayout({
         ]}
       />
       <Suspense fallback={<p>loading ... </p>}>
-        <div className="mt-10">{children}</div>
+        <div className="mt-20">{children}</div>
       </Suspense>
     </div>
   );

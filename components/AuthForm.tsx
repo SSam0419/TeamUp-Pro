@@ -11,7 +11,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
 
 const PortalUrl = {
-  main: "/",
+  main: "",
   user: "user_portal",
   professional: "professional_portal",
 };
@@ -130,7 +130,7 @@ const AuthForm = ({
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: origin ? `${origin}/${portalType}` : "localhost:3000",
+            redirectTo: origin ? `${origin}/${portalUrl}` : "localhost:3000",
           },
         });
         return { data, error };

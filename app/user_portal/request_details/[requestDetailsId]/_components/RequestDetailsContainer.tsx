@@ -134,13 +134,14 @@ const RequestDetailsContainer = () => {
               <label htmlFor="budget" className="">
                 Budget (HKD) :
               </label>
-              <div className="flex flex-col md:flex-row items-start gap-3 md:items-center">
+              <div className="flex flex-col md:flex-row items-start gap-3 md:items-center md:justify-center">
                 <div className="flex items-center w-full">
                   <div className="w-1/5 md:hidden">From ~</div>
+
                   <input
                     disabled={!editMode}
                     id="budget"
-                    className="bg-white shadow p-2 border rounded-xl"
+                    className="bg-white shadow p-2 border rounded-xl w-full"
                     name="budget_lower_limit"
                     value={requestDetails.budget_lower_limit}
                     onChange={handleInputChange}
@@ -152,7 +153,7 @@ const RequestDetailsContainer = () => {
                   <input
                     disabled={!editMode}
                     id="budget_upper_limit"
-                    className="bg-white shadow p-2 border rounded-xl"
+                    className="bg-white shadow p-2 border rounded-xl w-full"
                     name="budget_upper_limit"
                     value={requestDetails.budget_upper_limit}
                     onChange={handleInputChange}

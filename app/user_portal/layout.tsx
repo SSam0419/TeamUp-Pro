@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
 import NavBar from "../../components/Navbar";
-import Link from "next/link";
-import ProfileCard from "@/components/ProfileCard";
 
 export const metadata: Metadata = {
   title: "User Portal",
@@ -33,7 +31,7 @@ export default async function UserPortalLayout({
           },
         ]}
       />
-      <div className="mt-10">{children}</div>
+      <div className="mt-20">{children}</div>
     </div>
   );
 }

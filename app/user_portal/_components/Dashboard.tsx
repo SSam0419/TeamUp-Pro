@@ -57,7 +57,7 @@ const Dashboard = () => {
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <div className="md:px-4 md:py-2  bg-white md:min-w-[1000px] md:max-w-[1400px] rounded-[15px] shadow p-4 flex flex-col items-center justify-center gap-5">
+    <div className="md:px-4 md:py-5  bg-white md:min-w-[1000px] md:max-w-[1400px] rounded-[15px] shadow p-4 flex flex-col items-center justify-center gap-5">
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -77,34 +77,33 @@ const Dashboard = () => {
         </ModalContent>
       </Modal>
 
-      <div className="flex flex-row justify-between items-center p-2 w-full">
-        <div className="text-xl flex items-center justify-center gap-2">
-          <LuClipboardList />
-          Your Requests
+      <div className="min-h-[200px] md:w-[900px] flex justify-center items-center flex-col gap-4 w-full rounded-md md:p-5">
+        <div className="flex flex-row justify-between items-center p-2 w-full">
+          <div className="text-xl flex items-center justify-center gap-2">
+            <LuClipboardList />
+            Your Requests
+          </div>
+          <div className="w-1/4 md:w-[200px]">
+            <PrimaryButton
+              action={() => {
+                onOpen();
+              }}
+              text="Create"
+              disabled={session === null}
+            />
+          </div>
         </div>
-        <div className="w-1/4 md:w-[200px]">
-          <PrimaryButton
-            action={() => {
-              onOpen();
-            }}
-            text="Create"
-            disabled={session === null}
-          />
-        </div>
-      </div>
-
-      <div className="min-h-[500px] md:w-[900px] flex justify-center items-center flex-col gap-4 w-full rounded-md md:p-5">
         {isLoading ? (
-          <div className="h-[380px]">
+          <div className="h-[200px]">
             <Spinner />
           </div>
         ) : (
-          <div className="md:min-h-[380px]">
+          <div className="md:min-h-[200px]">
             <DashboardTable />
           </div>
         )}
         {!session && !isLoading && (
-          <div className="text-subheading text-secondary h-[380px]">
+          <div className="text-subheading text-secondary h-[200px]">
             sign in now to view your requests!
           </div>
         )}
