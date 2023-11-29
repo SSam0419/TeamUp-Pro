@@ -12,7 +12,7 @@ export default function Home() {
         menuItems={[
           {
             name: "Professional Portal",
-            link: "/user_portal",
+            link: "/professional_portal",
           },
           {
             name: "User Portal",
