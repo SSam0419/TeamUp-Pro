@@ -3,7 +3,7 @@ import Dashboard from "./_components/Dashboard";
 
 const page = () => {
   return (
-    <div>
+    <div className="relative">
       <Suspense fallback={<p>loading ... </p>}>
         <Dashboard />
       </Suspense>

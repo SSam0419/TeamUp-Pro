@@ -9,6 +9,7 @@ import Spinner from "@/components/Spinner";
 import { useSearchParams } from "next/navigation";
 import DashboardToolBar from "../../../components/DashboardToolBar";
 import { Pagination } from "@nextui-org/react";
+import DashboardFilter from "./DashboardFilter";
 
 const Dashboard = () => {
   const { setFetchedRequestDetails, profileInfo } = useAppStore();
@@ -63,6 +64,7 @@ const Dashboard = () => {
 
   return (
     <div className="md:px-[20px] md:py-[30px]  bg-white rounded-[15px] shadow flex flex-col gap-5 items-center p-5 mb-10">
+      <DashboardFilter />
       <div className="md:w-[650px]">
         <DashboardToolBar isLoading={isLoading} />
       </div>
