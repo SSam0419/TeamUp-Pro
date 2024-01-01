@@ -20,15 +20,16 @@ export default function Home() {
           },
         ]}
       />
-      <div className="bg-white p-5 min-h-screen min-w-full flex items-center justify-center flex-col py-10">
-        <div className="flex items-center justify-between gap-5 min-h-screen">
+      <div className="bg-white p-5 min-h-screen min-w-full flex items-center justify-start flex-col py-10">
+        <div className="flex items-center justify-between gap-11 min-h-screen">
           <div className="md:w-[550px]">
-            <div className="my-2 text-heading">
+            <div className="my-2 text-heading leading-tight">
               Find the right talents for the right projects with TeamUp Pro!
             </div>
-            <div className="text-title">
+            <hr className="my-3"></hr>
+            <div className="leading-relaxed text-xl">
               TeamUp Pro provide a platform where you can easily find talents
-              and bring your projects to life.
+              and bring your projects to life remotely.
             </div>
             <Link
               className="mt-16 text-subtitle flex items-center justify-center gap-5 hover:cursor-pointer"

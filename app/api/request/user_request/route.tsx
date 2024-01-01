@@ -1,4 +1,4 @@
-import { CreateRequestFormDataType } from "@/app/user_portal/_components/CreateRequestForm";
+import { CreateRequestFormDataType } from "@/app/user_portal/_components/RequestForm/CreateRequestForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";

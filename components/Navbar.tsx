@@ -37,7 +37,9 @@ export default function NavBar({ portalType, menuItems }: props) {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <p className="text-subheading">TeamUp Pro</p>
+            <Link href={"/"} className="text-subheading">
+              TeamUp Pro
+            </Link>
           </NavbarBrand>
         </NavbarContent>
 

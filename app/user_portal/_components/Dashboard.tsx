@@ -3,7 +3,7 @@ import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import React from "react";
 
 import DashboardTable from "./DashboardTable";
-import CreateRequestForm from "./CreateRequestForm";
+import CreateRequestForm from "./RequestForm/CreateRequestForm";
 import { useQuery } from "react-query";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
