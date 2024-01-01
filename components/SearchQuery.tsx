@@ -39,7 +39,7 @@ const SearchQuery = ({
   }, [pathname, query, router, searchParams]);
 
   return (
-    <div className="flex justify-between items-center w-full ">
+    <div className="flex justify-between items-center w-full h-full">
       {/* <div className="rounded-full bg-white border shadow px-5 py-2 flex justify-between items-center"> */}
       <div className="flex justify-between items-center">
         <div className="flex items-center justify-between">

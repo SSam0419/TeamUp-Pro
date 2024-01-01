@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import DashboardToolBar from "../../../components/DashboardToolBar";
 import { Pagination } from "@nextui-org/react";
 import DashboardFilter from "./DashboardFilter";
+import SearchQuery from "@/components/SearchQuery";
 
 const Dashboard = () => {
   const { setFetchedRequestDetails, profileInfo } = useAppStore();
@@ -64,10 +65,13 @@ const Dashboard = () => {
 
   return (
     <div className="md:px-[20px] md:py-[30px]  bg-white rounded-[15px] shadow flex flex-col gap-5 items-center p-5 mb-10">
-      <DashboardFilter />
-      <div className="md:w-[650px]">
-        <DashboardToolBar isLoading={isLoading} />
+      <div className="md:w-[650px] h-[40px] flex flex-col md:flex-row border rounded-md shadow justify-center items-center px-5 ">
+        <SearchQuery
+          isLoading={isLoading}
+          placeholderText="Search for request "
+        />
       </div>
+
       {!isLoading && <DashboardTable />}
       {isLoading && (
         <div className="my-3 min-h-[500px] flex items-center justify-center">
