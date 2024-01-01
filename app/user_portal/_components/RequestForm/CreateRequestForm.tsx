@@ -27,9 +27,8 @@ export type CreateRequestFormDataType = {
   industry: (typeof IndustriesOptions)[number];
   createdBy: string;
   duration_unit: string;
-  based_location: string;
-  langugage_requirements: string[];
-  communication_preferences: string[];
+  base_location: string;
+  language_requirements: string[];
   workmode: string;
 };
 
@@ -69,9 +68,8 @@ const CreateRequestForm = ({ onClose }: props) => {
     duration_unit: "Days",
     industry: IndustriesOptions[0],
     createdBy: profileInfo?.id || session?.user?.id || "",
-    based_location: "",
-    langugage_requirements: [],
-    communication_preferences: [],
+    base_location: "",
+    language_requirements: [],
     workmode: "",
   });
 
@@ -184,7 +182,7 @@ const CreateRequestForm = ({ onClose }: props) => {
               setLanguages={(languages: string[]) => {
                 setFormData((prevFormData) => ({
                   ...prevFormData,
-                  langugage_requirements: languages,
+                  language_requirements: languages,
                 }));
               }}
             />
@@ -194,7 +192,7 @@ const CreateRequestForm = ({ onClose }: props) => {
               setLocation={(location: string) => {
                 setFormData((prevFormData) => ({
                   ...prevFormData,
-                  based_location: location,
+                  base_location: location,
                 }));
               }}
             />
@@ -212,7 +210,6 @@ const CreateRequestForm = ({ onClose }: props) => {
             <PrimaryButton
               action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 e.preventDefault();
-                return console.log(formData);
                 if (
                   Object.values(formData).some(
                     (value) => value.toString().trim() === ""

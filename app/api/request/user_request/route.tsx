@@ -114,6 +114,9 @@ export async function POST(request: Request) {
     created_by: requestDetails.createdBy,
     duration_unit: requestDetails.duration_unit,
     status: "Active",
+    base_location: requestDetails.base_location,
+    language_requirements: requestDetails.language_requirements,
+    workmode: requestDetails.workmode,
   });
   return NextResponse.json(data);
 }

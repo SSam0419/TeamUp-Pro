@@ -2,7 +2,7 @@ type Pitch = {
   id: string;
   created_at: Date;
   delivery_time: number;
-  delivery_unit: "Days" | "Weeks" | "Months";
+  delivery_unit: DurationUnit;
   message: string;
   price: number;
   professional_id: string;
