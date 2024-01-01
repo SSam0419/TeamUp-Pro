@@ -50,7 +50,7 @@ const DashboardCard = ({
                 return null;
             }
           })()}
-          {requestDetails.workmode}
+          {requestDetails.workmode || ""}
         </div>
         <div className="flex items-center gap-2">
           <GrLanguage />
