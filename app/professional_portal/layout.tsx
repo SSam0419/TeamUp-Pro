@@ -14,8 +14,8 @@ export default function UserPortalLayout({
 }) {
   return (
     <div className="flex flex-col items-center justify-between">
-      {/* <Navbar /> */}
       <NavBar
+        key="professional"
         portalType="professional"
         menuItems={[
           {
@@ -30,10 +30,6 @@ export default function UserPortalLayout({
             name: "Mailbox",
             link: "/professional_portal/mailbox",
           },
-          // {
-          //   name: "FAQ",
-          //   link: "/professional_portal/faq",
-          // },
         ]}
       />
       <Suspense fallback={<p>loading ... </p>}>

@@ -12,6 +12,7 @@ import {
 import ProfileCard from "@/components/ProfileCard";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import useConstants from "@/hooks/useFetchConstant";
 
 type props = {
   portalType: "main" | "user" | "professional";
@@ -19,12 +20,14 @@ type props = {
 };
 
 export default function NavBar({ portalType, menuItems }: props) {
+  useConstants();
+
   const pathName = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" key={portalType}>
       <Navbar
         isBordered
         isMenuOpen={isMenuOpen}

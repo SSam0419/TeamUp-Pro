@@ -29,7 +29,7 @@ const ProfileCard = ({
     setUserSession,
   } = useAppStore();
 
-  const { isLoading } = useQuery(
+  const { isLoading, refetch } = useQuery(
     ["retrieveUserProfile", sessionState, portalType],
     async () => {
       if (sessionState == null) return { data: null };
@@ -45,7 +45,10 @@ const ProfileCard = ({
 
     {
       onSuccess: ({ data }) => {
-        if (data) setUserProfile(data);
+        if (data) {
+          data.is_professional = portalType !== "user";
+        }
+        setUserProfile(data);
       },
     }
   );
@@ -85,9 +88,18 @@ const ProfileCard = ({
   if (isLoading || isSigningOut) {
     return <Spinner size={35} />;
   }
-
+  if (profileInfo && portalType === "user" && profileInfo.is_professional) {
+    refetch();
+  }
+  if (
+    profileInfo &&
+    portalType === "professional" &&
+    !profileInfo.is_professional
+  ) {
+    refetch();
+  }
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4" key={portalType}>
       {!(portalType === "main") && sessionState !== null && (
         <Link
           href={

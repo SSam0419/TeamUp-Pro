@@ -1,6 +1,5 @@
 "use client";
 
-import { IndustriesOptions } from "@/app/_types/constants/industries";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -13,6 +12,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useConstantStore } from "@/libs/slices/constantSlice";
 
 export type ProfessionalProfileFormType = {
   id: string;
@@ -22,7 +22,7 @@ export type ProfessionalProfileFormType = {
   email: string;
   phone_number: string;
   occupation: string;
-  industry: (typeof IndustriesOptions)[number] | string;
+  industry: string;
   avatar_file: File | null;
   avatar_link: string;
 };
@@ -41,6 +41,7 @@ export default function ProfessionalProfileForm({
   const router = useRouter();
   const [skills, setSkills] = useState<string[]>(professional_skills || []);
   const [enteredSkill, setEnteredSkill] = useState<string>("");
+  const industryOptions = useConstantStore((state) => state.industryOptions);
 
   const [professionalProfile, setProfessionalProfile] =
     useState<ProfessionalProfileFormType>({
@@ -51,7 +52,7 @@ export default function ProfessionalProfileForm({
       email: profileData?.email || "",
       phone_number: profileData?.phone_number || "",
       occupation: profileData?.occupation || "",
-      industry: IndustriesOptions[0],
+      industry: industryOptions[0],
       avatar_file: null,
       avatar_link: profileData?.avatar_link || "",
     });
@@ -256,7 +257,7 @@ export default function ProfessionalProfileForm({
           className="bg-gray-50 border border-gray-300 rounded-lg p-2"
           onChange={handleChange}
         >
-          {IndustriesOptions.map((option) => (
+          {industryOptions.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>

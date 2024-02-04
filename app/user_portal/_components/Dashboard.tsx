@@ -16,6 +16,7 @@ import {
   Pagination,
   useDisclosure,
 } from "@nextui-org/react";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const { session, setFetchedRequestDetails, profileInfo } = useAppStore();
@@ -59,6 +60,7 @@ const Dashboard = () => {
   return (
     <div className="md:px-4 md:py-5  bg-white md:min-w-[1000px] md:max-w-[1400px] rounded-[15px] shadow p-4 flex flex-col items-center justify-center gap-5">
       <Modal
+        isDismissable={false}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         size="4xl"
@@ -86,7 +88,11 @@ const Dashboard = () => {
           <div className="w-1/4 md:w-[200px]">
             <PrimaryButton
               action={() => {
-                onOpen();
+                if (profileInfo) {
+                  onOpen();
+                } else {
+                  toast("You must create a user profile to post a request");
+                }
               }}
               text="Create"
               disabled={session === null}

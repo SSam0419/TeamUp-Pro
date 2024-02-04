@@ -1,6 +1,5 @@
 import { ProfessionalProfileFormType } from "@/app/professional_portal/profile/_components/ProfessionalProfileForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { IndustriesOptions } from "@/app/_types/constants/industries";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -38,8 +37,6 @@ export async function GET(request: Request) {
     }
     if (industry) {
       query.eq("industry", industry);
-    } else {
-      query.eq("industry", IndustriesOptions[0]);
     }
   }
 

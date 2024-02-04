@@ -1,18 +1,12 @@
 import React from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 
-const locations = [
-  { value: "Tokyo", label: "Tokyo" },
-  { value: "Beijing", label: "Beijing" },
-  { value: "Seoul", label: "Seoul" },
-  { value: "Bangkok", label: "Bangkok" },
-];
-
 type props = {
   setLocation: Function;
+  baseLocationOptions: string[];
 };
 
-const LocationDropdown = ({ setLocation }: props) => {
+const LocationDropdown = ({ setLocation, baseLocationOptions }: props) => {
   return (
     <Select
       label="Base location"
@@ -21,9 +15,9 @@ const LocationDropdown = ({ setLocation }: props) => {
       isRequired
       onChange={(location) => setLocation(location.target.value)}
     >
-      {locations.map((location) => (
-        <SelectItem key={location.value} value={location.value}>
-          {location.label}
+      {baseLocationOptions.map((location) => (
+        <SelectItem key={location} value={location}>
+          {location}
         </SelectItem>
       ))}
     </Select>

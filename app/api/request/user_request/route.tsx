@@ -102,21 +102,27 @@ export async function POST(request: Request) {
     requestType: "POST",
     route: "/api/request/user_request/route",
   });
-  const requestDetails: CreateRequestFormDataType = await request.json();
-  const supabase = createRouteHandlerClient({ cookies });
-  const data = await supabase.from("request_details").insert({
-    title: requestDetails.title,
-    content: requestDetails.content,
-    duration: requestDetails.duration,
-    budget_upper_limit: requestDetails.budget_upper_limit,
-    budget_lower_limit: requestDetails.budget_lower_limit,
-    industry: requestDetails.industry,
-    created_by: requestDetails.createdBy,
-    duration_unit: requestDetails.duration_unit,
-    status: "Active",
-    base_location: requestDetails.base_location,
-    language_requirements: requestDetails.language_requirements,
-    workmode: requestDetails.workmode,
-  });
-  return NextResponse.json(data);
+  try {
+    const requestDetails: CreateRequestFormDataType = await request.json();
+    const supabase = createRouteHandlerClient({ cookies });
+    const data = await supabase.from("request_details").insert({
+      title: requestDetails.title,
+      content: requestDetails.content,
+      duration: requestDetails.duration,
+      budget_upper_limit: requestDetails.budget_upper_limit,
+      budget_lower_limit: requestDetails.budget_lower_limit,
+      industry: requestDetails.industry,
+      duration_unit: requestDetails.duration_unit,
+      status: "Active",
+      base_location: requestDetails.base_location,
+      language_requirements: requestDetails.language_requirements,
+      workmode: requestDetails.workmode,
+    });
+    return NextResponse.json("", {
+      status: data.status,
+      statusText: data.statusText,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }

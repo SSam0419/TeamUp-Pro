@@ -2,7 +2,7 @@ import { ConsoleLog } from "@/server-actions/utils/logger";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { userMailboxTb } from "../constant/table";
+import { userMailboxTb } from "../constants/table";
 
 export async function PUT(request: NextRequest) {
   ConsoleLog({ requestType: "PUT", route: "/api/user_mailbox/route" });

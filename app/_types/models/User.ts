@@ -10,4 +10,5 @@ type UserProfile = {
   firstname: string;
   skill: string[];
   avatar_link: string;
+  is_professional: boolean;
 };

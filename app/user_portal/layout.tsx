@@ -15,6 +15,7 @@ export default async function UserPortalLayout({
   return (
     <div className="flex flex-col items-center justify-between">
       <NavBar
+        key="user"
         portalType="user"
         menuItems={[
           {

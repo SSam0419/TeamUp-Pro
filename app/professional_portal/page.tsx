@@ -4,7 +4,7 @@ import DashboardFilter from "./_components/DashboardFilter";
 
 const page = () => {
   return (
-    <div className="relative">
+    <div className="relative flex gap-5">
       <Suspense fallback={<p>loading ... </p>}>
         <DashboardFilter />
         <Dashboard />

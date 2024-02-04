@@ -9,9 +9,13 @@ import {
 
 type props = {
   setLanguages: Function;
+  availableLanguages: string[];
 };
 
-export default function LanguageDropdown({ setLanguages }: props) {
+export default function LanguageDropdown({
+  setLanguages,
+  availableLanguages,
+}: props) {
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([
     availableLanguages[0],
   ]);
@@ -55,7 +59,7 @@ export default function LanguageDropdown({ setLanguages }: props) {
           <DropdownMenu aria-label="Languages">
             {availableLanguages
               .filter((lang) => !selectedLanguages.includes(lang))
-              .map((language: string) => (
+              .map((language: string, idx) => (
                 <DropdownItem
                   key={language}
                   onClick={() => handleLanguageSelection(language)}
@@ -69,20 +73,3 @@ export default function LanguageDropdown({ setLanguages }: props) {
     </>
   );
 }
-const availableLanguages = [
-  "English",
-  "Spanish",
-  "French",
-  "German",
-  "Chinese",
-  "Japanese",
-  "Korean",
-  "Russian",
-  "Portuguese",
-  "Italian",
-  "Dutch",
-  "Arabic",
-  "Hindi",
-  "Bengali",
-  "Punjabi",
-];

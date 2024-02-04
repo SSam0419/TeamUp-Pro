@@ -17,6 +17,7 @@ import { GrLanguage } from "react-icons/gr";
 import { MdAirplanemodeActive } from "react-icons/md";
 import { FaHouse } from "react-icons/fa6";
 import { FaNetworkWired } from "react-icons/fa";
+import { SlPeople } from "react-icons/sl";
 
 const DashboardCard = ({
   requestDetails,
@@ -34,6 +35,9 @@ const DashboardCard = ({
       }}
     >
       <div className="flex items-center gap-4 bg-">
+        <div className="flex items-center gap-2">
+          <SlPeople /> {requestDetails.industry || "UNAVAILABLE"}
+        </div>
         <div className="flex items-center gap-2">
           <CiLocationOn /> {requestDetails.base_location || "UNAVAILABLE"}
         </div>
