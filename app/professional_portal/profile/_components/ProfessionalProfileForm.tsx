@@ -6,8 +6,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Image from "next/image";
@@ -323,7 +323,8 @@ export default function ProfessionalProfileForm({
         </div>
       </div>
       <div className="flex gap-2">
-        <PrimaryButton
+        <CustomButton
+          variant="primary"
           isLoading={mutation.isLoading}
           type="submit"
           text={profileData ? "Update Profile" : "Create Profile"}
@@ -331,7 +332,8 @@ export default function ProfessionalProfileForm({
         />
 
         {profileData && closeForm && (
-          <SecondaryButton
+          <CustomButton
+            variant="secondary"
             isLoading={mutation.isLoading}
             type="button"
             text="Cancel"

@@ -1,5 +1,5 @@
 "use client";
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import React from "react";
 
 import DashboardTable from "./DashboardTable";
@@ -86,7 +86,8 @@ const Dashboard = () => {
             Your Requests
           </div>
           <div className="w-1/4 md:w-[200px]">
-            <PrimaryButton
+            <CustomButton
+              variant="primary"
               action={() => {
                 if (profileInfo) {
                   onOpen();

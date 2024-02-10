@@ -1,7 +1,7 @@
 "use client";
 
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
@@ -256,7 +256,8 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
         />
       </div>
       <div className="flex gap-2">
-        <PrimaryButton
+        <CustomButton
+          variant="primary"
           isLoading={mutation.isLoading}
           type="submit"
           text={profileData ? "Update Profile" : "Create Profile"}
@@ -264,7 +265,8 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
         />
 
         {profileData && closeForm && (
-          <SecondaryButton
+          <CustomButton
+            variant="secondary"
             isLoading={mutation.isLoading}
             type="button"
             text="Cancel"

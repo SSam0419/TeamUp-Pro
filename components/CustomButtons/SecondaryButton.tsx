@@ -13,7 +13,7 @@ type props = {
   icon?: ReactElement;
 };
 
-const SecondaryButton = ({
+const CustomButton = ({
   action,
   text,
   isLoading,
@@ -42,4 +42,4 @@ const SecondaryButton = ({
   );
 };
 
-export default SecondaryButton;
+export default CustomButton;

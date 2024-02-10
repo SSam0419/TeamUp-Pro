@@ -1,6 +1,6 @@
 "use client";
 
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import StatusChip from "@/components/StatusChip";
 import {
   Card,
@@ -95,8 +95,10 @@ const DashboardCard = ({
           <div>{requestDetails.content}</div>
 
           <div className="w-full">
-            <SecondaryButton
+            <CustomButton
+              variant="secondary"
               isLoading={redirecting}
+              disabled={requestDetails.status === "Cancelled"}
               text="Pitch Now"
               action={() => {
                 setRedirecting(true);

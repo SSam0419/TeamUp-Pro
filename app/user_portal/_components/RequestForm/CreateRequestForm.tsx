@@ -1,7 +1,7 @@
 "use client";
 
 import { Input, Textarea, Slider } from "@nextui-org/react";
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { useState } from "react";
@@ -218,7 +218,8 @@ const CreateRequestForm = ({ onClose }: props) => {
           </div>
 
           <div className="my-3 flex items-center justify-center">
-            <PrimaryButton
+            <CustomButton
+              variant="primary"
               action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 e.preventDefault();
                 if (

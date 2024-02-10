@@ -1,4 +1,4 @@
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { notifyUserPitchMessage } from "@/components/MessageMarkdown";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
@@ -158,7 +158,8 @@ const PitchForm = ({
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      <SecondaryButton
+      <CustomButton
+        variant="secondary"
         isLoading={isLoading}
         text={requestDetails.pitch !== null ? "Edit Pitch" : "Create Pitch"}
         type="submit"

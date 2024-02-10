@@ -1,5 +1,5 @@
 "use client";
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import PrimaryTooltip from "@/components/PrimaryTooltip";
 import { useAppStore } from "@/libs/ZustandStore";
 import { Select, SelectItem } from "@nextui-org/react";
@@ -106,7 +106,8 @@ const SendRequestButton = ({
         <div className="md:w-1/2 h-full">
           <PrimaryTooltip tooltipText="Invite selected professionals to view your selected request">
             <div className="h-full w-full">
-              <PrimaryButton
+              <CustomButton
+                variant="primary"
                 isLoading={isCreatingMailboxMessage}
                 text="Send Request"
                 action={() => {

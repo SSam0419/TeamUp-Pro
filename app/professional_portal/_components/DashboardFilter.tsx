@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
 import { Workmodes } from "@/libs/types/constants/Workmodes";
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useConstantStore } from "@/libs/slices/constantSlice";
 import { requestDetailsStatus } from "@/libs/types/constants/requestDetailsStatus";
@@ -65,9 +65,12 @@ const DashboardFilter = () => {
         upper: parseFloat(_upperBudget),
       });
     } else if (_lowerBudget) {
-      setBudget({ ...budget, lower: parseFloat(_lowerBudget) });
+      setBudget({
+        upper: parseFloat(_lowerBudget) + 1,
+        lower: parseFloat(_lowerBudget),
+      });
     } else if (_upperBudget) {
-      setBudget({ ...budget, upper: parseFloat(_upperBudget) });
+      setBudget({ lower: 0, upper: parseFloat(_upperBudget) });
     }
 
     if (_location) {
@@ -85,7 +88,7 @@ const DashboardFilter = () => {
     if (_languages) {
       setSelectedLanguages(new Set(_languages.split(",")));
     }
-  }, [budget, industryOptions, searchParams]);
+  }, [industryOptions, searchParams]);
 
   const filterFunction = () => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -214,13 +217,16 @@ const DashboardFilter = () => {
             label="Max Budget"
             placeholder="Enter upper limit"
             onChange={(val) =>
-              setBudget({ ...budget, upper: parseFloat(val.target.value) })
+              setBudget((prev) => ({
+                ...prev,
+                upper: parseFloat(val.target.value),
+              }))
             }
             value={budget.upper.toString()}
           />
         </div>
 
-        <PrimaryButton action={filterFunction} text="Filter" />
+        <CustomButton variant="primary" action={filterFunction} text="Filter" />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { Button, Checkbox } from "@nextui-org/react";
 
 import { ReadonlyURLSearchParams } from "next/navigation";
@@ -79,7 +79,8 @@ const ProfileCard = ({
 
       <div className="h-1/6">
         {!showContact[idx] && (
-          <SecondaryButton
+          <CustomButton
+            variant="secondary"
             text="Get Contact"
             action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
               e.stopPropagation();
@@ -91,7 +92,7 @@ const ProfileCard = ({
           <div className=" font-semibold">Email: {profile.email}</div>
         )}
         {/* <div className="my-1"></div>
-                  <PrimaryButton
+                  <CustomButton variant="primary"
                     text="Send Request"
                     action={(
                       e: React.MouseEvent<HTMLButtonElement, MouseEvent>

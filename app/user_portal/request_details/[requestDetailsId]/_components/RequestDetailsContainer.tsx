@@ -1,4 +1,4 @@
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import ToggleButton from "@/components/CustomButtons/ToggleButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
@@ -192,7 +192,8 @@ const RequestDetailsContainer = () => {
           </div>
         </div>
 
-        <SecondaryButton
+        <CustomButton
+          variant="secondary"
           text={"CONFIRM"}
           disabled={!editMode}
           isLoading={isLoading}

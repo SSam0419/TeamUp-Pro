@@ -1,4 +1,4 @@
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { Divider } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (lower_budget) {
-    fetchQuery.gte("budget_lower_limit", lower_budget);
+    fetchQuery.gte("budget_upper_limit", lower_budget);
   }
 
   if (upper_budget) {
