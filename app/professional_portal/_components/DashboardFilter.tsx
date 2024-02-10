@@ -14,6 +14,7 @@ import CustomButton from "@/components/CustomButtons/CustomButton";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useConstantStore } from "@/libs/slices/constantSlice";
 import { requestDetailsStatus } from "@/libs/types/constants/requestDetailsStatus";
+import toast from "react-hot-toast";
 
 const DashboardFilter = () => {
   const searchParams = useSearchParams();
@@ -107,13 +108,19 @@ const DashboardFilter = () => {
     } else {
       current.delete("languages");
     }
-    if (budget.lower && budget.upper) {
+
+    if (budget.lower) {
       current.set("lower_budget", budget.lower.toString());
-      current.set("upper_budget", budget.upper.toString());
     } else {
       current.delete("lower_budget");
+    }
+
+    if (budget.upper) {
+      current.set("upper_budget", budget.upper.toString());
+    } else {
       current.delete("upper_budget");
     }
+
     if (selectedLocation) {
       current.set("location", selectedLocation.toString());
     } else {
@@ -206,9 +213,18 @@ const DashboardFilter = () => {
             type="number"
             label="Min Budget"
             placeholder="Enter lower limit"
-            onChange={(val) =>
-              setBudget({ ...budget, lower: parseFloat(val.target.value) })
-            }
+            onChange={(val) => {
+              if (parseFloat(val.target.value) > budget.upper) {
+                toast.error(
+                  "Upper Budget must be larger that the Lower Budget"
+                );
+                return;
+              }
+              setBudget((prev) => ({
+                ...prev,
+                lower: parseFloat(val.target.value),
+              }));
+            }}
             value={budget.lower.toString()}
           />
           -
@@ -216,12 +232,18 @@ const DashboardFilter = () => {
             type="number"
             label="Max Budget"
             placeholder="Enter upper limit"
-            onChange={(val) =>
+            onChange={(val) => {
+              if (parseFloat(val.target.value) < budget.lower) {
+                toast.error(
+                  "Upper Budget must be larger that the Lower Budget"
+                );
+                return;
+              }
               setBudget((prev) => ({
                 ...prev,
                 upper: parseFloat(val.target.value),
-              }))
-            }
+              }));
+            }}
             value={budget.upper.toString()}
           />
         </div>

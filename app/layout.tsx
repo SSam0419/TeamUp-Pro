@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  icons: { icon: "favicon.ico", apple: "favicon.ico" },
   title: "TeamUpPro",
   description: "TeamUpPro Beta Version, coming soon ... ",
 };

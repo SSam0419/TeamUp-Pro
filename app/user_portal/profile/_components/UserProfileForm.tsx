@@ -1,7 +1,6 @@
 "use client";
 
 import CustomButton from "@/components/CustomButtons/CustomButton";
-import CustomButton from "@/components/CustomButtons/CustomButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";

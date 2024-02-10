@@ -85,7 +85,7 @@ const Dashboard = () => {
         initialPage={1}
         page={currentPage}
         onChange={setCurrentPage}
-        isDisabled={profileInfo === null}
+        // isDisabled={profileInfo === null}
       />
     </div>
   );

@@ -9,7 +9,6 @@ import SearchBar from "./SearchBar";
 import { useSearchParams } from "next/navigation";
 import SendRequestButton from "./SendRequestButton";
 import ProfileCard from "./ProfileCard";
-import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
 
 const ProfileList = () => {
   const { profileInfo } = useAppStore();

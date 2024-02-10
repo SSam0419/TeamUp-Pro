@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { Button } from "@nextui-org/react";
 
 type Props = {
-  action: () => void;
+  action: Function;
   text: string;
   isLoading?: boolean;
   disabled?: boolean;
@@ -33,7 +33,7 @@ const CustomButton = ({
       type={type || "button"}
       isLoading={isLoading}
       disabled={disabled || isLoading || false}
-      onClick={action}
+      onClick={(e) => action(e)}
     >
       {icon && (
         <div className="flex items-center justify-center gap-2">

@@ -13,6 +13,7 @@ import LocationDropdown from "./LocationSelect";
 import WorkModeSelect from "./WorkModeSelect";
 import IndustrySelect from "./IndustrySelect";
 import { useConstantStore } from "@/libs/slices/constantSlice";
+import ExpirationDateInput from "./ExpirationDateInput";
 
 type props = {
   onClose: Function;
@@ -25,10 +26,11 @@ export type CreateRequestFormDataType = {
   budget_upper_limit: string;
   duration: string;
   industry: string;
-  duration_unit: string;
+  duration_unit: "Days" | "Weeks" | "Months" | "Years";
   base_location: string;
   language_requirements: string[];
-  workmode: string;
+  workmode: "Remote Only" | "On Site Only" | "Hybrid";
+  days_until_expiration: number;
 };
 
 const CreateRequestForm = ({ onClose }: props) => {
@@ -46,10 +48,6 @@ const CreateRequestForm = ({ onClose }: props) => {
       const result = await axios.post("/api/request/user_request", formData, {
         validateStatus: (status) => status >= 200 && status < 300,
       });
-      // console.log(result);
-      // if (result.status < 200 || result.status >= 300) {
-      //   throw new Error(result.statusText);
-      // }
 
       return result;
     },
@@ -74,7 +72,8 @@ const CreateRequestForm = ({ onClose }: props) => {
     industry: industryOptions[0],
     base_location: "",
     language_requirements: [languageOptions[0]],
-    workmode: "",
+    workmode: "Hybrid",
+    days_until_expiration: 10,
   });
 
   return (
@@ -87,15 +86,31 @@ const CreateRequestForm = ({ onClose }: props) => {
       {!isLoading && (
         <div className="flex flex-col gap-5">
           <div className="mb-4 text-subheading">Submit a request now!</div>
-          <IndustrySelect
-            industryOptions={industryOptions}
-            setIndustry={(i: string) =>
-              setFormData((prevFormData) => ({
-                ...prevFormData,
-                industry: i,
-              }))
-            }
-          />
+          <div className="flex gap-5 justify-between">
+            <IndustrySelect
+              industryOptions={industryOptions}
+              setIndustry={(i: string) =>
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  industry: i,
+                }))
+              }
+            />
+            <ExpirationDateInput
+              daysUntilExpiration={formData.days_until_expiration}
+              setDaysUntilExpiration={(i: string) => {
+                const parsedValue = parseInt(i);
+                if (!isNaN(parsedValue)) {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    days_until_expiration: parsedValue,
+                  }));
+                } else {
+                  toast.error("Please input integer number only");
+                }
+              }}
+            />
+          </div>
           <Input
             type="text"
             label="Title"
@@ -170,10 +185,18 @@ const CreateRequestForm = ({ onClose }: props) => {
                   name="duration_unit"
                   id=""
                   onChange={(e) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      duration_unit: e.target.value,
-                    }));
+                    const selectedValue = e.target.value;
+                    if (
+                      selectedValue === "Days" ||
+                      selectedValue === "Weeks" ||
+                      selectedValue === "Months" ||
+                      selectedValue === "Years"
+                    ) {
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        duration_unit: selectedValue,
+                      }));
+                    }
                   }}
                 >
                   <option value={"Days"}>Day(s)</option>
@@ -208,7 +231,9 @@ const CreateRequestForm = ({ onClose }: props) => {
               }}
             />
             <WorkModeSelect
-              setWorkmode={(workmode: string) => {
+              setWorkmode={(
+                workmode: "Remote Only" | "On Site Only" | "Hybrid"
+              ) => {
                 setFormData((prevFormData) => ({
                   ...prevFormData,
                   workmode: workmode,

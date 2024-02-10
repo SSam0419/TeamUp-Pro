@@ -18,9 +18,9 @@ export async function GET(request: Request) {
   const to = searchParams.get("to");
   const supabase = createRouteHandlerClient<Database>({ cookies });
 
-  // const { count, error } = await supabase
-  //   .from("request_details")
-  //   .select("*", { count: "exact", head: true });
+  if (!userId) {
+    return NextResponse.json({ status: 400, statusText: "missing user id" });
+  }
 
   let query;
 
@@ -69,6 +69,10 @@ export async function PUT(request: Request) {
   const request_id = searchParams.get("request_id");
   const pitch_id = searchParams.get("pitch_id");
 
+  if (!request_id) {
+    return NextResponse.json({ status: 400, statusText: "missing request id" });
+  }
+
   if (pitch_id) {
     const { data, error, status, statusText } = await supabase
       .from("request_details")
@@ -106,19 +110,28 @@ export async function POST(request: Request) {
   try {
     const requestDetails: CreateRequestFormDataType = await request.json();
     const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    if (!requestDetails) {
+      return NextResponse.json("", {
+        status: 400,
+        statusText: "missing data",
+      });
+    }
     const data = await supabase.from("request_details").insert({
       title: requestDetails.title,
       content: requestDetails.content,
       duration: requestDetails.duration,
-      budget_upper_limit: requestDetails.budget_upper_limit,
-      budget_lower_limit: requestDetails.budget_lower_limit,
+      budget_upper_limit: parseFloat(requestDetails.budget_upper_limit),
+      budget_lower_limit: parseFloat(requestDetails.budget_lower_limit),
       industry: requestDetails.industry,
       duration_unit: requestDetails.duration_unit,
       status: "Active",
       base_location: requestDetails.base_location,
       language_requirements: requestDetails.language_requirements,
       workmode: requestDetails.workmode,
+      days_until_expiration: requestDetails.days_until_expiration,
     });
+    console.log(data);
     return NextResponse.json("", {
       status: data.status,
       statusText: data.statusText,

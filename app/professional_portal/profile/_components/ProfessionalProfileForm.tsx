@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "react-query";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
 import CustomButton from "@/components/CustomButtons/CustomButton";
-import CustomButton from "@/components/CustomButtons/CustomButton";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import Image from "next/image";

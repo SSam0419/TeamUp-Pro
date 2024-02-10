@@ -13,6 +13,8 @@ import ProfileCard from "@/components/ProfileCard";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import useConstants from "@/hooks/useFetchConstant";
+import { useAppStore } from "@/libs/ZustandStore";
+import classNames from "classnames";
 
 type props = {
   portalType: "main" | "user" | "professional";
@@ -23,6 +25,8 @@ export default function NavBar({ portalType, menuItems }: props) {
   useConstants();
 
   const pathName = usePathname();
+
+  const user = useAppStore((state) => state.profileInfo);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -40,27 +44,34 @@ export default function NavBar({ portalType, menuItems }: props) {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <Link href={"/"} className="text-subheading">
+            <Link
+              href={`${
+                user == null
+                  ? "/"
+                  : user.is_professional
+                  ? "/professional_portal"
+                  : "/user_portal"
+              }`}
+              className="text-subheading"
+            >
               TeamUp Pro
             </Link>
           </NavbarBrand>
-        </NavbarContent>
-
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
           {menuItems.map((item, index) => (
             <NavbarItem
               key={`${item}-${index}`}
-              className={`${pathName === item.link ? "border-primary" : ""} ${
-                portalType === "main" ? "w-[200px]" : "w-[150px]"
-              } text-center border shadpw px-4 py-2 rounded-full`}
+              className={classNames({
+                // "w-[200px]": portalType === "main",
+                // "w-[150px]": portalType !== "main",
+                "text-center": true,
+                "px-4": true,
+                "py-2": true,
+                "rounded-full": true,
+                "font-semibold": true,
+                "text-primary": pathName === item.link,
+              })}
             >
-              <Link
-                className={`w-full ${
-                  pathName === item.link ? "text-primary font-medium" : ""
-                } `}
-                color={"foreground"}
-                href={item.link}
-              >
+              <Link className={`w-full`} color="foreground" href={item.link}>
                 {item.name}
               </Link>
             </NavbarItem>

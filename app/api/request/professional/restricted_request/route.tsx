@@ -61,9 +61,10 @@ export async function GET(request: NextRequest) {
   if (from && to) {
     fetchQuery = fetchQuery.range(parseInt(from), parseInt(to));
   }
+
   if (query) fetchQuery = fetchQuery.like("title", `%${query}%`);
 
-  const data = await fetchQuery;
-  console.log(data);
+  const data = await fetchQuery.order("created_at", { ascending: false });
+
   return NextResponse.json(data);
 }
