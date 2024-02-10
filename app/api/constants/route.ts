@@ -1,11 +1,12 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
+import { Database } from "@/libs/types/database";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   ConsoleLog({ requestType: "GET", route: "/api/constants" });
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
 
   const languageOptions = await supabase
     .from("language_options")

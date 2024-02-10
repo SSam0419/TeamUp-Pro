@@ -133,7 +133,7 @@ const ProfileCard = ({
           type="submit"
           className="bg-secondary text-white font-medium px-10 py-2 rounded-[45px] "
           onClick={() => {
-            toast("You are now signing out .. ");
+            toast.success("You are now signing out .. ");
             mutate();
             router.push("/");
             setUserProfile(null);

@@ -74,7 +74,7 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
     },
     onSuccess: ({ data, status }) => {
       if (status >= 200 && status <= 300) {
-        toast("Update Successful, wait a while to see changes");
+        toast.success("Update Successful, wait a while to see changes");
         queryClient.invalidateQueries({
           queryKey: ["retrieveUserProfile"],
         });
@@ -126,15 +126,24 @@ export default function UserProfileForm({ profileData, closeForm }: props) {
           </p>
           <input
             type="file"
+            accept="image/jpeg, image/png"
             className="w-full opacity-0 placeholder:upload your avatar"
             onChange={async (e) => {
-              if (e.target.files) {
-                const file = e.target.files[0];
+              if (!e.target.files) {
+                return;
+              }
+              const file = e.target.files[0];
+              if (
+                file &&
+                (file.type === "image/jpeg" || file.type === "image/png")
+              ) {
                 setUserProfile((prevProfile) => ({
                   ...prevProfile,
                   avatar_file: file,
                   avatar_link: URL.createObjectURL(file),
                 }));
+              } else {
+                toast.error("Please select a JPEG or PNG image.");
               }
             }}
           ></input>

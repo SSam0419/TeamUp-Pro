@@ -54,9 +54,9 @@ const PitchForm = ({
     {
       onSuccess: () => {
         if (requestDetails.pitch == null) {
-          toast("Pitch Created!");
+          toast.success("Pitch Created!");
         } else {
-          toast("Pitch Edited!");
+          toast.success("Pitch Edited!");
         }
         queryClient.invalidateQueries({
           queryKey: ["retrieveUnlockedRequest"],

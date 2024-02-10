@@ -1,12 +1,13 @@
 import { ProfessionalProfileFormType } from "@/app/professional_portal/profile/_components/ProfessionalProfileForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
+import { Database } from "@/libs/types/database";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   ConsoleLog({ requestType: "GET", route: "/api/profile/professional/route" });
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
 
   const { searchParams } = new URL(request.url);
 
@@ -49,7 +50,7 @@ export async function POST(request: Request) {
     requestType: "POST",
     route: "/api/profile/professional/route",
   });
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const {
     professionalProfile,
     skills,

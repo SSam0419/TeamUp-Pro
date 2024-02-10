@@ -1,3 +1,4 @@
+import { Database } from "@/libs/types/database";
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
@@ -11,17 +12,36 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const from = searchParams.get("from");
   const to = searchParams.get("to");
-  const industry = searchParams.get("industry");
   const industries = searchParams.get("industries");
   const workmode = searchParams.get("workmode");
   const languages = searchParams.get("languages");
+  const location = searchParams.get("location");
+  const status = searchParams.get("status");
+  const lower_budget = searchParams.get("lower_budget");
+  const upper_budget = searchParams.get("upper_budget");
 
   const query = searchParams.get("query");
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   let fetchQuery = supabase
     .from("professional_free_request_view")
     .select(` *  `, { count: "exact" });
+
+  if (location) {
+    fetchQuery.eq("base_location", location);
+  }
+
+  if (status) {
+    fetchQuery.eq("status", status);
+  }
+
+  if (lower_budget) {
+    fetchQuery.gte("budget_lower_limit", lower_budget);
+  }
+
+  if (upper_budget) {
+    fetchQuery.lte("budget_upper_limit", upper_budget);
+  }
 
   if (industries) {
     fetchQuery.filter("industry", "in", `(${industries})`);

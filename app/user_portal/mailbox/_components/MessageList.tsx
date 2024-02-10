@@ -34,7 +34,9 @@ const MessageList = () => {
             </div>
           );
         })}
-      {messsages?.length === 0 && <div>No messages yet.</div>}
+      {(messsages == null || messsages.length === 0) && (
+        <div>No messages yet.</div>
+      )}
     </div>
   );
 };

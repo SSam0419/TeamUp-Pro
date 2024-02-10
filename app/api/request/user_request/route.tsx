@@ -1,5 +1,6 @@
 import { CreateRequestFormDataType } from "@/app/user_portal/_components/RequestForm/CreateRequestForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
+import { Database } from "@/libs/types/database";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
   const requestId = searchParams.get("request_id");
   const from = searchParams.get("from");
   const to = searchParams.get("to");
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
 
   // const { count, error } = await supabase
   //   .from("request_details")
@@ -64,7 +65,7 @@ export async function PUT(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const requestDetails: RequestDetails = await request.json();
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const request_id = searchParams.get("request_id");
   const pitch_id = searchParams.get("pitch_id");
 
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
   });
   try {
     const requestDetails: CreateRequestFormDataType = await request.json();
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = createRouteHandlerClient<Database>({ cookies });
     const data = await supabase.from("request_details").insert({
       title: requestDetails.title,
       content: requestDetails.content,

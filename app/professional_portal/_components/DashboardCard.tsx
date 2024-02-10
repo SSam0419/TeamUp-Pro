@@ -69,15 +69,15 @@ const DashboardCard = ({
       </div>
       <hr></hr>
       <div className="flex flex-col gap-2">
-        <div className="grid grid-cols-7 gap-5 w-full text-sm text-gray-400">
+        <div className="grid grid-cols-8 w-full text-sm text-gray-400">
           <div className="col-span-3">Title</div>
-          <div className="col-span-1">Status</div>
+          <div className="col-span-2">Status</div>
           <div className="col-span-2">Budget(HKD)</div>
           <div className="col-span-1">Duration</div>
         </div>
-        <div className="grid grid-cols-7 gap-5 w-full text-base">
+        <div className="grid grid-cols-8 w-full text-base">
           <div className="col-span-3 line-clamp-1">{requestDetails.title}</div>
-          <div className="col-span-1">
+          <div className="col-span-2">
             <StatusChip status={requestDetails.status} />
           </div>
           <div className="col-span-2">

@@ -1,5 +1,6 @@
 import { UserProfileFormType } from "@/app/user_portal/profile/_components/UserProfileForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
+import { Database } from "@/libs/types/database";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
@@ -10,7 +11,7 @@ export async function GET(request: Request) {
     requestType: "GET",
     route: "/api/profile/user/route",
   });
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   let query = supabase.from("user_profile").select();
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
@@ -33,14 +34,13 @@ export async function POST(request: Request) {
     requestType: "POST",
     route: "/api/profile/user/route",
   });
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const userProfileData: UserProfileFormType = await request.json();
 
   if (userProfileData.id === "") {
     return NextResponse.error();
   }
 
-  console.log("userProfileData: ", userProfileData);
   const data = await supabase.from("user_profile").upsert({
     id: userProfileData.id,
     bio: userProfileData.bio,
@@ -55,6 +55,5 @@ export async function POST(request: Request) {
     }),
   });
 
-  console.log(data);
   return NextResponse.json(userProfileData);
 }

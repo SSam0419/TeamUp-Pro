@@ -38,7 +38,7 @@ const PitchCard = ({ pitchData, requestId }: props) => {
     },
     {
       onSuccess: () => {
-        toast(
+        toast.success(
           "Congrats! You have accepted a pitch from the professional! \n We will notify the professional shortly!"
         );
         setAccepted(true);

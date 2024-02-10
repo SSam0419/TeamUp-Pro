@@ -59,7 +59,7 @@ const CreateRequestForm = ({ onClose }: props) => {
         queryClient.invalidateQueries({ queryKey: ["retrieveRequestDetails"] });
       },
       onError: (error: Error) => {
-        toast("Something went wrong! ");
+        toast.error("Something went wrong! ");
       },
     }
   );
@@ -226,18 +226,18 @@ const CreateRequestForm = ({ onClose }: props) => {
                     (value) => value.toString().trim() === ""
                   )
                 ) {
-                  toast("Please filled in all requested field(s)");
+                  toast.error("Please filled in all requested field(s)");
                   return;
                 }
                 if (
                   parseFloat(formData.budget_lower_limit) >
                   parseFloat(formData.budget_upper_limit)
                 ) {
-                  toast("Please filled in valid budget range");
+                  toast.error("Please filled in valid budget range");
                   return;
                 }
                 if (session == null) {
-                  toast("Please Log In before submitting your rquest! ");
+                  toast.error("Please Log In before submitting your rquest! ");
                   return;
                 }
                 try {

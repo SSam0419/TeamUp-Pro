@@ -62,13 +62,14 @@ const SendRequestButton = ({
       },
       {
         onSuccess: () => {
-          toast("Invitation Sent Successful!");
+          toast.success("Invitation Sent Successful!");
         },
         onError: (error) => {
           if (axios.isAxiosError(error)) {
-            if (error.response) toast(error.response.statusText.toString());
+            if (error.response)
+              toast.error(error.response.statusText.toString());
           } else if (error instanceof Error) {
-            toast(error.message.toString());
+            toast.error(error.message.toString());
           }
 
           console.log(error);

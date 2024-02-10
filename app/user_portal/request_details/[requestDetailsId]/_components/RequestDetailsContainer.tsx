@@ -48,8 +48,8 @@ const RequestDetailsContainer = () => {
     },
     {
       onSuccess: ({ status }) => {
-        if (status === 200) toast("Update Successful");
-        else toast("Something went wrong, refresh and try again");
+        if (status === 200) toast.success("Update Successful");
+        else toast.error("Something went wrong, refresh and try again");
       },
     }
   );
@@ -81,7 +81,7 @@ const RequestDetailsContainer = () => {
             className=""
             onClick={() => {
               if (requestDetails.status === "Hired") {
-                toast("You cannot edit hired requerst");
+                toast.error("You cannot edit hired requerst");
               }
             }}
           >

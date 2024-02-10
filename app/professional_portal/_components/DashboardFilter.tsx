@@ -1,12 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import {
+  CheckboxGroup,
+  Checkbox,
+  Input,
+  Autocomplete,
+  AutocompleteItem,
+} from "@nextui-org/react";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
-import { Workmodes } from "@/app/_types/constants/Workmodes";
+import { Workmodes } from "@/libs/types/constants/Workmodes";
 import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useConstantStore } from "@/libs/slices/constantSlice";
+import { requestDetailsStatus } from "@/libs/types/constants/requestDetailsStatus";
 
 const DashboardFilter = () => {
   const searchParams = useSearchParams();
@@ -14,15 +21,27 @@ const DashboardFilter = () => {
   const pathname = usePathname();
   const languageOptions = useConstantStore((state) => state.languageOptions);
   const industryOptions = useConstantStore((state) => state.industryOptions);
+  const baseLocationOptions = useConstantStore(
+    (state) => state.baseLocationOptions
+  );
+  const [selectedLocation, setSelectedLocation] =
+    React.useState<React.Key | null>(null);
 
   const [industries, setIndustries] = useState<undefined | string[]>(
     industryOptions
   );
+  const [budget, setBudget] = useState<{ lower: number; upper: number }>({
+    lower: 0,
+    upper: 0,
+  });
 
   const [selectedWorkmode, setSelectedWorkmode] = React.useState<Selection>(
     new Set([])
   );
   const [selectedLanguages, setSelectedLanguages] = React.useState<Selection>(
+    new Set([])
+  );
+  const [selectedStatus, setSelectedStatus] = React.useState<Selection>(
     new Set([])
   );
 
@@ -31,9 +50,34 @@ const DashboardFilter = () => {
     const _industries = current.get("industries");
     const _workmode = current.get("workmode");
     const _languages = current.get("languages");
+    const _location = current.get("location");
+    const _status = current.get("status");
+    const _lowerBudget = current.get("lower_budget");
+    const _upperBudget = current.get("upper_budget");
+
+    if (_status) {
+      setSelectedStatus(new Set([_status]));
+    }
+
+    if (_lowerBudget && _upperBudget) {
+      setBudget({
+        lower: parseFloat(_lowerBudget),
+        upper: parseFloat(_upperBudget),
+      });
+    } else if (_lowerBudget) {
+      setBudget({ ...budget, lower: parseFloat(_lowerBudget) });
+    } else if (_upperBudget) {
+      setBudget({ ...budget, upper: parseFloat(_upperBudget) });
+    }
+
+    if (_location) {
+      setSelectedLocation(_location);
+    }
 
     if (_industries) {
       setIndustries(_industries.split(","));
+    } else {
+      setIndustries(industryOptions);
     }
     if (_workmode) {
       setSelectedWorkmode(new Set([_workmode]));
@@ -41,7 +85,7 @@ const DashboardFilter = () => {
     if (_languages) {
       setSelectedLanguages(new Set(_languages.split(",")));
     }
-  }, [searchParams]);
+  }, [budget, industryOptions, searchParams]);
 
   const filterFunction = () => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -60,13 +104,32 @@ const DashboardFilter = () => {
     } else {
       current.delete("languages");
     }
+    if (budget.lower && budget.upper) {
+      current.set("lower_budget", budget.lower.toString());
+      current.set("upper_budget", budget.upper.toString());
+    } else {
+      current.delete("lower_budget");
+      current.delete("upper_budget");
+    }
+    if (selectedLocation) {
+      current.set("location", selectedLocation.toString());
+    } else {
+      current.delete("location");
+    }
+    if (selectedStatus) {
+      current.set("status", Array.from(selectedStatus).join(""));
+    } else {
+      current.delete("status");
+    }
     const search = current.toString();
     const full_query = search ? `?${search}` : "";
     router.push(`${pathname}${full_query}`);
   };
+
   return (
     <div className="w-[350px] hidden md:block">
       <div className="border shadow rounded bg-white px-2 py-5 flex flex-col gap-3">
+        <div className="font-semibold p-1">Custom Filter</div>
         <div className="">
           <CheckboxGroup
             defaultValue={industryOptions}
@@ -85,6 +148,18 @@ const DashboardFilter = () => {
             ))}
           </CheckboxGroup>
         </div>
+        <Autocomplete
+          label="Location"
+          placeholder="Select preferrable work location"
+          onSelectionChange={setSelectedLocation}
+          selectedKey={selectedLocation}
+        >
+          {baseLocationOptions.map((location) => (
+            <AutocompleteItem key={location} value={location}>
+              {location}
+            </AutocompleteItem>
+          ))}
+        </Autocomplete>
         <Select
           label="Workmode"
           placeholder="Select preferrable workmode"
@@ -110,6 +185,41 @@ const DashboardFilter = () => {
             </SelectItem>
           ))}
         </Select>
+        <Select
+          label="Status"
+          placeholder="Select status"
+          selectedKeys={selectedStatus}
+          onSelectionChange={setSelectedStatus}
+        >
+          {requestDetailsStatus.map((status, idx) => (
+            <SelectItem key={status} value={status}>
+              {status}
+            </SelectItem>
+          ))}
+        </Select>
+
+        <div className="flex justify-between align-middle items-center gap-5">
+          <Input
+            type="number"
+            label="Min Budget"
+            placeholder="Enter lower limit"
+            onChange={(val) =>
+              setBudget({ ...budget, lower: parseFloat(val.target.value) })
+            }
+            value={budget.lower.toString()}
+          />
+          -
+          <Input
+            type="number"
+            label="Max Budget"
+            placeholder="Enter upper limit"
+            onChange={(val) =>
+              setBudget({ ...budget, upper: parseFloat(val.target.value) })
+            }
+            value={budget.upper.toString()}
+          />
+        </div>
+
         <PrimaryButton action={filterFunction} text="Filter" />
       </div>
     </div>

@@ -91,7 +91,9 @@ const Dashboard = () => {
                 if (profileInfo) {
                   onOpen();
                 } else {
-                  toast("You must create a user profile to post a request");
+                  toast.error(
+                    "You must create a user profile to post a request"
+                  );
                 }
               }}
               text="Create"
