@@ -9,6 +9,14 @@ type Props = {
   type?: "button" | "submit" | "reset";
   icon?: ReactElement | null;
   variant?: "primary" | "secondary";
+  style?:
+    | "solid"
+    | "bordered"
+    | "light"
+    | "flat"
+    | "faded"
+    | "shadow"
+    | "ghost";
 };
 
 const CustomButton = ({
@@ -19,18 +27,14 @@ const CustomButton = ({
   disabled,
   icon,
   variant = "primary",
+  style = "solid",
 }: Props) => {
-  const buttonClassName =
-    variant === "primary"
-      ? "bg-primary"
-      : variant === "secondary"
-      ? "bg-secondary"
-      : "";
-
   return (
     <Button
-      className={`${buttonClassName} w-full text-white h-[40px] font-normal px-10 py-2 rounded-2xl flex items-center justify-center gap-2 hover:opacity-80`}
+      className={`w-full h-[40px] font-normal px-10 py-2 rounded-2xl flex items-center justify-center gap-2 hover:opacity-80`}
       type={type || "button"}
+      color={variant}
+      variant={style}
       isLoading={isLoading}
       disabled={disabled || isLoading || false}
       onClick={(e) => action(e)}

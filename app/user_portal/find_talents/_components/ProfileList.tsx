@@ -5,9 +5,8 @@ import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import SearchBar from "./SearchBar";
+import ToolBarSection from "./ToolBarSection";
 import { useSearchParams } from "next/navigation";
-import SendRequestButton from "./SendRequestButton";
 import ProfileCard from "./ProfileCard";
 
 const ProfileList = () => {
@@ -46,9 +45,14 @@ const ProfileList = () => {
 
   return (
     <div className="flex flex-col gap-10 items-center justify-center">
-      <SearchBar isLoading={false} />
+      <ToolBarSection
+        isLoading={false}
+        professionalIds={profiles
+          .filter((profile, index) => check[index])
+          .map((profile) => profile.id)}
+      />
 
-      <div className="grid grid-cols-4 gap-5 items-center justify-center p-5">
+      <div className="grid md:grid-cols-4 gap-5 items-center justify-center p-5 ">
         {isLoading && <Spinner />}
         {!isLoading &&
           profiles.map((profile, idx) => {
@@ -79,13 +83,7 @@ const ProfileList = () => {
             );
           })}
       </div>
-      <div className="sticky w-full bottom-0 md:bottom-10 md:w-[550px]">
-        <SendRequestButton
-          professionalIds={profiles
-            .filter((profile, index) => check[index])
-            .map((profile) => profile.id)}
-        />
-      </div>
+      <div className="fixed w-full right-10 bottom-0 md:bottom-10 md:w-[550px]"></div>
     </div>
   );
 };

@@ -16,6 +16,7 @@ export async function GET(request: Request) {
   const id = searchParams.get("id");
   const filter = searchParams.get("query");
   const industry = searchParams.get("industry");
+
   if (id) {
     query.eq("id", id).maybeSingle();
   } else {
@@ -26,14 +27,18 @@ export async function GET(request: Request) {
       const data = await supabase
         .from("professional_skill")
         .select("professional_id")
-        .ilikeAnyOf("skill_name", modifiedArray);
+        .in("skill_name", filterArray);
+
       if (data.data == null) {
-        return NextResponse.json(data);
+        return NextResponse.json({
+          status: 200,
+          statusText: "No Professionals Retrieved",
+          data: [],
+        });
       }
       const professionalIds = data.data.map((item) => {
         return item.professional_id;
       });
-      console.log(professionalIds);
       query.in("id", professionalIds);
     }
     if (industry) {

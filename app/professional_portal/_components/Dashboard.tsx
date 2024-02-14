@@ -7,7 +7,7 @@ import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import { useSearchParams } from "next/navigation";
-import DashboardToolBar from "../../../components/DashboardToolBar";
+import DashboardToolBar from "../../../components/Dashboard/DashboardToolBar";
 import { Pagination } from "@nextui-org/react";
 import DashboardFilter from "./DashboardFilter";
 import SearchQuery from "@/components/SearchQuery";

@@ -51,7 +51,7 @@ export async function GET(request: Request) {
     const requestDetailsFromUserId = await query
       .order("created_at", { ascending: false })
       .eq("created_by", userId);
-    console.log({ requestDetailsFromUserId, from, to });
+
     return NextResponse.json(requestDetailsFromUserId);
   }
 }
@@ -131,7 +131,7 @@ export async function POST(request: Request) {
       workmode: requestDetails.workmode,
       days_until_expiration: requestDetails.days_until_expiration,
     });
-    console.log(data);
+
     return NextResponse.json("", {
       status: data.status,
       statusText: data.statusText,

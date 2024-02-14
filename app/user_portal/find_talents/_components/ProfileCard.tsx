@@ -1,5 +1,5 @@
 import CustomButton from "@/components/CustomButtons/CustomButton";
-import { Button, Checkbox } from "@nextui-org/react";
+import { Badge, Button, Checkbox, Chip } from "@nextui-org/react";
 
 import { ReadonlyURLSearchParams } from "next/navigation";
 import React from "react";
@@ -28,7 +28,7 @@ const ProfileCard = ({
   return (
     <div
       key={idx}
-      className="bg-white p-5 relative rounded-lg shadow border w-[300px] flex flex-col h-[430px] gap-3 hover:cursor-pointer hover:bg-slate-100"
+      className="bg-white p-5 relative rounded-lg shadow border md:w-[260px] flex flex-col md:h-[430px] gap-3 hover:cursor-pointer hover:bg-slate-100"
       onClick={() => setCheckFunction(idx)}
     >
       <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
@@ -42,6 +42,7 @@ const ProfileCard = ({
         </div>
       </div>
       <div className="h-2/6">{profile.bio}</div>
+      <hr></hr>
       <div className="h-2/6">
         Skills :
         <div className="flex flex-wrap gap-2">
@@ -70,7 +71,7 @@ const ProfileCard = ({
             }
             return (
               <div key={idx} className={`${style ? "text-primary" : ""}`}>
-                #{skill}
+                <Chip color="primary">{skill}</Chip>
               </div>
             );
           })}

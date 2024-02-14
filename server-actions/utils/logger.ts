@@ -5,7 +5,11 @@ export const ConsoleLog = ({
   route: string;
   requestType: string;
 }) => {
-  return console.log(
-    `Server Log : making ${requestType} request at : ${route}`
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleString();
+  console.log("--------");
+  console.log(
+    `Server Log: Making ${requestType} request at ${formattedDate} to route: ${route}`
   );
+  console.log("--------");
 };
