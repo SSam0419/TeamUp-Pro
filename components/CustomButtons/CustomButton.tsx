@@ -36,7 +36,7 @@ const CustomButton = ({
       color={variant}
       variant={style}
       isLoading={isLoading}
-      disabled={disabled || isLoading || false}
+      isDisabled={disabled || isLoading || false}
       onClick={(e) => action(e)}
     >
       {icon && (

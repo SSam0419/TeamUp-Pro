@@ -12,6 +12,7 @@ const useFetchConstants = () => {
   const setBaseLocationOptions = useConstantStore(
     (state) => state.setBaseLocationOptions
   );
+  const setSkillset = useConstantStore((state) => state.setSkillset);
 
   useEffect(() => {
     const fetchConstants = async () => {
@@ -20,6 +21,7 @@ const useFetchConstants = () => {
         setIndustryOptions(response.data.industriOptions);
         setLanguageOptions(response.data.languageOptions);
         setBaseLocationOptions(response.data.baseLocationOptions);
+        setSkillset(response.data.skillset);
       } catch (error) {
         console.error("Error fetching constants:", error);
       }

@@ -14,7 +14,7 @@ import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/components/AuthForm";
 import { Avatar, Modal, ModalContent, useDisclosure } from "@nextui-org/react";
-import { UserProfileClass } from "@/libs/types/models/UserProfileClass/UserProfileClass";
+import { UserProfileClass } from "@/libs/models/UserProfileClass/UserProfileClass";
 
 const ProfileCard = ({
   portalType,

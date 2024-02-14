@@ -1,54 +1,9 @@
-import { ProfessionalProfileFormType } from "@/app/professional_portal/profile/_components/ProfessionalProfileForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { Database } from "@/libs/types/database";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-export async function GET(request: Request) {
-  ConsoleLog({ requestType: "GET", route: "/api/profile/professional/route" });
-  const supabase = createRouteHandlerClient<Database>({ cookies });
-
-  const { searchParams } = new URL(request.url);
-
-  let query = supabase.from("professional_profile_view").select("*");
-
-  const id = searchParams.get("id");
-  const filter = searchParams.get("query");
-  const industry = searchParams.get("industry");
-
-  if (id) {
-    query.eq("id", id).maybeSingle();
-  } else {
-    if (filter) {
-      const filterArray = filter.split(" ");
-      const modifiedArray = filterArray.map((item) => "%" + item + "%");
-
-      const data = await supabase
-        .from("professional_skill")
-        .select("professional_id")
-        .in("skill_name", filterArray);
-
-      if (data.data == null) {
-        return NextResponse.json({
-          status: 200,
-          statusText: "No Professionals Retrieved",
-          data: [],
-        });
-      }
-      const professionalIds = data.data.map((item) => {
-        return item.professional_id;
-      });
-      query.in("id", professionalIds);
-    }
-    if (industry) {
-      query.eq("industry", industry);
-    }
-  }
-
-  const data = await query;
-  return NextResponse.json(data);
-}
+import { CreateProfessionalProfileFormType } from "@/libs/models/UserProfileClass/UserProfileUtility";
 
 export async function POST(request: Request) {
   ConsoleLog({
@@ -56,11 +11,12 @@ export async function POST(request: Request) {
     route: "/api/profile/professional/route",
   });
   const supabase = createRouteHandlerClient<Database>({ cookies });
+
   const {
     professionalProfile,
-    skills,
-  }: { professionalProfile: ProfessionalProfileFormType; skills: string[] } =
-    await request.json();
+  }: {
+    professionalProfile: CreateProfessionalProfileFormType;
+  } = await request.json();
 
   if (professionalProfile.id === "") {
     return NextResponse.error();
@@ -68,28 +24,15 @@ export async function POST(request: Request) {
 
   const response = await supabase.from("professional_profile").upsert({
     id: professionalProfile.id,
-    bio: professionalProfile.bio,
-    firstname: professionalProfile.firstname,
-    lastname: professionalProfile.lastname,
-    email: professionalProfile.email,
-    phone_number: professionalProfile.phone_number,
-    occupation: professionalProfile.occupation,
-    ...(professionalProfile.avatar_file !== null && {
-      avatar_link: professionalProfile.avatar_link,
-    }),
+    professional_introduction: professionalProfile.professional_introduction,
+    professional_job_title: professionalProfile.professional_job_title,
+    availability: professionalProfile.availability,
+    hourly_rate: professionalProfile.hourly_rate,
+    resume_link: professionalProfile.resume_link,
+    skills: professionalProfile.skills,
   });
-  console.log(response);
-  await supabase
-    .from("professional_skill")
-    .delete()
-    .eq("professional_id", professionalProfile.id);
 
-  skills.map(async (skill) => {
-    await supabase.from("professional_skill").upsert({
-      professional_id: professionalProfile.id,
-      skill_name: skill,
-    });
-  });
+  console.log(response);
 
   return NextResponse.json(response);
 }

@@ -15,6 +15,7 @@ import Link from "next/link";
 import useConstants from "@/hooks/useFetchConstant";
 import { useAppStore } from "@/libs/ZustandStore";
 import classNames from "classnames";
+import CustomButton from "./CustomButtons/CustomButton";
 
 type props = {
   portalType: "main" | "user" | "professional";
@@ -48,7 +49,7 @@ export default function NavBar({ portalType, menuItems }: props) {
               href={`${
                 user == null
                   ? "/"
-                  : user.is_professional
+                  : user.professionalProfile == null
                   ? "/professional_portal"
                   : "/user_portal"
               }`}
@@ -76,6 +77,31 @@ export default function NavBar({ portalType, menuItems }: props) {
               </Link>
             </NavbarItem>
           ))}
+        </NavbarContent>
+
+        <NavbarContent>
+          <NavbarItem>
+            <Link
+              className={`w-full`}
+              color="foreground"
+              href={
+                portalType === "professional"
+                  ? "/user_portal"
+                  : "/professional_portal"
+              }
+            >
+              <CustomButton
+                action={() => {}}
+                variant="secondary"
+                text={
+                  portalType === "professional"
+                    ? "User Portal"
+                    : "Professional Portal"
+                }
+                style="bordered"
+              />
+            </Link>
+          </NavbarItem>
         </NavbarContent>
 
         <NavbarContent justify="end" className="hidden sm:flex">

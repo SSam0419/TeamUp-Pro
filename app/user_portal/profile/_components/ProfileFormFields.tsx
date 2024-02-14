@@ -16,9 +16,9 @@ export const FormInput = ({
   isDisabled: boolean;
 }) => {
   return (
-    <div className="p-3 w-full">
+    <div className="py-3 w-full">
       <Input
-        disabled={isDisabled}
+        isDisabled={isDisabled}
         labelPlacement="outside"
         type="text"
         label={label}
@@ -46,9 +46,9 @@ export const FormTextarea = ({
   isDisabled: boolean;
 }) => {
   return (
-    <div className="p-3 w-full">
+    <div className="py-3 w-full">
       <Textarea
-        disabled={isDisabled}
+        isDisabled={isDisabled}
         labelPlacement="outside"
         type="text"
         label={label}
@@ -79,7 +79,7 @@ export const FormLanguageMultipleSelect = ({
   isDisabled: boolean;
 }) => {
   return (
-    <div className="p-3 w-full">
+    <div className="py-3 w-full">
       <Select
         isDisabled={isDisabled}
         labelPlacement="outside"

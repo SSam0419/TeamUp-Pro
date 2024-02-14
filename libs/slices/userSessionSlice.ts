@@ -1,6 +1,6 @@
 import { Session } from "@supabase/supabase-js";
 import { StateCreator } from "zustand";
-import { UserProfileClass } from "../types/models/UserProfileClass/UserProfileClass";
+import { UserProfileClass } from "../models/UserProfileClass/UserProfileClass";
 
 export interface IUserProfile {
   session: Session | null;
