@@ -1,5 +1,13 @@
 import CustomButton from "@/components/CustomButtons/CustomButton";
-import { Badge, Button, Checkbox, Chip } from "@nextui-org/react";
+import { UserProfileClass } from "@/libs/models/UserProfileClass/UserProfileClass";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Checkbox,
+  Chip,
+  Divider,
+} from "@nextui-org/react";
 
 import { ReadonlyURLSearchParams } from "next/navigation";
 import React from "react";
@@ -10,7 +18,7 @@ type props = {
   setShowContactFunction: Function;
   showContact: boolean[];
   check: boolean[];
-  profile: UserProfile;
+  profile: UserProfileClass;
   query: string;
   searchParams: ReadonlyURLSearchParams;
 };
@@ -35,18 +43,35 @@ const ProfileCard = ({
         <Checkbox isSelected={check[idx]} size="lg"></Checkbox>
       </div>
 
-      <div className="h-1/6 border-b flex-col justify-between">
-        <div className="">Occupation : {profile.occupation}</div>
-        <div className="font-light">
-          Contact person: {profile.firstname} {profile.lastname}
+      <div className="flex items-center gap-2">
+        {profile.avatarLink && (
+          <div>
+            <Avatar src={profile.avatarLink} />
+          </div>
+        )}
+        <div className="">
+          {profile.firstname} {profile.lastname}
         </div>
       </div>
-      <div className="h-2/6">{profile.bio}</div>
-      <hr></hr>
+
+      <div className="flex flex-col gap-1">
+        <span className="text-small">{profile.currentOrganization}</span>
+        <span className="text-tiny text-default-600">
+          {profile.professionalProfile.professionalJobTitle}
+        </span>
+      </div>
+
+      <Divider />
+
       <div className="h-2/6">
-        Skills :
+        {profile.professionalProfile.professionalIntroduction}
+      </div>
+
+      <Divider />
+
+      <div className="h-2/6">
         <div className="flex flex-wrap gap-2">
-          {profile.skill.map((skill, idx) => {
+          {profile.professionalProfile.skills.map((skill, idx) => {
             let style = false;
             if (query.includes("query")) {
               const current = new URLSearchParams(
@@ -92,15 +117,6 @@ const ProfileCard = ({
         {showContact[idx] && (
           <div className=" font-semibold">Email: {profile.email}</div>
         )}
-        {/* <div className="my-1"></div>
-                  <CustomButton variant="primary"
-                    text="Send Request"
-                    action={(
-                      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                    ) => {
-                      e.stopPropagation();
-                    }}
-                  /> */}
       </div>
     </div>
   );

@@ -12,14 +12,14 @@ export async function POST(request: Request) {
   });
   const supabase = createRouteHandlerClient<Database>({ cookies });
 
-  const {
-    professionalProfile,
-  }: {
-    professionalProfile: CreateProfessionalProfileFormType;
-  } = await request.json();
+  const professionalProfile: CreateProfessionalProfileFormType =
+    await request.json();
 
-  if (professionalProfile.id === "") {
-    return NextResponse.error();
+  if (!professionalProfile || professionalProfile.id === "") {
+    return NextResponse.json({
+      status: 400,
+      statusText: "Something went wrong, try again later.",
+    });
   }
 
   const response = await supabase.from("professional_profile").upsert({
@@ -31,8 +31,6 @@ export async function POST(request: Request) {
     resume_link: professionalProfile.resume_link,
     skills: professionalProfile.skills,
   });
-
-  console.log(response);
 
   return NextResponse.json(response);
 }

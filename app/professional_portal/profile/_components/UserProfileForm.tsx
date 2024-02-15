@@ -116,7 +116,7 @@ export default function UserProfileForm() {
       userProfileData: CreateUserProfileFormType;
       avatarFile: File | null;
     }) => {
-      return await new UserProfileClass().create({
+      return await new UserProfileClass().createOrUpdate({
         userProfileData,
         avatarFile,
       });

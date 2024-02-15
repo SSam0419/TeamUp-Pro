@@ -50,7 +50,7 @@ export class UserProfileClass {
     }
   }
 
-  async create({
+  async createOrUpdate({
     userProfileData,
     avatarFile,
   }: {
@@ -92,5 +92,18 @@ class ProfessionalProfile {
     this.yearsOfExperience = yearsOfExperience;
     this.professionalJobTitle = professionalJobTitle;
     this.professionalIntroduction = professionalIntroduction;
+  }
+
+  async createOrUpdate({
+    professionalProfileData,
+    resumeFile,
+  }: {
+    professionalProfileData: Utility.CreateProfessionalProfileFormType;
+    resumeFile: File | null;
+  }) {
+    return await Utility.createProfessionalProfile({
+      professionalProfileData,
+      resumeFile,
+    });
   }
 }

@@ -17,15 +17,14 @@ export async function GET(request: Request) {
     .select("* , professional_profile(*)");
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
-  const email = searchParams.get("email");
+
   if (id) {
     query.eq("id", id);
-  }
-  if (email) {
-    query.eq("email", email);
+    const data = await query.maybeSingle();
+    return NextResponse.json(data);
   }
 
-  const data = await query.maybeSingle();
+  const data = await query;
   return NextResponse.json(data);
 }
 
@@ -35,6 +34,7 @@ export async function POST(request: Request) {
     requestType: "POST",
     route: "/api/profile/user/route",
   });
+
   const supabase = createRouteHandlerClient<Database>({ cookies });
   const userProfileData: CreateUserProfileFormType = await request.json();
 

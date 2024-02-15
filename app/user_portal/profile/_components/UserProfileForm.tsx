@@ -108,7 +108,7 @@ export default function UserProfileForm() {
     });
   }, [profileInfo, session?.user.id]);
 
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: async ({
       userProfileData,
       avatarFile,
@@ -116,7 +116,7 @@ export default function UserProfileForm() {
       userProfileData: CreateUserProfileFormType;
       avatarFile: File | null;
     }) => {
-      return await new UserProfileClass().create({
+      return await new UserProfileClass().createOrUpdate({
         userProfileData,
         avatarFile,
       });
@@ -152,7 +152,7 @@ export default function UserProfileForm() {
     if (session == null) return;
 
     userProfile.id = session.user.id;
-    await mutation.mutate({ userProfileData: userProfile, avatarFile });
+    await mutate({ userProfileData: userProfile, avatarFile });
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -360,6 +360,7 @@ export default function UserProfileForm() {
           ) : (
             <div className="flex gap-2 items-center">
               <CustomButton
+                disabled={isLoading}
                 action={() => {
                   setDisableEdit((prev) => !prev);
                 }}
@@ -368,6 +369,7 @@ export default function UserProfileForm() {
                 icon={disableEdit ? <CiSettings size={25} /> : null}
               />
               <CustomButton
+                isLoading={isLoading}
                 disabled={disableEdit}
                 type="submit"
                 action={() => {}}

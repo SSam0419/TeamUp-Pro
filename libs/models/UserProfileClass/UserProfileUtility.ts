@@ -20,7 +20,7 @@ export interface CreateUserProfileFormType {
 export interface CreateProfessionalProfileFormType {
   id: string;
   professional_introduction: string;
-  resume_link: string;
+  resume_link: string | null;
   professional_job_title: string;
   hourly_rate: number;
   availability: boolean;
@@ -91,6 +91,5 @@ export async function createProfessionalProfile({
       professionalProfileData.resume_link = link.publicUrl;
     }
   }
-
   return await axios.post("/api/profile/professional", professionalProfileData);
 }

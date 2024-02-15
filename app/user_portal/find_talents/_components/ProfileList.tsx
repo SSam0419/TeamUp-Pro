@@ -8,10 +8,11 @@ import { useQuery } from "react-query";
 import ToolBarSection from "./ToolBarSection";
 import { useSearchParams } from "next/navigation";
 import ProfileCard from "./ProfileCard";
+import { UserProfileClass } from "@/libs/models/UserProfileClass/UserProfileClass";
 
 const ProfileList = () => {
   const { profileInfo } = useAppStore();
-  const [profiles, setProfiles] = useState<UserProfile[]>([]);
+  const [profiles, setProfiles] = useState<UserProfileClass[]>([]);
   const [showContact, setShowContact] = useState<boolean[]>([]);
   const [check, setCheck] = useState<boolean[]>([]);
   const [query, setQuery] = useState("");
@@ -28,13 +29,18 @@ const ProfileList = () => {
     async () => {
       if (profileInfo == null) return { data: [] };
 
-      const { data } = await axios.get("/api/profile/professional?" + query);
+      const { data } = await axios.get(
+        query ? `/api/profile/user?${query}` : "/api/profile/user"
+      );
 
       return data;
     },
     {
       onSuccess: ({ data }) => {
-        setProfiles(data);
+        const _data = data.map(
+          (userProfile: any) => new UserProfileClass(userProfile)
+        );
+        setProfiles(_data);
         setShowContact(Array(data.length).fill(false));
         setCheck(Array(data.length).fill(false));
       },
@@ -45,12 +51,12 @@ const ProfileList = () => {
 
   return (
     <div className="flex flex-col gap-10 items-center justify-center">
-      <ToolBarSection
+      {/* <ToolBarSection
         isLoading={false}
         professionalIds={profiles
           .filter((profile, index) => check[index])
           .map((profile) => profile.id)}
-      />
+      /> */}
 
       <div className="grid md:grid-cols-4 gap-5 items-center justify-center p-5 ">
         {isLoading && <Spinner />}
