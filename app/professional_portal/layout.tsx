@@ -26,10 +26,10 @@ export default function UserPortalLayout({
             name: "Pitch",
             link: "/professional_portal/my_pitch",
           },
-          {
-            name: "Mailbox",
-            link: "/professional_portal/mailbox",
-          },
+          // {
+          //   name: "Mailbox",
+          //   link: "/professional_portal/mailbox",
+          // },
         ]}
       />
       <Suspense fallback={<p>loading ... </p>}>

@@ -9,8 +9,8 @@ type props = {
 
 const Spinner = ({ size }: props) => {
   return (
-    <div>
-      <MoonLoader color="#F7717D" size={size} />
+    <div className="">
+      <MoonLoader color="#6c63ff" size={size} />
     </div>
   );
 };

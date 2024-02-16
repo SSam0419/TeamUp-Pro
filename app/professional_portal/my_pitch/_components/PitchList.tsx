@@ -7,6 +7,7 @@ import PitchCard from "./PitchCard";
 import UnauthorizedPage from "@/components/UnauthorizedPage";
 import { Divider } from "@nextui-org/react";
 import Spinner from "@/components/Spinner";
+import { Tabs, Tab } from "@nextui-org/react";
 
 const PitchList = () => {
   const { profileInfo } = useAppStore();
@@ -31,23 +32,39 @@ const PitchList = () => {
     <>
       {isLoading && <Spinner />}
       {!isLoading && (
-        <div className="">
-          <p className="text-heading">Accepted</p>
-
-          {pitchList
-            ?.filter((p) => p.is_accepted)
-            .map((pitch: Pitch, idx: number) => (
-              <PitchCard key={idx} pitch={pitch} />
-            ))}
-
-          <Divider className="my-20" />
-
-          <p className="text-heading">Ongoing</p>
-          {pitchList
-            ?.filter((p) => !p.is_accepted)
-            .map((pitch: Pitch, idx: number) => (
-              <PitchCard key={idx} pitch={pitch} />
-            ))}
+        <div className="w-[1000px]">
+          <Tabs>
+            <Tab key="Pending" title="Pending">
+              <div className="">
+                {pitchList
+                  ?.filter((p) => !p.is_accepted)
+                  .map((pitch: Pitch, idx: number) => (
+                    <PitchCard key={idx} pitch={pitch} />
+                  ))}
+                {!pitchList ||
+                  (pitchList
+                    ?.filter((p) => !p.is_accepted)
+                    .map((pitch: Pitch, idx: number) => (
+                      <PitchCard key={idx} pitch={pitch} />
+                    )).length === 0 && <div>No Accepted Pitch Yet</div>)}
+              </div>
+            </Tab>
+            <Tab key="Accepted" title="Accepted">
+              <div className="">
+                {pitchList
+                  ?.filter((p) => p.is_accepted)
+                  .map((pitch: Pitch, idx: number) => (
+                    <PitchCard key={idx} pitch={pitch} />
+                  ))}
+                {!pitchList ||
+                  (pitchList
+                    ?.filter((p) => p.is_accepted)
+                    .map((pitch: Pitch, idx: number) => (
+                      <PitchCard key={idx} pitch={pitch} />
+                    )).length === 0 && <div>No Accepted Pitch Yet</div>)}
+              </div>
+            </Tab>
+          </Tabs>
         </div>
       )}
     </>

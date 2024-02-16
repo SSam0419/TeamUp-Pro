@@ -26,10 +26,10 @@ export default async function UserPortalLayout({
             name: "Talents",
             link: "/user_portal/find_talents",
           },
-          {
-            name: "Mailbox",
-            link: "/user_portal/mailbox",
-          },
+          // {
+          //   name: "Mailbox",
+          //   link: "/user_portal/mailbox",
+          // },
         ]}
       />
       <div className="mt-20">{children}</div>

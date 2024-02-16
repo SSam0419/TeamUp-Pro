@@ -39,9 +39,9 @@ const ProfileCard = ({
       className="bg-white p-5 relative rounded-lg shadow border md:w-[260px] flex flex-col md:h-[430px] gap-3 hover:cursor-pointer hover:bg-slate-100"
       onClick={() => setCheckFunction(idx)}
     >
-      <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+      {/* <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
         <Checkbox isSelected={check[idx]} size="lg"></Checkbox>
-      </div>
+      </div> */}
 
       <div className="flex items-center gap-2">
         {profile.avatarLink && (
@@ -96,27 +96,24 @@ const ProfileCard = ({
             }
             return (
               <div key={idx} className={`${style ? "text-primary" : ""}`}>
-                <Chip color="primary">{skill}</Chip>
+                <Chip color="default">{skill}</Chip>
               </div>
             );
           })}
         </div>
       </div>
+      <Divider />
 
       <div className="h-1/6">
-        {!showContact[idx] && (
-          <CustomButton
-            variant="secondary"
-            text="Get Contact"
-            action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-              e.stopPropagation();
-              setShowContactFunction();
-            }}
-          />
-        )}
-        {showContact[idx] && (
-          <div className=" font-semibold">Email: {profile.email}</div>
-        )}
+        <CustomButton
+          variant="secondary"
+          text="Get Resume"
+          action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.stopPropagation();
+            if (profile.professionalProfile.resumeLink)
+              window.open(profile.professionalProfile.resumeLink, "_blank");
+          }}
+        />
       </div>
     </div>
   );

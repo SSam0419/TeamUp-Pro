@@ -13,9 +13,9 @@ const PitchCard = ({ pitch }: props) => {
   const router = useRouter();
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6 my-2 flex flex-col w-[300px] md:w-[600px] md:flex-row md:items-start ">
+    <div className="bg-white shadow-lg rounded-lg p-6 my-2 flex flex-col w-full   md:flex-row md:items-start ">
       <div className="flex flex-col justify-center items-start w-full md:w-1/2">
-        <p className="text-gray-600 font-medium mb-2">
+        <p className="text-gray-950 font-medium mb-2">
           Status: {pitch.is_read ? "Read" : "Unread"}
         </p>
         <p className="text-gray-600 mb-2">
