@@ -1,5 +1,5 @@
 import CustomButton from "@/components/CustomButtons/CustomButton";
-import { Divider } from "@nextui-org/react";
+import { Chip, Divider } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -16,7 +16,12 @@ const PitchCard = ({ pitch }: props) => {
     <div className="bg-white shadow-lg rounded-lg p-6 my-2 flex flex-col w-full   md:flex-row md:items-start ">
       <div className="flex flex-col justify-center items-start w-full md:w-1/2">
         <p className="text-gray-950 font-medium mb-2">
-          Status: {pitch.is_read ? "Read" : "Unread"}
+          Status:{" "}
+          {pitch.is_read ? (
+            <Chip color="secondary">Read</Chip>
+          ) : (
+            <Chip>Unread</Chip>
+          )}
         </p>
         <p className="text-gray-600 mb-2">
           Delivery Time: {pitch.delivery_time} {pitch.delivery_unit}

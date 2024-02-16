@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import {
+  Divider,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -53,28 +54,26 @@ export default function NavBar({ portalType, menuItems }: props) {
                   ? "/professional_portal"
                   : "/user_portal"
               }`}
-              className="text-subheading"
+              className="font-bold"
             >
               TeamUp Pro
             </Link>
           </NavbarBrand>
+
           {menuItems.map((item, index) => (
             <NavbarItem
               key={`${item}-${index}`}
               className={classNames({
-                // "w-[200px]": portalType === "main",
-                // "w-[150px]": portalType !== "main",
                 "text-center": true,
-                "px-4": true,
-                "py-2": true,
-                "rounded-full": true,
-                "font-semibold": true,
                 "text-primary": pathName === item.link,
               })}
             >
               <Link className={`w-full`} color="foreground" href={item.link}>
                 {item.name}
               </Link>
+              {/* {pathName === item.link && (
+                <Divider className="bg-primary h-[1.5px]" />
+              )} */}
             </NavbarItem>
           ))}
         </NavbarContent>
