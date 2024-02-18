@@ -11,6 +11,9 @@ const DashboardTable = () => {
         {fetchedRequestDetails.length === 0 && profileInfo !== null && (
           <div>You have not create any request yet!</div>
         )}
+        {profileInfo == null && (
+          <div>Create you user profile to post request!</div>
+        )}
         {fetchedRequestDetails &&
           fetchedRequestDetails.map((request, idx) => {
             return <DashboardCard requestDetails={request} key={idx} />;

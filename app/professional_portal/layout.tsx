@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import NavBar from "@/components/Navbar";
+import { MdSpaceDashboard } from "react-icons/md";
+import { HiPresentationChartLine } from "react-icons/hi2";
 
 export const metadata: Metadata = {
   title: "Professional Portal",
@@ -14,25 +16,23 @@ export default function UserPortalLayout({
 }) {
   return (
     <div className="flex flex-col items-center justify-between">
-      {/* <Navbar /> */}
       <NavBar
+        key="professional"
         portalType="professional"
         menuItems={[
           {
             name: "Dashboard",
             link: "/professional_portal",
+            icon: <MdSpaceDashboard />,
           },
           {
             name: "Pitch",
             link: "/professional_portal/my_pitch",
-          },
-          {
-            name: "Mailbox",
-            link: "/professional_portal/mailbox",
+            icon: <HiPresentationChartLine />,
           },
           // {
-          //   name: "FAQ",
-          //   link: "/professional_portal/faq",
+          //   name: "Mailbox",
+          //   link: "/professional_portal/mailbox",
           // },
         ]}
       />

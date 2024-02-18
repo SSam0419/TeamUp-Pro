@@ -14,6 +14,7 @@ import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 import AuthForm from "@/components/AuthForm";
 import { Avatar, Modal, ModalContent, useDisclosure } from "@nextui-org/react";
+import { UserProfileClass } from "@/libs/models/UserProfileClass/UserProfileClass";
 
 const ProfileCard = ({
   portalType,
@@ -29,15 +30,13 @@ const ProfileCard = ({
     setUserSession,
   } = useAppStore();
 
-  const { isLoading } = useQuery(
+  const { isLoading, refetch } = useQuery(
     ["retrieveUserProfile", sessionState, portalType],
     async () => {
       if (sessionState == null) return { data: null };
       if (portalType === "main") return { data: null };
-      let url =
-        portalType === "user"
-          ? "/api/profile/user?id="
-          : "/api/profile/professional?id=";
+      let url = "/api/profile/user?id=";
+
       const { data } = await axios.get(url + sessionState?.user.id);
 
       return data;
@@ -45,7 +44,8 @@ const ProfileCard = ({
 
     {
       onSuccess: ({ data }) => {
-        if (data) setUserProfile(data);
+        const userProfile = new UserProfileClass(data);
+        setUserProfile(userProfile);
       },
     }
   );
@@ -87,7 +87,7 @@ const ProfileCard = ({
   }
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4" key={portalType}>
       {!(portalType === "main") && sessionState !== null && (
         <Link
           href={
@@ -105,12 +105,12 @@ const ProfileCard = ({
                 <RxAvatar size={30} />
                 <p className="hidden md:block">Create Profile</p>
               </div>
-            ) : profileInfo.avatar_link == null ? (
+            ) : profileInfo.avatarLink == null ? (
               <Avatar
                 name={`${profileInfo.firstname} ${profileInfo.lastname}`}
               />
             ) : (
-              <Avatar src={profileInfo.avatar_link} />
+              <Avatar src={profileInfo.avatarLink} />
             )}
           </span>
         </Link>
@@ -121,7 +121,7 @@ const ProfileCard = ({
           type="submit"
           className="bg-secondary text-white font-medium px-10 py-2 rounded-[45px] "
           onClick={() => {
-            toast("You are now signing out .. ");
+            toast.success("You are now signing out .. ");
             mutate();
             router.push("/");
             setUserProfile(null);

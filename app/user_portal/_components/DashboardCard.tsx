@@ -1,6 +1,6 @@
 "use client";
 
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import StatusChip from "@/components/StatusChip";
 import {
   Card,
@@ -50,7 +50,8 @@ const DashboardCard = ({
       <Divider />
       <CardFooter>
         <div className="w-full">
-          <SecondaryButton
+          <CustomButton
+            variant="secondary"
             isLoading={redirecting}
             text="Read More"
             action={async () => {

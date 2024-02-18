@@ -1,5 +1,4 @@
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -38,7 +37,7 @@ const PitchCard = ({ pitchData, requestId }: props) => {
     },
     {
       onSuccess: () => {
-        toast(
+        toast.success(
           "Congrats! You have accepted a pitch from the professional! \n We will notify the professional shortly!"
         );
         setAccepted(true);
@@ -61,7 +60,7 @@ const PitchCard = ({ pitchData, requestId }: props) => {
         <div>
           Delivery : {pitchData.delivery_time} {pitchData.delivery_unit}
         </div>
-        {/* <SecondaryButton text="Message Professional" action={() => {}} /> */}
+        {/* <CustomButton variant="secondary" text="Message Professional" action={() => {}} /> */}
       </div>
       <div className="border my-2"></div>
       {read && (
@@ -69,7 +68,8 @@ const PitchCard = ({ pitchData, requestId }: props) => {
           <div>{pitchData.message}</div>
           <div className="border my-2"></div>
           <div className="w-full flex gap-3 justify-between">
-            <PrimaryButton
+            <CustomButton
+              variant="primary"
               disabled={accepted}
               isLoading={isUpdatingPitchAcceptStatus}
               text={accepted ? "You have accepted" : "Accept"}
@@ -82,7 +82,8 @@ const PitchCard = ({ pitchData, requestId }: props) => {
       )}
       {!read && (
         <div className="w-full">
-          <PrimaryButton
+          <CustomButton
+            variant="primary"
             isLoading={isLoading}
             text="Read Message"
             action={() => {

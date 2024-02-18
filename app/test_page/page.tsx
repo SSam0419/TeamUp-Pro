@@ -18,7 +18,7 @@ const Page = () => {
   }
   return (
     <Suspense fallback={<p>loading ...</p>}>
-      <div>Page this is just a random page for testing getData async</div>
+      <div>Page</div>
     </Suspense>
   );
 };

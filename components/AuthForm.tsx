@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiFillGithub, AiOutlineMail } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { RiLockPasswordLine } from "react-icons/ri";
-import PrimaryButton from "./CustomButtons/PrimaryButton";
-import SecondaryButton from "./CustomButtons/SecondaryButton";
+import CustomButton from "./CustomButtons/CustomButton";
 import Link from "next/link";
 import { useMutation } from "react-query";
 
@@ -222,13 +221,15 @@ const AuthForm = ({
           <div className="italic text-primary h-[10px]">{hint}</div>
           {signUp && (
             <div className="flex gap-2 justify-center items-center text-sm">
-              <PrimaryButton
+              <CustomButton
+                variant="primary"
                 text="Sign Up"
                 action={() => {
                   signUpWithEmail();
                 }}
               />
-              <SecondaryButton
+              <CustomButton
+                variant="secondary"
                 text="Cancel"
                 action={() => {
                   setSignUp(false);
@@ -238,13 +239,15 @@ const AuthForm = ({
           )}
           {!signUp && (
             <div className="flex gap-2 justify-center items-center text-sm">
-              <PrimaryButton
+              <CustomButton
+                variant="primary"
                 text="Sign In"
                 action={() => {
                   signInWithEmail();
                 }}
               />
-              <SecondaryButton
+              <CustomButton
+                variant="secondary"
                 text="Sign Up"
                 action={() => {
                   setSignUp(true);

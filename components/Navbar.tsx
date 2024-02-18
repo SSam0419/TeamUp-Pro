@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
+import React, { ReactNode } from "react";
 import {
+  Divider,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -12,19 +13,28 @@ import {
 import ProfileCard from "@/components/ProfileCard";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import useConstants from "@/hooks/useFetchConstant";
+import { useAppStore } from "@/libs/ZustandStore";
+import classNames from "classnames";
+import CustomButton from "./CustomButtons/CustomButton";
+import { PiSignpostFill } from "react-icons/pi";
 
 type props = {
   portalType: "main" | "user" | "professional";
-  menuItems: { name: string; link: string }[];
+  menuItems: { name: string; link: string; icon?: ReactNode }[];
 };
 
 export default function NavBar({ portalType, menuItems }: props) {
+  useConstants();
+
   const pathName = usePathname();
+
+  const user = useAppStore((state) => state.profileInfo);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" key={portalType}>
       <Navbar
         isBordered
         isMenuOpen={isMenuOpen}
@@ -37,32 +47,68 @@ export default function NavBar({ portalType, menuItems }: props) {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <Link href={"/"} className="text-subheading">
+            <Link
+              href={`${
+                user == null
+                  ? "/"
+                  : user.professionalProfile == null
+                  ? "/professional_portal"
+                  : "/user_portal"
+              }`}
+              className="font-bold"
+            >
               TeamUp Pro
             </Link>
           </NavbarBrand>
         </NavbarContent>
 
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent>
           {menuItems.map((item, index) => (
             <NavbarItem
               key={`${item}-${index}`}
-              className={`${pathName === item.link ? "border-primary" : ""} ${
-                portalType === "main" ? "w-[200px]" : "w-[150px]"
-              } text-center border shadpw px-4 py-2 rounded-full`}
+              className={classNames({
+                "text-center": true,
+                "text-primary": pathName === item.link,
+              })}
             >
               <Link
-                className={`w-full ${
-                  pathName === item.link ? "text-primary font-medium" : ""
-                } `}
-                color={"foreground"}
+                className={`w-full rounded-full px-5 py-2 hover:bg-default flex gap-2  items-center justify-center`}
+                color="foreground"
                 href={item.link}
               >
+                {item.icon !== null && item.icon}
                 {item.name}
               </Link>
             </NavbarItem>
           ))}
         </NavbarContent>
+
+        {!(portalType === "main") && (
+          <NavbarContent>
+            <NavbarItem>
+              <Link
+                className={`w-full`}
+                color="foreground"
+                href={
+                  portalType === "professional"
+                    ? "/user_portal"
+                    : "/professional_portal"
+                }
+              >
+                <CustomButton
+                  action={() => {}}
+                  variant="secondary"
+                  text={
+                    portalType === "professional"
+                      ? "User Portal"
+                      : "Professional Portal"
+                  }
+                  style="bordered"
+                />
+              </Link>
+            </NavbarItem>
+          </NavbarContent>
+        )}
 
         <NavbarContent justify="end" className="hidden sm:flex">
           <NavbarItem>

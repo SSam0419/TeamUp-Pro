@@ -1,24 +1,26 @@
 import React from "react";
 import { Select, SelectItem } from "@nextui-org/react";
-import { IndustriesOptions } from "@/app/_types/constants/industries";
 
 type props = {
+  industryOptions: string[];
   setIndustry: Function;
 };
 
-export default function IndustrySelect({ setIndustry }: props) {
+export default function IndustrySelect({
+  setIndustry,
+  industryOptions,
+}: props) {
   return (
     <Select
       isRequired
       label="Industry"
       placeholder="Select an industry"
-      defaultSelectedKeys={IndustriesOptions[0]}
       className=""
       onChange={(industry) => {
         setIndustry(industry.target.value);
       }}
     >
-      {IndustriesOptions.map((industry) => (
+      {industryOptions.map((industry) => (
         <SelectItem key={industry} value={industry}>
           {industry}
         </SelectItem>

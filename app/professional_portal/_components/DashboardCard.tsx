@@ -1,6 +1,6 @@
 "use client";
 
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import StatusChip from "@/components/StatusChip";
 import {
   Card,
@@ -17,6 +17,7 @@ import { GrLanguage } from "react-icons/gr";
 import { MdAirplanemodeActive } from "react-icons/md";
 import { FaHouse } from "react-icons/fa6";
 import { FaNetworkWired } from "react-icons/fa";
+import { SlPeople } from "react-icons/sl";
 
 const DashboardCard = ({
   requestDetails,
@@ -34,6 +35,9 @@ const DashboardCard = ({
       }}
     >
       <div className="flex items-center gap-4 bg-">
+        <div className="flex items-center gap-2">
+          <SlPeople /> {requestDetails.industry || "UNAVAILABLE"}
+        </div>
         <div className="flex items-center gap-2">
           <CiLocationOn /> {requestDetails.base_location || "UNAVAILABLE"}
         </div>
@@ -65,15 +69,15 @@ const DashboardCard = ({
       </div>
       <hr></hr>
       <div className="flex flex-col gap-2">
-        <div className="grid grid-cols-7 gap-5 w-full text-sm text-gray-400">
+        <div className="grid grid-cols-8 w-full text-sm text-gray-400">
           <div className="col-span-3">Title</div>
-          <div className="col-span-1">Status</div>
+          <div className="col-span-2">Status</div>
           <div className="col-span-2">Budget(HKD)</div>
           <div className="col-span-1">Duration</div>
         </div>
-        <div className="grid grid-cols-7 gap-5 w-full text-base">
+        <div className="grid grid-cols-8 w-full text-base">
           <div className="col-span-3 line-clamp-1">{requestDetails.title}</div>
-          <div className="col-span-1">
+          <div className="col-span-2">
             <StatusChip status={requestDetails.status} />
           </div>
           <div className="col-span-2">
@@ -91,8 +95,10 @@ const DashboardCard = ({
           <div>{requestDetails.content}</div>
 
           <div className="w-full">
-            <SecondaryButton
+            <CustomButton
+              variant="secondary"
               isLoading={redirecting}
+              disabled={requestDetails.status === "Cancelled"}
               text="Pitch Now"
               action={() => {
                 setRedirecting(true);
@@ -106,47 +112,6 @@ const DashboardCard = ({
         </>
       )}
     </div>
-  );
-
-  return (
-    <Card className="flex flex-row md:w-full h-[380px] ">
-      <CardHeader className="flex flex-col w-full">
-        <div className="flex justify-between items-center w-full">
-          <div className="w-3/4 max-h-20 truncate overflow-hidden">
-            {requestDetails.title}
-          </div>
-
-          <StatusChip status={requestDetails.status} />
-        </div>
-        <div className="text-small text-default-500 w-full">
-          {requestDetails.duration} {requestDetails.duration_unit}
-        </div>
-        <div className="text-small text-default-500 w-full">
-          ${requestDetails.budget_lower_limit}-
-          {requestDetails.budget_upper_limit}
-        </div>
-      </CardHeader>
-      <Divider />
-      <CardBody className="">
-        <div className="line-clamp-6">{requestDetails.content}</div>
-      </CardBody>
-      <Divider />
-      <CardFooter>
-        <div className="w-full">
-          <SecondaryButton
-            isLoading={redirecting}
-            text="Read More"
-            action={() => {
-              setRedirecting(true);
-              router.push(
-                "/professional_portal/view_request/" + requestDetails.id
-              );
-            }}
-            icon={<MdReadMore size={20} />}
-          />
-        </div>
-      </CardFooter>
-    </Card>
   );
 };
 

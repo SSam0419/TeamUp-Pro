@@ -1,5 +1,5 @@
 import React from "react";
-import SearchQuery from "./SearchQuery";
+import SearchQuery from "../SearchQuery";
 import IndustryFilter from "./IndustryFilter";
 
 const DashboardToolBar = ({ isLoading }: { isLoading: boolean }) => {

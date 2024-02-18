@@ -5,15 +5,14 @@ import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import SearchBar from "./SearchBar";
+import ToolBarSection from "./ToolBarSection";
 import { useSearchParams } from "next/navigation";
-import SendRequestButton from "./SendRequestButton";
 import ProfileCard from "./ProfileCard";
-import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
+import { UserProfileClass } from "@/libs/models/UserProfileClass/UserProfileClass";
 
 const ProfileList = () => {
   const { profileInfo } = useAppStore();
-  const [profiles, setProfiles] = useState<UserProfile[]>([]);
+  const [profiles, setProfiles] = useState<UserProfileClass[]>([]);
   const [showContact, setShowContact] = useState<boolean[]>([]);
   const [check, setCheck] = useState<boolean[]>([]);
   const [query, setQuery] = useState("");
@@ -30,13 +29,18 @@ const ProfileList = () => {
     async () => {
       if (profileInfo == null) return { data: [] };
 
-      const { data } = await axios.get("/api/profile/professional?" + query);
+      const { data } = await axios.get(
+        query ? `/api/profile/user?${query}` : "/api/profile/user"
+      );
 
       return data;
     },
     {
       onSuccess: ({ data }) => {
-        setProfiles(data);
+        const _data = data.map(
+          (userProfile: any) => new UserProfileClass(userProfile)
+        );
+        setProfiles(_data);
         setShowContact(Array(data.length).fill(false));
         setCheck(Array(data.length).fill(false));
       },
@@ -47,9 +51,14 @@ const ProfileList = () => {
 
   return (
     <div className="flex flex-col gap-10 items-center justify-center">
-      <SearchBar isLoading={false} />
+      {/* <ToolBarSection
+        isLoading={false}
+        professionalIds={profiles
+          .filter((profile, index) => check[index])
+          .map((profile) => profile.id)}
+      /> */}
 
-      <div className="grid grid-cols-4 gap-5 items-center justify-center p-5">
+      <div className="grid md:grid-cols-4 gap-5 items-center justify-center p-5 ">
         {isLoading && <Spinner />}
         {!isLoading &&
           profiles.map((profile, idx) => {
@@ -80,13 +89,7 @@ const ProfileList = () => {
             );
           })}
       </div>
-      <div className="sticky w-full bottom-0 md:bottom-10 md:w-[550px]">
-        <SendRequestButton
-          professionalIds={profiles
-            .filter((profile, index) => check[index])
-            .map((profile) => profile.id)}
-        />
-      </div>
+      <div className="fixed w-full right-10 bottom-0 md:bottom-10 md:w-[550px]"></div>
     </div>
   );
 };

@@ -1,5 +1,13 @@
-import SecondaryButton from "@/components/CustomButtons/SecondaryButton";
-import { Button, Checkbox } from "@nextui-org/react";
+import CustomButton from "@/components/CustomButtons/CustomButton";
+import { UserProfileClass } from "@/libs/models/UserProfileClass/UserProfileClass";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Checkbox,
+  Chip,
+  Divider,
+} from "@nextui-org/react";
 
 import { ReadonlyURLSearchParams } from "next/navigation";
 import React from "react";
@@ -10,7 +18,7 @@ type props = {
   setShowContactFunction: Function;
   showContact: boolean[];
   check: boolean[];
-  profile: UserProfile;
+  profile: UserProfileClass;
   query: string;
   searchParams: ReadonlyURLSearchParams;
 };
@@ -28,24 +36,42 @@ const ProfileCard = ({
   return (
     <div
       key={idx}
-      className="bg-white p-5 relative rounded-lg shadow border w-[300px] flex flex-col h-[430px] gap-3 hover:cursor-pointer hover:bg-slate-100"
+      className="bg-white p-5 relative rounded-lg shadow border md:w-[260px] flex flex-col md:h-[430px] gap-3 hover:cursor-pointer hover:bg-slate-100"
       onClick={() => setCheckFunction(idx)}
     >
-      <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+      {/* <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
         <Checkbox isSelected={check[idx]} size="lg"></Checkbox>
-      </div>
+      </div> */}
 
-      <div className="h-1/6 border-b flex-col justify-between">
-        <div className="">Occupation : {profile.occupation}</div>
-        <div className="font-light">
-          Contact person: {profile.firstname} {profile.lastname}
+      <div className="flex items-center gap-2">
+        {profile.avatarLink && (
+          <div>
+            <Avatar src={profile.avatarLink} />
+          </div>
+        )}
+        <div className="">
+          {profile.firstname} {profile.lastname}
         </div>
       </div>
-      <div className="h-2/6">{profile.bio}</div>
+
+      <div className="flex flex-col gap-1">
+        <span className="text-small">{profile.currentOrganization}</span>
+        <span className="text-tiny text-default-600">
+          {profile.professionalProfile.professionalJobTitle}
+        </span>
+      </div>
+
+      <Divider />
+
       <div className="h-2/6">
-        Skills :
+        {profile.professionalProfile.professionalIntroduction}
+      </div>
+
+      <Divider />
+
+      <div className="h-2/6">
         <div className="flex flex-wrap gap-2">
-          {profile.skill.map((skill, idx) => {
+          {profile.professionalProfile.skills.map((skill, idx) => {
             let style = false;
             if (query.includes("query")) {
               const current = new URLSearchParams(
@@ -70,35 +96,24 @@ const ProfileCard = ({
             }
             return (
               <div key={idx} className={`${style ? "text-primary" : ""}`}>
-                #{skill}
+                <Chip color="default">{skill}</Chip>
               </div>
             );
           })}
         </div>
       </div>
+      <Divider />
 
       <div className="h-1/6">
-        {!showContact[idx] && (
-          <SecondaryButton
-            text="Get Contact"
-            action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-              e.stopPropagation();
-              setShowContactFunction();
-            }}
-          />
-        )}
-        {showContact[idx] && (
-          <div className=" font-semibold">Email: {profile.email}</div>
-        )}
-        {/* <div className="my-1"></div>
-                  <PrimaryButton
-                    text="Send Request"
-                    action={(
-                      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                    ) => {
-                      e.stopPropagation();
-                    }}
-                  /> */}
+        <CustomButton
+          variant="secondary"
+          text="Get Resume"
+          action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.stopPropagation();
+            if (profile.professionalProfile.resumeLink)
+              window.open(profile.professionalProfile.resumeLink, "_blank");
+          }}
+        />
       </div>
     </div>
   );

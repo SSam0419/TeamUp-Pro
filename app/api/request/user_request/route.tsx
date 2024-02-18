@@ -1,5 +1,6 @@
 import { CreateRequestFormDataType } from "@/app/user_portal/_components/RequestForm/CreateRequestForm";
 import { ConsoleLog } from "@/server-actions/utils/logger";
+import { Database } from "@/libs/types/database";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -15,11 +16,11 @@ export async function GET(request: Request) {
   const requestId = searchParams.get("request_id");
   const from = searchParams.get("from");
   const to = searchParams.get("to");
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
 
-  // const { count, error } = await supabase
-  //   .from("request_details")
-  //   .select("*", { count: "exact", head: true });
+  if (!userId) {
+    return NextResponse.json({ status: 400, statusText: "missing user id" });
+  }
 
   let query;
 
@@ -50,7 +51,7 @@ export async function GET(request: Request) {
     const requestDetailsFromUserId = await query
       .order("created_at", { ascending: false })
       .eq("created_by", userId);
-    console.log({ requestDetailsFromUserId, from, to });
+
     return NextResponse.json(requestDetailsFromUserId);
   }
 }
@@ -64,9 +65,13 @@ export async function PUT(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const requestDetails: RequestDetails = await request.json();
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const request_id = searchParams.get("request_id");
   const pitch_id = searchParams.get("pitch_id");
+
+  if (!request_id) {
+    return NextResponse.json({ status: 400, statusText: "missing request id" });
+  }
 
   if (pitch_id) {
     const { data, error, status, statusText } = await supabase
@@ -102,21 +107,36 @@ export async function POST(request: Request) {
     requestType: "POST",
     route: "/api/request/user_request/route",
   });
-  const requestDetails: CreateRequestFormDataType = await request.json();
-  const supabase = createRouteHandlerClient({ cookies });
-  const data = await supabase.from("request_details").insert({
-    title: requestDetails.title,
-    content: requestDetails.content,
-    duration: requestDetails.duration,
-    budget_upper_limit: requestDetails.budget_upper_limit,
-    budget_lower_limit: requestDetails.budget_lower_limit,
-    industry: requestDetails.industry,
-    created_by: requestDetails.createdBy,
-    duration_unit: requestDetails.duration_unit,
-    status: "Active",
-    base_location: requestDetails.base_location,
-    language_requirements: requestDetails.language_requirements,
-    workmode: requestDetails.workmode,
-  });
-  return NextResponse.json(data);
+  try {
+    const requestDetails: CreateRequestFormDataType = await request.json();
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    if (!requestDetails) {
+      return NextResponse.json("", {
+        status: 400,
+        statusText: "missing data",
+      });
+    }
+    const data = await supabase.from("request_details").insert({
+      title: requestDetails.title,
+      content: requestDetails.content,
+      duration: requestDetails.duration,
+      budget_upper_limit: parseFloat(requestDetails.budget_upper_limit),
+      budget_lower_limit: parseFloat(requestDetails.budget_lower_limit),
+      industry: requestDetails.industry,
+      duration_unit: requestDetails.duration_unit,
+      status: "Active",
+      base_location: requestDetails.base_location,
+      language_requirements: requestDetails.language_requirements,
+      workmode: requestDetails.workmode,
+      days_until_expiration: requestDetails.days_until_expiration,
+    });
+
+    return NextResponse.json("", {
+      status: data.status,
+      statusText: data.statusText,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -33,6 +33,9 @@ const MessageList = () => {
             </div>
           );
         })}
+      {(messsages == null || messsages.length === 0) && (
+        <div>No messages yet.</div>
+      )}
     </div>
   );
 };

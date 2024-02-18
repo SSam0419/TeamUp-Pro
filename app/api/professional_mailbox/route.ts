@@ -1,16 +1,16 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
+import { Database } from "@/libs/types/database";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { professionalMailboxTb } from "../constant/table";
 
 export async function PUT(request: NextRequest) {
   ConsoleLog({ requestType: "PUT", route: "/api/professional_mailbox/route" });
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const { id, message } = await request.json();
 
   const { data, error } = await supabase
-    .from(professionalMailboxTb)
+    .from("professional_mailbox")
     .update(message)
     .eq("id", id);
 
@@ -20,7 +20,7 @@ export async function PUT(request: NextRequest) {
 export async function GET(request: NextRequest) {
   ConsoleLog({ requestType: "GET", route: "/api/professional_mailbox/route" });
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const { searchParams } = new URL(request.url);
   const user_id = searchParams.get("user_id");
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { data, error } = await supabase
-    .from(professionalMailboxTb)
+    .from("professional_mailbox")
     .select("*, user_profile(*)")
     .eq("sent_to", user_id)
     .order("created_at", { ascending: false });
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   ConsoleLog({ requestType: "POST", route: "/api/professional_mailbox/route" });
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const { searchParams } = new URL(request.url);
   const { message, userIds } = await request.json();
 
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
   for (const id of userIds) {
     const { data: checkDuplicateMessage, error: checkError } = await supabase
-      .from(professionalMailboxTb)
+      .from("professional_mailbox")
       .select()
       .eq("message", message)
       .eq("sent_to", id)
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
         statusText: "ERROR : Try Again Later",
       });
     } else {
-      const { error } = await supabase.from(professionalMailboxTb).insert({
+      const { error } = await supabase.from("professional_mailbox").insert({
         message: message,
         sent_to: id,
         sent_from: user_id,

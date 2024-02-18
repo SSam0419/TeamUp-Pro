@@ -1,14 +1,22 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { ReactQueryClientProvider } from "@/components/TanstackQueryProvider";
+import { ReactQueryClientProvider } from "@/components/Providers/TanstackQueryProvider";
 import { Toaster } from "react-hot-toast";
-import { MyNextUIProvider } from "@/components/NextUIProvider";
+import { MyNextUIProvider } from "@/components/Providers/NextUIProvider";
 import { Analytics } from "@vercel/analytics/react";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Roboto } from "next/font/google";
+import NavBar from "@/components/Navbar";
+import { FaSuitcase } from "react-icons/fa";
+import { MdOutlinePostAdd } from "react-icons/md";
+
+const fontFamily = Roboto({
+  weight: ["100", "400", "500", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
+  icons: { icon: "favicon.ico", apple: "favicon.ico" },
   title: "TeamUpPro",
   description: "TeamUpPro Beta Version, coming soon ... ",
 };
@@ -20,7 +28,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="text-black font-normal min-h-screen bg-slate-50">
+      <body
+        className={`text-black font-normal min-h-screen bg-slate-50 ${fontFamily.className}`}
+      >
         <MyNextUIProvider>
           <ReactQueryClientProvider>
             <div className="flex flex-col items-center justify-between">
@@ -36,6 +46,7 @@ export default function RootLayout({
                   position: "bottom-right",
                 }}
               />
+
               {children}
               <Analytics />
             </div>

@@ -1,8 +1,7 @@
 "use client";
 
 import { Input, Textarea, Slider } from "@nextui-org/react";
-import { IndustriesOptions } from "@/app/_types/constants/industries";
-import PrimaryButton from "@/components/CustomButtons/PrimaryButton";
+import CustomButton from "@/components/CustomButtons/CustomButton";
 import { useAppStore } from "@/libs/ZustandStore";
 import axios from "axios";
 import React, { useState } from "react";
@@ -13,6 +12,8 @@ import LanguageDropdown from "./LanguageDropdown";
 import LocationDropdown from "./LocationSelect";
 import WorkModeSelect from "./WorkModeSelect";
 import IndustrySelect from "./IndustrySelect";
+import { useConstantStore } from "@/libs/slices/constantSlice";
+import ExpirationDateInput from "./ExpirationDateInput";
 
 type props = {
   onClose: Function;
@@ -24,16 +25,22 @@ export type CreateRequestFormDataType = {
   budget_lower_limit: string;
   budget_upper_limit: string;
   duration: string;
-  industry: (typeof IndustriesOptions)[number];
-  createdBy: string;
-  duration_unit: string;
+  industry: string;
+  duration_unit: "Days" | "Weeks" | "Months" | "Years";
   base_location: string;
   language_requirements: string[];
-  workmode: string;
+  workmode: "Remote Only" | "On Site Only" | "Hybrid";
+  days_until_expiration: number;
 };
 
 const CreateRequestForm = ({ onClose }: props) => {
-  const { session, profileInfo } = useAppStore();
+  const languageOptions = useConstantStore((state) => state.languageOptions);
+  const industryOptions = useConstantStore((state) => state.industryOptions);
+  const baseLocationOptions = useConstantStore(
+    (state) => state.baseLocationOptions
+  );
+
+  const { session } = useAppStore();
   const queryClient = useQueryClient();
 
   const { mutate, isLoading, error } = useMutation(
@@ -41,10 +48,6 @@ const CreateRequestForm = ({ onClose }: props) => {
       const result = await axios.post("/api/request/user_request", formData, {
         validateStatus: (status) => status >= 200 && status < 300,
       });
-
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error(result.statusText);
-      }
 
       return result;
     },
@@ -54,7 +57,7 @@ const CreateRequestForm = ({ onClose }: props) => {
         queryClient.invalidateQueries({ queryKey: ["retrieveRequestDetails"] });
       },
       onError: (error: Error) => {
-        toast(error.toString());
+        toast.error("Something went wrong! ");
       },
     }
   );
@@ -66,11 +69,11 @@ const CreateRequestForm = ({ onClose }: props) => {
     budget_upper_limit: "0.00",
     duration: "",
     duration_unit: "Days",
-    industry: IndustriesOptions[0],
-    createdBy: profileInfo?.id || session?.user?.id || "",
+    industry: industryOptions[0],
     base_location: "",
-    language_requirements: [],
-    workmode: "",
+    language_requirements: [languageOptions[0]],
+    workmode: "Hybrid",
+    days_until_expiration: 10,
   });
 
   return (
@@ -83,14 +86,31 @@ const CreateRequestForm = ({ onClose }: props) => {
       {!isLoading && (
         <div className="flex flex-col gap-5">
           <div className="mb-4 text-subheading">Submit a request now!</div>
-          <IndustrySelect
-            setIndustry={(i: string) =>
-              setFormData((prevFormData) => ({
-                ...prevFormData,
-                industry: i,
-              }))
-            }
-          />
+          <div className="flex gap-5 justify-between">
+            <IndustrySelect
+              industryOptions={industryOptions}
+              setIndustry={(i: string) =>
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  industry: i,
+                }))
+              }
+            />
+            <ExpirationDateInput
+              daysUntilExpiration={formData.days_until_expiration}
+              setDaysUntilExpiration={(i: string) => {
+                const parsedValue = parseInt(i);
+                if (!isNaN(parsedValue)) {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    days_until_expiration: parsedValue,
+                  }));
+                } else {
+                  toast.error("Please input integer number only");
+                }
+              }}
+            />
+          </div>
           <Input
             type="text"
             label="Title"
@@ -149,10 +169,14 @@ const CreateRequestForm = ({ onClose }: props) => {
               type="text"
               label="Duration"
               placeholder=" "
+              value={formData.duration}
               onChange={(e) => {
+                const value = e.target.value;
+                const digits = value.match(/\d+/g);
+                const filteredValue = digits ? digits.join("") : "";
                 setFormData((prevFormData) => ({
                   ...prevFormData,
-                  duration: e.target.value,
+                  duration: filteredValue,
                 }));
               }}
               endContent={
@@ -161,10 +185,18 @@ const CreateRequestForm = ({ onClose }: props) => {
                   name="duration_unit"
                   id=""
                   onChange={(e) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      duration_unit: e.target.value,
-                    }));
+                    const selectedValue = e.target.value;
+                    if (
+                      selectedValue === "Days" ||
+                      selectedValue === "Weeks" ||
+                      selectedValue === "Months" ||
+                      selectedValue === "Years"
+                    ) {
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        duration_unit: selectedValue,
+                      }));
+                    }
                   }}
                 >
                   <option value={"Days"}>Day(s)</option>
@@ -179,6 +211,7 @@ const CreateRequestForm = ({ onClose }: props) => {
           <div>
             <label>Required Languages</label>
             <LanguageDropdown
+              availableLanguages={languageOptions}
               setLanguages={(languages: string[]) => {
                 setFormData((prevFormData) => ({
                   ...prevFormData,
@@ -189,6 +222,7 @@ const CreateRequestForm = ({ onClose }: props) => {
           </div>
           <div className="flex gap-2">
             <LocationDropdown
+              baseLocationOptions={baseLocationOptions}
               setLocation={(location: string) => {
                 setFormData((prevFormData) => ({
                   ...prevFormData,
@@ -197,7 +231,9 @@ const CreateRequestForm = ({ onClose }: props) => {
               }}
             />
             <WorkModeSelect
-              setWorkmode={(workmode: string) => {
+              setWorkmode={(
+                workmode: "Remote Only" | "On Site Only" | "Hybrid"
+              ) => {
                 setFormData((prevFormData) => ({
                   ...prevFormData,
                   workmode: workmode,
@@ -207,7 +243,8 @@ const CreateRequestForm = ({ onClose }: props) => {
           </div>
 
           <div className="my-3 flex items-center justify-center">
-            <PrimaryButton
+            <CustomButton
+              variant="primary"
               action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 e.preventDefault();
                 if (
@@ -215,18 +252,18 @@ const CreateRequestForm = ({ onClose }: props) => {
                     (value) => value.toString().trim() === ""
                   )
                 ) {
-                  toast("Please filled in all requested field(s)");
+                  toast.error("Please filled in all requested field(s)");
                   return;
                 }
                 if (
                   parseFloat(formData.budget_lower_limit) >
                   parseFloat(formData.budget_upper_limit)
                 ) {
-                  toast("Please filled in valid budget range");
+                  toast.error("Please filled in valid budget range");
                   return;
                 }
                 if (session == null) {
-                  toast("Please Log In before submitting your rquest! ");
+                  toast.error("Please Log In before submitting your rquest! ");
                   return;
                 }
                 try {
@@ -242,7 +279,7 @@ const CreateRequestForm = ({ onClose }: props) => {
         </div>
       )}
 
-      {error && <p>{error.toString()}</p>}
+      {error && <p className="text-red-400">Something went wrong! </p>}
     </form>
   );
 };

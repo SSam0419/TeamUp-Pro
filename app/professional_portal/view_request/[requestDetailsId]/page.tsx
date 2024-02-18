@@ -9,7 +9,7 @@ import PitchForm from "./_components/PitchForm";
 import { useAppStore } from "@/libs/ZustandStore";
 
 const Page = ({ params }: { params: { requestDetailsId: string } }) => {
-  const { profileInfo } = useAppStore();
+  const { profileInfo, session } = useAppStore();
 
   const {
     data: requestDetailsData,
@@ -24,10 +24,20 @@ const Page = ({ params }: { params: { requestDetailsId: string } }) => {
     return data.data.data as RequestDetails;
   });
 
-  if (profileInfo === null) {
+  if (session === null) {
     return (
       <div className="text-center w-[880px] h-[300px] bg-white p-4 rounded-lg flex justify-center items-center italic">
         Please Sign In Before Viewing Unlocked Request Details
+      </div>
+    );
+  }
+  if (profileInfo === null) {
+    return (
+      <div className="text-center w-[880px] h-[300px] bg-white p-4 rounded-lg flex justify-center items-center italic">
+        <p>
+          <b> Complete Your Professional Profile </b> Before Viewing Unlocked
+          Request Details
+        </p>
       </div>
     );
   }

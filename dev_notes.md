@@ -1,3 +1,8 @@
+prompt
+You are a software platform consultant.
+
+I am building a platform specialize in optimizing user post requests and facilitating professional engagement. The web application streamlines the process by allowing users to submit requests, which are then viewed by professionals who can submit their pitches. Users have the ability to review these pitches and make an informed decision to either accept or decline them.
+
 # User Portal:
 
 ## Request Submission:
