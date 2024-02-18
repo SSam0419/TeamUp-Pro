@@ -12,6 +12,13 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const professional_id = searchParams.get("professional_id");
 
+  if (!professional_id) {
+    return new NextResponse(null, {
+      status: 400,
+      statusText: "Invalid request",
+    });
+  }
+
   const { data, error } = await supabase
     .from("professional_pitch_view")
     .select("*")
@@ -36,12 +43,19 @@ export async function POST(request: NextRequest) {
 
   const pitchData: PitchFormDataType = await request.json();
 
+  if (!professional_id || !request_id || !pitchData) {
+    return new NextResponse(null, {
+      status: 400,
+      statusText: "Invalid request",
+    });
+  }
+
   const { data, error } = await supabase.from("professional_pitch").insert({
     request_details_id: request_id,
     professional_id: professional_id,
     message: pitchData.message,
     price: pitchData.price,
-    delivery_time: pitchData.deliveryTime,
+    delivery_time: parseInt(pitchData.deliveryTime),
     delivery_unit: pitchData.deliveryUnit,
   });
 
@@ -63,6 +77,13 @@ export async function PUT(request: NextRequest) {
   const is_accepted = searchParams.get("is_accepted");
   const request_id = searchParams.get("request_id");
   const professional_id = searchParams.get("professional_id");
+
+  if (!request_id) {
+    return new NextResponse(null, {
+      status: 400,
+      statusText: "Invalid request",
+    });
+  }
 
   const pitchData: PitchFormDataType =
     !is_read && !is_accepted ? await request.json() : {};
@@ -127,7 +148,7 @@ export async function PUT(request: NextRequest) {
     .update({
       message: pitchData.message,
       price: pitchData.price,
-      delivery_time: pitchData.deliveryTime,
+      delivery_time: parseFloat(pitchData.deliveryTime),
       delivery_unit: pitchData.deliveryUnit,
     })
     .filter("professional_id", "eq", professional_id)

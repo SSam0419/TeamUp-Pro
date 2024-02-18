@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
   const request_id = searchParams.get("request_id");
   const professional_id = searchParams.get("professional_id");
 
-  if (request_id == null)
+  if (professional_id == null || request_id == null)
     return new NextResponse("Error", {
       status: 404,
       statusText: "ERROR : Missing Request Id",
@@ -49,15 +49,14 @@ export async function GET(request: NextRequest) {
     .eq("request_details_id", request_id)
     .maybeSingle();
 
-  data.pitch = pitch;
-  console.log({ request_id, professional_id, data });
+  const returnData = { ...data, pitch: pitch };
 
   if (pitchRequestError)
     return new NextResponse("Error", {
       status: 400,
       statusText: "ERROR : Try Again Later",
     });
-  return NextResponse.json({ data });
+  return NextResponse.json({ returnData });
 }
 
 //unlock a request
