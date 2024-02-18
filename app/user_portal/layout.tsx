@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-
+import { FaHospitalUser } from "react-icons/fa";
+import { BsFillPostcardFill } from "react-icons/bs";
 import NavBar from "../../components/Navbar";
 
 export const metadata: Metadata = {
@@ -21,10 +22,12 @@ export default async function UserPortalLayout({
           {
             name: "Dashboard",
             link: "/user_portal",
+            icon: <BsFillPostcardFill />,
           },
           {
             name: "Talents",
             link: "/user_portal/find_talents",
+            icon: <FaHospitalUser />,
           },
           // {
           //   name: "Mailbox",

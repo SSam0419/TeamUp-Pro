@@ -6,6 +6,9 @@ import { MyNextUIProvider } from "@/components/Providers/NextUIProvider";
 import { Analytics } from "@vercel/analytics/react";
 
 import { Roboto } from "next/font/google";
+import NavBar from "@/components/Navbar";
+import { FaSuitcase } from "react-icons/fa";
+import { MdOutlinePostAdd } from "react-icons/md";
 
 const fontFamily = Roboto({
   weight: ["100", "400", "500", "700"],
@@ -43,6 +46,7 @@ export default function RootLayout({
                   position: "bottom-right",
                 }}
               />
+
               {children}
               <Analytics />
             </div>

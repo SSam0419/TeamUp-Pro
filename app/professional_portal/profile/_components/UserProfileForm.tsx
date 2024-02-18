@@ -17,7 +17,7 @@ import {
   FormInput,
   FormLanguageMultipleSelect,
   FormTextarea,
-} from "./userProfileFormFields";
+} from "./ProfileFormFields";
 import { CiSettings } from "react-icons/ci";
 import { FaCircleInfo } from "react-icons/fa6";
 import { IoShareSocialSharp } from "react-icons/io5";
@@ -108,7 +108,7 @@ export default function UserProfileForm() {
     });
   }, [profileInfo, session?.user.id]);
 
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: async ({
       userProfileData,
       avatarFile,
@@ -152,7 +152,7 @@ export default function UserProfileForm() {
     if (session == null) return;
 
     userProfile.id = session.user.id;
-    await mutation.mutate({ userProfileData: userProfile, avatarFile: null });
+    await mutate({ userProfileData: userProfile, avatarFile });
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -164,7 +164,7 @@ export default function UserProfileForm() {
     <div className="p-2">
       <form onSubmit={handleSubmit}>
         {/* personal */}
-        <div className="flex gap-3 justify-between items-center w-full my-2">
+        <div className="flex gapy-3 justify-between items-center w-full my-2">
           <div className="border w-full"></div>
           <div className="w-full text-center flex items-center justify-evenly">
             <FaCircleInfo /> Personal
@@ -183,6 +183,22 @@ export default function UserProfileForm() {
                       ? URL.createObjectURL(avatarFile)
                       : "/default-avatar.png"
                   }
+                  width={150}
+                  height={150}
+                  alt={""}
+                  className="border rounded-full shadow h-[150px] w-[150px] hover:cursor-pointer"
+                  onClick={() => {
+                    if (inputRef.current) {
+                      inputRef.current.click();
+                    }
+                  }}
+                />
+              ) : userProfile.avatar_link ? (
+                <Image
+                  loader={({ src, width, quality }) => {
+                    return userProfile.avatar_link || "";
+                  }}
+                  src={userProfile.avatar_link}
                   width={150}
                   height={150}
                   alt={""}
@@ -213,6 +229,7 @@ export default function UserProfileForm() {
                 ref={inputRef}
                 onChange={(e) => {
                   const file = e.target.files ? e.target.files[0] : null;
+
                   if (file) setAvatarFile(file);
                 }}
               />
@@ -307,7 +324,7 @@ export default function UserProfileForm() {
         </div>
 
         {/* social medias */}
-        <div className="flex gap-3 justify-between items-center w-full my-2">
+        <div className="flex gapy-3 justify-between items-center w-full my-2">
           <div className="border w-full"></div>
           <div className="w-full text-center flex items-center justify-evenly">
             <IoShareSocialSharp /> Social Links
@@ -330,8 +347,9 @@ export default function UserProfileForm() {
               </div>
             );
           })}
+
         <Divider className="my-3" />
-        <div className="p-3">
+        <div className="py-3">
           {profileInfo == null ? (
             <CustomButton
               disabled={disableEdit}
@@ -342,6 +360,7 @@ export default function UserProfileForm() {
           ) : (
             <div className="flex gap-2 items-center">
               <CustomButton
+                disabled={isLoading}
                 action={() => {
                   setDisableEdit((prev) => !prev);
                 }}
@@ -350,6 +369,7 @@ export default function UserProfileForm() {
                 icon={disableEdit ? <CiSettings size={25} /> : null}
               />
               <CustomButton
+                isLoading={isLoading}
                 disabled={disableEdit}
                 type="submit"
                 action={() => {}}

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import NavBar from "@/components/Navbar";
+import { MdSpaceDashboard } from "react-icons/md";
+import { HiPresentationChartLine } from "react-icons/hi2";
 
 export const metadata: Metadata = {
   title: "Professional Portal",
@@ -21,10 +23,12 @@ export default function UserPortalLayout({
           {
             name: "Dashboard",
             link: "/professional_portal",
+            icon: <MdSpaceDashboard />,
           },
           {
             name: "Pitch",
             link: "/professional_portal/my_pitch",
+            icon: <HiPresentationChartLine />,
           },
           // {
           //   name: "Mailbox",

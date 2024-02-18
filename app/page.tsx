@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { BsMouse } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
-
+import { MdOutlinePostAdd } from "react-icons/md";
+import { FaSuitcase } from "react-icons/fa";
 export default function Home() {
   return (
     <>
@@ -13,10 +14,12 @@ export default function Home() {
           {
             name: "Professional Portal",
             link: "/professional_portal",
+            icon: <FaSuitcase />,
           },
           {
             name: "User Portal",
             link: "/user_portal",
+            icon: <MdOutlinePostAdd />,
           },
         ]}
       />

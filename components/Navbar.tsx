@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Divider,
   Navbar,
@@ -17,10 +17,11 @@ import useConstants from "@/hooks/useFetchConstant";
 import { useAppStore } from "@/libs/ZustandStore";
 import classNames from "classnames";
 import CustomButton from "./CustomButtons/CustomButton";
+import { PiSignpostFill } from "react-icons/pi";
 
 type props = {
   portalType: "main" | "user" | "professional";
-  menuItems: { name: string; link: string }[];
+  menuItems: { name: string; link: string; icon?: ReactNode }[];
 };
 
 export default function NavBar({ portalType, menuItems }: props) {
@@ -59,7 +60,9 @@ export default function NavBar({ portalType, menuItems }: props) {
               TeamUp Pro
             </Link>
           </NavbarBrand>
+        </NavbarContent>
 
+        <NavbarContent>
           {menuItems.map((item, index) => (
             <NavbarItem
               key={`${item}-${index}`}
@@ -68,40 +71,44 @@ export default function NavBar({ portalType, menuItems }: props) {
                 "text-primary": pathName === item.link,
               })}
             >
-              <Link className={`w-full`} color="foreground" href={item.link}>
+              <Link
+                className={`w-full rounded-full px-5 py-2 hover:bg-default flex gap-2  items-center justify-center`}
+                color="foreground"
+                href={item.link}
+              >
+                {item.icon !== null && item.icon}
                 {item.name}
               </Link>
-              {/* {pathName === item.link && (
-                <Divider className="bg-primary h-[1.5px]" />
-              )} */}
             </NavbarItem>
           ))}
         </NavbarContent>
 
-        <NavbarContent>
-          <NavbarItem>
-            <Link
-              className={`w-full`}
-              color="foreground"
-              href={
-                portalType === "professional"
-                  ? "/user_portal"
-                  : "/professional_portal"
-              }
-            >
-              <CustomButton
-                action={() => {}}
-                variant="secondary"
-                text={
+        {!(portalType === "main") && (
+          <NavbarContent>
+            <NavbarItem>
+              <Link
+                className={`w-full`}
+                color="foreground"
+                href={
                   portalType === "professional"
-                    ? "User Portal"
-                    : "Professional Portal"
+                    ? "/user_portal"
+                    : "/professional_portal"
                 }
-                style="bordered"
-              />
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
+              >
+                <CustomButton
+                  action={() => {}}
+                  variant="secondary"
+                  text={
+                    portalType === "professional"
+                      ? "User Portal"
+                      : "Professional Portal"
+                  }
+                  style="bordered"
+                />
+              </Link>
+            </NavbarItem>
+          </NavbarContent>
+        )}
 
         <NavbarContent justify="end" className="hidden sm:flex">
           <NavbarItem>
