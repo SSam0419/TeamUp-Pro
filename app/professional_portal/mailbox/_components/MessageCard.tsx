@@ -10,6 +10,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import Markdown from "react-markdown";
+import { Mailbox } from "@/libs/models/Mailbox";
 
 const MessageCard = ({ message }: { message: Mailbox }) => {
   const [isRead, setIsRead] = useState(message.is_read);
@@ -50,7 +51,7 @@ const MessageCard = ({ message }: { message: Mailbox }) => {
               {message.user_profile.firstname}
             </p>
             <p className="text-small text-default-500">
-              {message.user_profile.occupation}
+              {message.user_profile.currentOrganization}
             </p>
           </div>
 

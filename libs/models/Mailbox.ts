@@ -1,8 +1,10 @@
-type Mailbox = {
+import { UserProfileClass } from "./UserProfileClass/UserProfileClass";
+
+export type Mailbox = {
   id: string;
   message: string;
   created_at: string;
   is_read: boolean;
-  user_profile: UserProfile;
-  professional_profile: UserProfile;
+  user_profile: UserProfileClass;
+  professional_profile: UserProfileClass;
 };

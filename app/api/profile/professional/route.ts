@@ -1,7 +1,7 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { Database } from "@/libs/types/database";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 import { CreateProfessionalProfileFormType } from "@/libs/models/UserProfileClass/UserProfileUtility";
 
@@ -10,7 +10,10 @@ export async function POST(request: Request) {
     requestType: "POST",
     route: "/api/profile/professional/route",
   });
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
 
   const professionalProfile: CreateProfessionalProfileFormType =
     await request.json();

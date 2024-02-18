@@ -1,6 +1,9 @@
-type RequestDetails = {
+import { Pitch } from "./Pitch";
+import { UserProfileClass } from "./UserProfileClass/UserProfileClass";
+
+export type RequestDetails = {
   id: string;
-  user_profile: UserProfile | null;
+  user_profile: UserProfileClass | null;
   title: string;
   industry: string;
   content: string;

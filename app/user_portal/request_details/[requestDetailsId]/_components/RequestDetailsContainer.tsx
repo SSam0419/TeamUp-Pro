@@ -7,6 +7,8 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "react-query";
 import PitchCard from "./PitchCard";
 import { notFound } from "next/navigation";
+import { RequestDetails } from "@/libs/models/RequestDetails";
+import { Pitch } from "@/libs/models/Pitch";
 
 const RequestDetailsContainer = () => {
   const { fetchedSingleRequestDetails } = useAppStore();
@@ -24,7 +26,7 @@ const RequestDetailsContainer = () => {
   ) => {
     const { name, value } = e.target;
 
-    setRequestDetails((prev) => {
+    setRequestDetails((prev: any) => {
       if (prev === null) {
         return null;
       } else {
@@ -212,13 +214,15 @@ const RequestDetailsContainer = () => {
 
         <div>
           <div className="flex flex-col gap-3 flex-wrap">
-            {requestDetails.professional_pitch_view?.map((pitch, index) => (
-              <PitchCard
-                pitchData={pitch}
-                requestId={requestDetails.id}
-                key={index}
-              />
-            ))}
+            {requestDetails.professional_pitch_view?.map(
+              (pitch: Pitch, index: React.Key | null | undefined) => (
+                <PitchCard
+                  pitchData={pitch}
+                  requestId={requestDetails.id}
+                  key={index}
+                />
+              )
+            )}
             {requestDetails.professional_pitch_view == null ||
               (requestDetails.professional_pitch_view.length == 0 && (
                 <div>

@@ -18,6 +18,7 @@ import { MdAirplanemodeActive } from "react-icons/md";
 import { FaHouse } from "react-icons/fa6";
 import { FaNetworkWired } from "react-icons/fa";
 import { SlPeople } from "react-icons/sl";
+import { RequestDetails } from "@/libs/models/RequestDetails";
 
 const DashboardCard = ({
   requestDetails,

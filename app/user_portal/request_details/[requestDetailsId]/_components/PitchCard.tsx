@@ -1,4 +1,5 @@
 import CustomButton from "@/components/CustomButtons/CustomButton";
+import { Pitch } from "@/libs/models/Pitch";
 import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";

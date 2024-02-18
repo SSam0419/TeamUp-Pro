@@ -8,6 +8,7 @@ import UnauthorizedPage from "@/components/UnauthorizedPage";
 import { Divider } from "@nextui-org/react";
 import Spinner from "@/components/Spinner";
 import { Tabs, Tab } from "@nextui-org/react";
+import { Pitch } from "@/libs/models/Pitch";
 
 const PitchList = () => {
   const { profileInfo } = useAppStore();

@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import UnlockedRequestView from "./_components/UnlockedRequestView";
 import PitchForm from "./_components/PitchForm";
 import { useAppStore } from "@/libs/ZustandStore";
+import { RequestDetails } from "@/libs/models/RequestDetails";
 
 const Page = ({ params }: { params: { requestDetailsId: string } }) => {
   const { profileInfo, session } = useAppStore();

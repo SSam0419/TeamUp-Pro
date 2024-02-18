@@ -1,5 +1,7 @@
 "use sever";
 
+import { RequestDetails } from "@/libs/models/RequestDetails";
+
 type props = {
   readonly requestDetails: RequestDetails;
 };

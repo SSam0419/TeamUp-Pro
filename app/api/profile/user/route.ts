@@ -1,7 +1,7 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { Database } from "@/libs/types/database";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 import { NextResponse } from "next/server";
 import { CreateUserProfileFormType } from "@/libs/models/UserProfileClass/UserProfileUtility";
@@ -11,7 +11,10 @@ export async function GET(request: Request) {
     requestType: "GET",
     route: "/api/profile/user/route",
   });
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
   let query = supabase
     .from("user_profile")
     .select("* , professional_profile(*)");
@@ -35,7 +38,10 @@ export async function POST(request: Request) {
     route: "/api/profile/user/route",
   });
 
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
   const userProfileData: CreateUserProfileFormType = await request.json();
 
   if (userProfileData.id === "") {

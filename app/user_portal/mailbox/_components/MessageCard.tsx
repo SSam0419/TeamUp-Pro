@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { useMutation } from "react-query";
 import Markdown from "react-markdown";
 import { MessageMarkdown } from "../../../../components/MessageMarkdown";
+import { Mailbox } from "@/libs/models/Mailbox";
 
 const MessageCard = ({ message }: { message: Mailbox }) => {
   const [isRead, setIsRead] = useState(message.is_read);
@@ -50,7 +51,7 @@ const MessageCard = ({ message }: { message: Mailbox }) => {
               {message.professional_profile.firstname}
             </p>
             <p className="text-small text-default-500">
-              {message.professional_profile.occupation}
+              {message.professional_profile.currentOrganization}
             </p>
           </div>
 

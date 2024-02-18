@@ -1,7 +1,8 @@
 import { Database } from "@/libs/types/database";
+import { createServerSideClient } from "@/server-actions/supabase/server";
 import { ConsoleLog } from "@/server-actions/utils/logger";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -22,7 +23,12 @@ export async function GET(request: NextRequest) {
 
   const query = searchParams.get("query");
 
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
+  // const supabase = createServerSideClient(cookies());
+
   let fetchQuery = supabase
     .from("professional_free_request_view")
     .select(` *  `, { count: "exact" });

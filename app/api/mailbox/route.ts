@@ -1,12 +1,15 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { Database } from "@/libs/types/database";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(request: NextRequest) {
   ConsoleLog({ requestType: "PUT", route: "/api/mailbox/route" });
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
   const { id, message } = await request.json();
 
   const { data, error } = await supabase
@@ -20,7 +23,10 @@ export async function PUT(request: NextRequest) {
 export async function GET(request: NextRequest) {
   ConsoleLog({ requestType: "GET", route: "/api/mailbox/route" });
 
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
   const { searchParams } = new URL(request.url);
   const user_id = searchParams.get("user_id");
 
@@ -46,7 +52,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   ConsoleLog({ requestType: "POST", route: "/api/mailbox/route" });
 
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
   const { searchParams } = new URL(request.url);
   const { message, userIds } = await request.json();
 

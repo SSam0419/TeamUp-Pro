@@ -1,4 +1,5 @@
 import CustomButton from "@/components/CustomButtons/CustomButton";
+import { Pitch } from "@/libs/models/Pitch";
 import { Chip, Divider } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

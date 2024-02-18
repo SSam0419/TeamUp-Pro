@@ -1,12 +1,15 @@
 import { ConsoleLog } from "@/server-actions/utils/logger";
 import { Database } from "@/libs/types/database";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   ConsoleLog({ requestType: "GET", route: "/api/constants" });
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient<Database>({
+    cookies: () => cookieStore,
+  });
 
   const languageOptions = await supabase
     .from("language_options")
@@ -49,7 +52,10 @@ export async function GET(request: NextRequest) {
     _skillset = skillsetOptions.data
       .filter((item) => item.skill !== null)
       .map((item) => {
-        return { skill: item.skill, industry: item.industry_options?.industry };
+        return {
+          skill: item.skill,
+          industry: item.industry_options?.industry,
+        };
       });
   }
 

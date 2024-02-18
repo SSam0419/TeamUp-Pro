@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import MessageCard from "./MessageCard";
 import UnauthorizedPage from "@/components/UnauthorizedPage";
+import { Mailbox } from "@/libs/models/Mailbox";
 
 const MessageList = () => {
   const { session } = useAppStore();

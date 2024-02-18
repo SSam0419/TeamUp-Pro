@@ -1,6 +1,7 @@
 import CustomButton from "@/components/CustomButtons/CustomButton";
 import { notifyUserPitchMessage } from "@/components/MessageMarkdown";
 import { useAppStore } from "@/libs/ZustandStore";
+import { RequestDetails } from "@/libs/models/RequestDetails";
 import axios from "axios";
 import React, { ChangeEvent, useState } from "react";
 import { toast } from "react-hot-toast";

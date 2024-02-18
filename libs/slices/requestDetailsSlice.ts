@@ -1,4 +1,5 @@
 import { StateCreator } from "zustand";
+import { RequestDetails } from "../models/RequestDetails";
 
 export interface RequestDetailsSlice {
   fetchedRequestDetails: RequestDetails[];

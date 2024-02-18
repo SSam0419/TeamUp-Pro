@@ -2,6 +2,7 @@
 
 import CustomButton from "@/components/CustomButtons/CustomButton";
 import StatusChip from "@/components/StatusChip";
+import { RequestDetails } from "@/libs/models/RequestDetails";
 import {
   Card,
   CardBody,
