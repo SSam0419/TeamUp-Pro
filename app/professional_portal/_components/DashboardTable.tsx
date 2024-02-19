@@ -1,11 +1,7 @@
 "use client";
 
 import { useAppStore } from "@/libs/ZustandStore";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import React from "react";
-import { toast } from "react-hot-toast";
-import { useMutation } from "react-query";
 import DashboardCard from "./DashboardCard";
 
 const DashboardTable = () => {

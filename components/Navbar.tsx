@@ -49,9 +49,9 @@ export default function NavBar({ portalType, menuItems }: props) {
           <NavbarBrand>
             <Link
               href={`${
-                user == null
+                portalType == "main"
                   ? "/"
-                  : user.professionalProfile == null
+                  : portalType == "professional"
                   ? "/professional_portal"
                   : "/user_portal"
               }`}
