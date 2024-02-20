@@ -4,7 +4,10 @@ import CustomButton from "@/components/CustomButtons/CustomButton";
 import UnauthorizedPage from "@/components/UnauthorizedPage";
 import { useAppStore } from "@/libs/ZustandStore";
 import { useConstantStore } from "@/libs/slices/constantSlice";
-import { UserProfileClass } from "@/libs/models/UserProfileClass/UserProfileClass";
+import {
+  ProfessionalProfile,
+  UserProfileClass,
+} from "@/libs/models/UserProfileClass/UserProfileClass";
 import { CreateProfessionalProfileFormType } from "@/libs/models/UserProfileClass/UserProfileUtility";
 import { Button, Divider, Select, SelectItem } from "@nextui-org/react";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
@@ -71,11 +74,10 @@ export default function ProfessionalProfileForm() {
       professionalProfileData: CreateProfessionalProfileFormType;
       resumeFile: File | null;
     }) => {
-      const { data } =
-        await new UserProfileClass().professionalProfile.createOrUpdate({
-          professionalProfileData,
-          resumeFile,
-        });
+      const { data } = await new ProfessionalProfile().createOrUpdate({
+        professionalProfileData,
+        resumeFile,
+      });
       return { data: data.data, status: data.status };
     },
     onSuccess: ({ data, status }) => {

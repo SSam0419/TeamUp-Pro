@@ -57,21 +57,21 @@ const ProfileCard = ({
       <div className="flex flex-col gap-1">
         <span className="text-small">{profile.currentOrganization}</span>
         <span className="text-tiny text-default-600">
-          {profile.professionalProfile.professionalJobTitle}
+          {profile.professionalProfile?.professionalJobTitle}
         </span>
       </div>
 
       <Divider />
 
       <div className="h-2/6">
-        {profile.professionalProfile.professionalIntroduction}
+        {profile.professionalProfile?.professionalIntroduction}
       </div>
 
       <Divider />
 
       <div className="h-2/6">
         <div className="flex flex-wrap gap-2">
-          {profile.professionalProfile.skills.map((skill, idx) => {
+          {profile.professionalProfile?.skills.map((skill, idx) => {
             let style = false;
             if (query.includes("query")) {
               const current = new URLSearchParams(
@@ -110,8 +110,8 @@ const ProfileCard = ({
           text="Get Resume"
           action={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.stopPropagation();
-            if (profile.professionalProfile.resumeLink)
-              window.open(profile.professionalProfile.resumeLink, "_blank");
+            if (profile.professionalProfile?.resumeLink)
+              window.open(profile.professionalProfile?.resumeLink, "_blank");
           }}
         />
       </div>
