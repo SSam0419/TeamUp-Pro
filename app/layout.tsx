@@ -46,7 +46,6 @@ export default function RootLayout({
                   position: "bottom-right",
                 }}
               />
-
               {children}
               <Analytics />
             </div>

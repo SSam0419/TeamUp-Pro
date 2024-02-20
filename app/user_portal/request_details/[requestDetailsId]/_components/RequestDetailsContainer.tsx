@@ -134,7 +134,7 @@ const RequestDetailsContainer = () => {
             </div>
             <div className="flex flex-col gap-1">
               <label htmlFor="budget" className="">
-                Budget (HKD) :
+                Budget (USD) :
               </label>
               <div className="flex flex-col md:flex-row items-start gap-3 md:items-center md:justify-center">
                 <div className="flex items-center w-full">

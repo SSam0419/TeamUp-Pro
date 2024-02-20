@@ -57,7 +57,7 @@ const PitchCard = ({ pitchData, requestId }: props) => {
         </div>
         <div>From : {pitchData.professional_profile?.lastname}</div>
         <div>Contact : {pitchData.professional_profile?.email}</div>
-        <div>Price (HKD): {pitchData.price}</div>
+        <div>Price (USD): {pitchData.price}</div>
         <div>
           Delivery : {pitchData.delivery_time} {pitchData.delivery_unit}
         </div>

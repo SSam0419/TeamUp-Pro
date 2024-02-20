@@ -73,7 +73,7 @@ const DashboardCard = ({
         <div className="grid grid-cols-8 w-full text-sm text-gray-400">
           <div className="col-span-3">Title</div>
           <div className="col-span-2">Status</div>
-          <div className="col-span-2">Budget(HKD)</div>
+          <div className="col-span-2">Budget(USD)</div>
           <div className="col-span-1">Duration</div>
         </div>
         <div className="grid grid-cols-8 w-full text-base">
