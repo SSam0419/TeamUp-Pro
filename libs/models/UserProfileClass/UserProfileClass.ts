@@ -16,7 +16,7 @@ export class UserProfileClass {
   linkedinLink: string | null = null;
   languages: string[] = [];
   years_of_experience: number = 0;
-  professionalProfile: ProfessionalProfile = new ProfessionalProfile();
+  professionalProfile: ProfessionalProfile | null = new ProfessionalProfile();
 
   constructor(data?: any) {
     if (data) {
@@ -35,18 +35,21 @@ export class UserProfileClass {
       this.linkedinLink = data.linkedin_link;
       this.languages = data.languages;
       this.years_of_experience = data.years_of_experience;
-
-      this.professionalProfile = new ProfessionalProfile(
-        data.professional_profile.skills,
-        new Date(data.professional_profile.created_at),
-        new Date(data.professional_profile.updated_at),
-        data.professional_profile.hourly_rate,
-        data.professional_profile.resume_link,
-        data.professional_profile.availability,
-        data.professional_profile.years_of_experience,
-        data.professional_profile.professional_job_title,
-        data.professional_profile.professional_introduction
-      );
+      if (data.professional_profile) {
+        this.professionalProfile = new ProfessionalProfile(
+          data.professional_profile.skills,
+          new Date(data.professional_profile.created_at),
+          new Date(data.professional_profile.updated_at),
+          data.professional_profile.hourly_rate,
+          data.professional_profile.resume_link,
+          data.professional_profile.availability,
+          data.professional_profile.years_of_experience,
+          data.professional_profile.professional_job_title,
+          data.professional_profile.professional_introduction
+        );
+      } else {
+        this.professionalProfile = null;
+      }
     }
   }
 
@@ -61,7 +64,7 @@ export class UserProfileClass {
   }
 }
 
-class ProfessionalProfile {
+export class ProfessionalProfile {
   skills: string[] = [];
   createdAt: Date | null = null;
   updatedAt: Date | null = null;

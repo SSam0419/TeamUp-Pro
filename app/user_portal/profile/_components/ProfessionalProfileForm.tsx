@@ -53,13 +53,13 @@ export default function ProfessionalProfileForm() {
     setProfessionalProfile({
       id: session?.user.id || "",
       professional_introduction:
-        profileInfo?.professionalProfile.professionalIntroduction || "",
-      resume_link: profileInfo?.professionalProfile.resumeLink || "",
+        profileInfo?.professionalProfile?.professionalIntroduction || "",
+      resume_link: profileInfo?.professionalProfile?.resumeLink || "",
       professional_job_title:
-        profileInfo?.professionalProfile.professionalJobTitle || "",
-      hourly_rate: profileInfo?.professionalProfile.hourlyRate || 0,
-      availability: profileInfo?.professionalProfile.availability || true,
-      skills: profileInfo?.professionalProfile.skills || [],
+        profileInfo?.professionalProfile?.professionalJobTitle || "",
+      hourly_rate: profileInfo?.professionalProfile?.hourlyRate || 0,
+      availability: profileInfo?.professionalProfile?.availability || true,
+      skills: profileInfo?.professionalProfile?.skills || [],
     });
   }, [profileInfo, session?.user.id]);
 

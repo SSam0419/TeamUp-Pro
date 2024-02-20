@@ -8,6 +8,7 @@ import { useMutation } from "react-query";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import axios from "axios";
+import { AuthError } from "@supabase/supabase-js";
 
 const PortalUrl = {
   main: "",
@@ -51,25 +52,13 @@ const AuthForm = ({
       async () => {
         if (password == confirmPassword && email && password) {
           //check if email exists
-          //create a profile with this email by going to api/auth links
-          const { data: response } = await axios.get(
-            `/api/profile/${portalType}?email=${email}`
-          );
-          if (response.data !== null) {
-            setHint("This email is already registered ");
-            return {
-              data: null,
-              error: "This email is already registered ",
-            };
-          } else {
-            const { data, error } = await supabase.auth.signUp({
-              email: email,
-              password: password,
-            });
 
-            setHint("an confirmation email has sent to your email");
-            return { data, error };
-          }
+          const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+          });
+
+          return { data, error };
         } else {
           setHint("Please fill the valid information in the fields");
           return {
@@ -79,6 +68,15 @@ const AuthForm = ({
         }
       },
       {
+        onSuccess: ({ data, error }) => {
+          if (error instanceof AuthError) {
+            setHint(error.message);
+          } else if (data?.user?.identities?.length === 0) {
+            setHint("This user already exists");
+          } else if (data) {
+            setHint("check your inbox for confirmation email");
+          }
+        },
         onError: ({ error }) => {
           setHint("Error" + error);
         },
@@ -88,18 +86,28 @@ const AuthForm = ({
     useMutation(
       ["signInWithEmail"],
       async () => {
+        setSigningInWithOauth(true);
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
+        console.log({ data, error });
         return { data, error };
       },
+
       {
+        onSuccess: ({ data, error }) => {
+          if (error) {
+            setHint(error.message);
+          }
+          setSigningInWithOauth(false);
+        },
         onError: () => {
           setSigningInWithOauth(false);
         },
       }
     );
+
   const { mutate: signInWithGithub, isLoading: signingInWithGithub } =
     useMutation(
       ["signInWithGithub"],
@@ -176,6 +184,7 @@ const AuthForm = ({
             <div className="border rounded-lg p-2 flex items-center justify-start">
               <AiOutlineMail size={25} />
               <input
+                required
                 id="email"
                 placeholder="your email address"
                 className="outline-none p-2 placeholder:font-thin placeholder:italic w-full"
@@ -195,6 +204,7 @@ const AuthForm = ({
                 placeholder="your password"
                 className="outline-none p-2 placeholder:font-thin placeholder:italic w-full"
                 value={password}
+                type="password"
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
@@ -207,6 +217,7 @@ const AuthForm = ({
               <div className="border rounded-lg p-2 flex items-center justify-start">
                 <RiLockPasswordLine size={25} />
                 <input
+                  type="password"
                   id="confirmPassword"
                   placeholder="your password"
                   className="outline-none p-2 placeholder:font-thin placeholder:italic w-full"
@@ -227,8 +238,10 @@ const AuthForm = ({
                 action={() => {
                   signUpWithEmail();
                 }}
+                isLoading={signingUpWithEmail}
               />
               <CustomButton
+                disabled={signingUpWithEmail}
                 variant="secondary"
                 text="Cancel"
                 action={() => {
